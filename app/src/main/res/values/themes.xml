@@ -32,5 +32,19 @@
 
     </style>
 
+    <style name="TitleTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primary_dark_color</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="MessageTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/neutral_grey</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+
+
+
 
 </resources>

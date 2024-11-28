@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("kotlin-kapt")  // for data binding
+    id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
+
 
 }
 
@@ -36,6 +40,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -59,4 +67,45 @@ dependencies {
     // third party libraries
     implementation("com.github.pwittchen:reactivenetwork-rx2:3.0.8")
 
+
+    // navigation
+    val nav_version = "2.8.3"
+
+    // Views/Fragments integration
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
+
+    // Feature module support for Fragments
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    val lifecycle_version = "2.8.0"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    testImplementation("com.google.dagger:hilt-android-testing:2.44.2")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.47")
+
+
+    implementation("com.google.dagger:hilt-android:2.48")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+//    // arch components
+//
+//    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+//    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+//    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+//    implementation("androidx.viewpager2:viewpager2:1.1.0")
+//
+//    val lifecycle_version = "2.8.0"
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+//    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+//    implementation("androidx.fragment:fragment-ktx:1.7.1")
+//    implementation("androidx.activity:activity-ktx:1.9.0")
+//    implementation("androidx.datastore:datastore-preferences:1.1.1")
+//    implementation("com.google.protobuf:protobuf-kotlin-lite:4.26.0")
+
 }
+
