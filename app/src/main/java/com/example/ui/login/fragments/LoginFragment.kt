@@ -5,20 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import com.example.data.repository.user.UserPreferenceRepositoryImpl
+import com.example.data.repository.user.UserDataStoreRepositoryImpl
 
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentLoginBinding
-import com.example.ui.login.viewmodel.AuthViewModel
 import com.example.ui.login.viewmodel.LoginViewModel
 
 
 class LoginFragment : Fragment() {
 
     val  loginViewModel: LoginViewModel by lazy {
-        LoginViewModel(userPrefs =UserPreferenceRepositoryImpl(requireActivity()))
+        LoginViewModel(userPrefs =UserDataStoreRepositoryImpl(requireActivity()))
     }
 
     lateinit var binding: FragmentLoginBinding

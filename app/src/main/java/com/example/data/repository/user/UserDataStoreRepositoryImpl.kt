@@ -2,14 +2,13 @@ package com.example.data.repository.user
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import com.example.data.datasource.datastore.DataStoreKeys
 import com.example.data.datasource.datastore.DataStoreKeys.IS_USER_LOGGED_IN
 import com.example.data.datasource.datastore.DataStoreKeys.USER_ID
 import com.example.data.datasource.datastore.dataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferenceRepositoryImpl(private var context: Context) : UserPreferenceRepository {
+class UserDataStoreRepositoryImpl(private var context: Context) : UserPreferenceRepository {
 
 
 
@@ -21,6 +20,7 @@ class UserPreferenceRepositoryImpl(private var context: Context) : UserPreferenc
     }
 
         override suspend fun isUserLoggedIn(): Flow<Boolean> {
+            // here i map flow of data
             return context.dataStore.data.map { preferences ->
                 // returns the logged-in state,defaulting to false if not found
                 preferences[IS_USER_LOGGED_IN] ?: false
