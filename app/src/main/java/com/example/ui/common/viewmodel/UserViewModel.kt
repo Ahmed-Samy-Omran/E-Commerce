@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.data.repository.user.UserDataStoreRepositoryImpl
+import com.example.data.repository.user.UserPreferenceRepository
 import kotlinx.coroutines.launch
 
 class UserViewModel(
-    private val userPreferencesRepository: UserDataStoreRepositoryImpl
+    private val userPreferencesRepository: UserPreferenceRepository
 ) : ViewModel() {
 
     suspend fun isUserLoggedIn() = userPreferencesRepository.isUserLoggedIn()

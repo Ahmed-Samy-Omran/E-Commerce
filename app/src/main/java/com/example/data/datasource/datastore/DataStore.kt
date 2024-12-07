@@ -10,7 +10,6 @@ import com.example.data.datasource.datastore.DataStoreKeys.E_COMMERCE_PREFERENCE
 
 object DataStoreKeys{
     const val E_COMMERCE_PREFERENCES = "e_commerce_preferences"
-    const val USER_DETAILS_PREFERENCES_PB = "user_details.pb"
     val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
     val USER_ID = stringPreferencesKey("user_id")
 }

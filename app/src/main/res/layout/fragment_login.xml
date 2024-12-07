@@ -1,16 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android=
-    "http://schemas.android.com/apk/res/android"
->
-<data>
-    <variable
-        name="viewmodel"
-        type="com.example.ui.login.viewmodel.LoginViewModel" />
-</data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
 
+        <variable
+            name="viewmodel"
+            type="com.example.ui.login.viewmodel.LoginViewModel" />
+    </data>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:src="@mipmap/ic_logo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/auth_welcome_msg" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/MessageTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/sign_in_msg" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/email_et"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="36dp"
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email_et_hint" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/password_et"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/ic_password"
+                android:hint="@string/password_et_hint"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/PrimaryButtonStyle"
+                android:layout_marginTop="16dp"
+                android:text="@string/sign_in" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:background="@color/neutral_light"
+                    />
+
+                <TextView
+
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/or_txt"
+                    android:textColor="@color/neutral_grey"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:background="@color/white"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </layout>
