@@ -19,7 +19,7 @@ import com.example.ui.login.AuthActivity
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity() {
     val userViewModel: UserViewModel by viewModels() {
@@ -30,18 +30,18 @@ class MainActivity : AppCompatActivity() {
         initSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        goToAuthActivity()
 
-
-        lifecycleScope.launch(Main) { // here we work on main thread and  stop every thing to see if user logged in or not
-            val isLoggedIn = userViewModel.isUserLoggedIn().first()
-//            Log.d(TAG,"")
-            if (isLoggedIn) {
-                setContentView(R.layout.activity_main)
-            } else {
-                userViewModel.setIsLoggedIn(true)
-                goToAuthActivity()
-            }
-        }
+//        lifecycleScope.launch(Main) { // here we work on main thread and  stop every thing to see if user logged in or not
+//            val isLoggedIn = userViewModel.isUserLoggedIn().first()
+//            Log.d(TAG, "User logged in status: $isLoggedIn")
+//            if (isLoggedIn) {
+//                setContentView(R.layout.activity_main)
+//            } else {
+//                userViewModel.setIsLoggedIn(true)
+//                goToAuthActivity()
+//            }
+//        }
     }
 
     private fun goToAuthActivity() {
@@ -66,5 +66,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             setTheme(R.style.Theme_ECommerce)
         }
+    }
+
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

@@ -87,6 +87,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.48")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.8.4")
+    implementation ("androidx.fragment:fragment-ktx:1.8.5")
     kapt("com.google.dagger:hilt-android-compiler:2.47")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
 

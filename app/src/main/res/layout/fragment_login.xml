@@ -11,21 +11,22 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:src="@mipmap/ic_logo" />
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_primary_logo" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/TitleTextStyle"
@@ -38,7 +39,7 @@
                 style="@style/MessageTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/sign_in_msg" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -48,7 +49,8 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="36dp"
                 android:drawableStart="@drawable/ic_email"
-                android:hint="@string/email_et_hint" />
+                android:hint="@string/email_et_hint"
+                android:inputType="textEmailAddress" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/password_et"
@@ -58,10 +60,12 @@
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ic_password"
                 android:hint="@string/password_et_hint"
+                android:inputType="textPassword"
 
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/login_btn"
                 style="@style/PrimaryButtonStyle"
                 android:layout_marginTop="16dp"
                 android:text="@string/sign_in" />
@@ -76,25 +80,63 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_centerInParent="true"
-                    android:background="@color/neutral_light"
-                    />
+                    android:background="@color/neutral_light" />
 
                 <TextView
-
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/or_txt"
-                    android:textColor="@color/neutral_grey"
+                    android:background="@color/white"
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center"
+                    android:text="@string/or_txt"
                     android:textAllCaps="true"
-                    android:background="@color/white"
-                    android:layout_centerInParent="true"
-                    />
+                    android:textColor="@color/neutral_grey" />
 
             </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/google_sign_in_btn"
+                style="@style/SocialButtonStyle"
+                android:drawableStart="@drawable/ic_google"
+                android:text="@string/google_signin_btn_msg"  />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/facebook_sign_in_btn"
+                style="@style/SocialButtonStyle"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/ic_facebook"
+                android:text="@string/facebook_signin_btn_msg" />
+
+            <TextView
+                style="@style/MediumPrimaryTextViewStyle"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/forgot_password_msg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/MessageTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dont_have_a_account_msg" />
+
+                <TextView
+                    android:id="@+id/register_tv"
+                    style="@style/MediumPrimaryTextViewStyle"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/register" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
