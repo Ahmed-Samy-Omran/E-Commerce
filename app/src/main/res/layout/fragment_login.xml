@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
     <data>
-
         <variable
             name="viewmodel"
-            type="com.example.ui.login.viewmodel.LoginViewModel" />
+            type="com.example.ui.auth.viewmodel.LoginViewModel" />
     </data>
 
     <ScrollView
@@ -48,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="36dp"
+                android:text="@={viewmodel.email}"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email_et_hint"
                 android:inputType="textEmailAddress" />
@@ -58,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
+                android:text="@={viewmodel.password}"
                 android:drawableStart="@drawable/ic_password"
                 android:hint="@string/password_et_hint"
                 android:inputType="textPassword"

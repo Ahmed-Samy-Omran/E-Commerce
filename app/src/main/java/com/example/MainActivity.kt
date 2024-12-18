@@ -4,21 +4,16 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import com.example.data.datasource.datastore.UserPreferencesDataSource
 import com.example.data.repository.user.UserDataStoreRepositoryImpl
 import com.example.e_commerce.R
 import com.example.ui.common.viewmodel.UserViewModel
 import com.example.ui.common.viewmodel.UserViewModelFactory
-import com.example.ui.login.AuthActivity
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import com.example.ui.auth.AuthActivity
 
 
 class MainActivity : AppCompatActivity() {
