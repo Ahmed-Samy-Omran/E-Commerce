@@ -10,6 +10,8 @@ import com.example.utils.isValidEmail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -26,57 +28,65 @@ class LoginViewModel(
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
 
-    val loginState = MutableSharedFlow<Resource<String>>()
+    // any changes happen to this flow will be shared with the UI
+    private val _loginState = MutableSharedFlow<Resource<String>>()
+    val loginState: SharedFlow<Resource<String>> = _loginState.asSharedFlow()
 
     // any changes happen to this flow will validate automatically
     val isLoginIsValid: Flow<Boolean> = combine(email, password) { email, password ->
         email.isValidEmail() && password.length >= 6
     }
 
-    fun login() {
-        viewModelScope.launch {
-            val email = email.value
-            val password = password.value
-            if (isLoginIsValid.first()) {
-                authRepository.loginWithEmailAndPassword(email, password).onEach { resource ->
-                    when (resource) {
-                        is Resource.Loading -> loginState.emit(Resource.Loading())
-                        is Resource.Success -> {
+    fun login() = viewModelScope.launch {
+        val email = email.value
+        val password = password.value
+        if (isLoginIsValid.first()) {
+            authRepository.loginWithEmailAndPassword(email, password).onEach { resource ->
+                when (resource) {
+//                        is Resource.Loading -> loginState.emit(Resource.Loading())
+                    is Resource.Success -> {
 
-                            loginState.emit(Resource.Success(resource.data ?: "Empty User ID"))
-                        }
-
-                        is Resource.Error -> {
-                            loginState.emit(
-                                Resource.Error(
-                                    resource.exception ?: Exception("Unknown error")
-                                )
-                            )
-                        }
+                        _loginState.emit(Resource.Success(resource.data ?: "Empty User ID"))
                     }
-                }.launchIn(viewModelScope)
-            } else {
-                loginState.emit(Resource.Error(Exception("Invalid Email or Password")))
-            }
+
+                    else -> _loginState.emit(resource)
+                }
+            }.launchIn(viewModelScope)
+        } else {
+            _loginState.emit(Resource.Error(Exception("Invalid Email or Password")))
         }
     }
 
+    fun loginWithGoogle(idToken: String) = viewModelScope.launch {
+        authRepository.loginWithGoogle(idToken).onEach { resource ->
+            when (resource) {
+//                is Resource.Loading -> loginState.emit(Resource.Loading())
+                is Resource.Success -> {
+                    _loginState.emit(Resource.Success(resource.data ?: "Empty User ID"))
+                }
 
-    class LoginViewModelFactory(
-        private val userPrefs: UserPreferenceRepository,
-        private val authRepository: FirebaseAuthRepository,
-
-        ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(userPrefs, authRepository)
-                        as T
+                else -> _loginState.emit(resource)
             }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
+        }.launchIn(viewModelScope)
     }
-
 }
+
+
+class LoginViewModelFactory(
+    private val userPrefs: UserPreferenceRepository,
+    private val authRepository: FirebaseAuthRepository,
+
+    ) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return LoginViewModel(userPrefs, authRepository)
+                    as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+
 

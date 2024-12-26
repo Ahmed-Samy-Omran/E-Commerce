@@ -6,8 +6,7 @@ plugins {
     id("kotlin-kapt")  // for data binding
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
-
-
+    id ("kotlin-android")
 }
 
 android {
@@ -31,6 +30,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            forEach{
+
+                it.buildConfigField("String", "clientServerId", "\"322843996565-2lg236vhq1i7llpgh92p3lli61k2sde1.apps.googleusercontent.com\"")
+
+            }
         }
     }
     compileOptions {
@@ -53,6 +57,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.google.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -92,34 +97,27 @@ dependencies {
 
 
 
+    // firebase libraries
 
-    // firebase dependencies
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-functions-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx")
     // that to sign in with google and facebook
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation("com.facebook.android:facebook-login:17.0.0")
+//    implementation("com.facebook.android:facebook-login:17.0.0")
+//
 
 
-//    // arch components
-//
-//    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-//    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-//    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
-//    implementation("androidx.viewpager2:viewpager2:1.1.0")
-//
-//    val lifecycle_version = "2.8.0"
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-//    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-//    implementation("androidx.fragment:fragment-ktx:1.7.1")
-//    implementation("androidx.activity:activity-ktx:1.9.0")
-//    implementation("androidx.datastore:datastore-preferences:1.1.1")
-//    implementation("com.google.protobuf:protobuf-kotlin-lite:4.26.0")
+    implementation("com.google.firebase:firebase-crashlytics")
+
+
+
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth:23.1.0")
+
+    implementation ("androidx.credentials:credentials:1.3.0")
+    implementation ("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation ("androidx.credentials:credentials:1.2.0-alpha02")
+    implementation (libs.credentials.play.services.auth)
 
 }
 
