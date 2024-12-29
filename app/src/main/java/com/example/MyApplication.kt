@@ -15,7 +15,7 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         listenToNetworkConnectivity()
-        FirebaseApp.initializeApp(this)
+//        FirebaseApp.initializeApp(this)
 
     }
     @SuppressLint("CheckResult")

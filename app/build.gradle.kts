@@ -31,9 +31,26 @@ android {
                 "proguard-rules.pro"
             )
             forEach{
-
-                it.buildConfigField("String", "clientServerId", "\"322843996565-2lg236vhq1i7llpgh92p3lli61k2sde1.apps.googleusercontent.com\"")
-
+                it.buildConfigField(
+                    "String",
+                    "clientServerId",
+                    "\"322843996565-2lg236vhq1i7llpgh92p3lli61k2sde1.apps.googleusercontent.com\""
+                )
+                it.resValue(
+                    "string",
+                    "facebook_app_id",
+                    "\"1699646247248307\""
+                )
+                it.resValue(
+                    "string",
+                    "fb_login_protocol_scheme",
+                    "\"fb1699646247248307\""
+                )
+                it.resValue(
+                    "string",
+                    "facebook_client_token",
+                    "\"b28ef2d76bc60e19224f8a1d9374fdfb\""
+                )
             }
         }
     }
@@ -101,8 +118,10 @@ dependencies {
 
     // that to sign in with google and facebook
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-//    implementation("com.facebook.android:facebook-login:17.0.0")
-//
+
+    // Facebook Android SDK (everything)
+//    implementation ("com.facebook.android:facebook-android-sdk:17.0.1")
+    implementation("com.facebook.android:facebook-login:17.0.0")
 
 
     implementation("com.google.firebase:firebase-crashlytics")
