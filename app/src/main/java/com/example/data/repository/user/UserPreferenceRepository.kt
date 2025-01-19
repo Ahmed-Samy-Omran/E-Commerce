@@ -1,12 +1,13 @@
 package com.example.data.repository.user
 
+import com.example.data.models.user.UserDetailsPreferences
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferenceRepository {
 
-     suspend fun saveLoginState(isLoggedIn: Boolean)
-     suspend fun isUserLoggedIn(): Flow<Boolean>
-     suspend fun saveUserID(userID: String)
-
-     fun getUserID(): Flow<String?>
+     fun getUserDetails(): Flow<UserDetailsPreferences>
+     suspend fun updateUserId(userId: String)
+     suspend fun getUserId(): Flow<String>
+     suspend fun clearUserPreferences()
+     suspend fun updateUserDetails(userDetailsPreferences: UserDetailsPreferences)
 }

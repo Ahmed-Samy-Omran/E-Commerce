@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
     id ("kotlin-android")
+    id("com.google.protobuf") version "0.9.4" apply true
 }
 
 android {
@@ -75,6 +76,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.googleid)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -138,5 +140,38 @@ dependencies {
     implementation ("androidx.credentials:credentials:1.2.0-alpha02")
     implementation (libs.credentials.play.services.auth)
 
+
+    implementation("androidx.datastore:datastore-core:1.1.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("com.google.protobuf:protobuf-kotlin-lite:4.26.0")
+    implementation("androidx.datastore:datastore:1.1.1")
+
+//    implementation("com.google.protobuf:protobuf-javalite:4.26.0") // Java lite runtime
+//    implementation("com.google.protobuf:protobuf-kotlin-lite:3.24.0") // Kotlin lite runtime
+
+
+//    implementation ("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+//    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+
+
 }
 
+// Setup protobuf configuration, generating lite Java and Kotlin classes
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.26.1"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
