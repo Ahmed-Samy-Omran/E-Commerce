@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.MainActivity
 import com.example.data.models.Resource
 import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
@@ -53,14 +54,13 @@ class LoginFragment : Fragment() {
 
 
     private val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(requireContext())
+        LoginViewModelFactory(contextValue = requireContext())
     }
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
-//private lateinit var firebaseAuth: FirebaseAuth
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,6 +114,10 @@ class LoginFragment : Fragment() {
         // Ensure the button ID matches the one in the layout file
         binding.googleSignInBtn.setOnClickListener {
             loginWithGoogleRequest()
+        }
+
+        binding.registerTv.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         binding.facebookSignInBtn.setOnClickListener {
