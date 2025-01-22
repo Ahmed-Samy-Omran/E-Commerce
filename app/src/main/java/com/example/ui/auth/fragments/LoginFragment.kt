@@ -96,13 +96,15 @@ class LoginFragment : Fragment() {
                     is Resource.Error -> {
                         progressDialog.dismiss()
                         val msg= resource.exception?.message?:getString(R.string.generic_err_msg)
-                        view?.showSnakeBarError(resource.exception?.message?:getString(R.string.generic_err_msg))
                         view?.showSnakeBarError(msg)
                     }
                 }
             }
         }
     }
+
+
+
 
     private fun goToHome() {
         requireActivity().startActivity(Intent(activity, MainActivity::class.java).apply {

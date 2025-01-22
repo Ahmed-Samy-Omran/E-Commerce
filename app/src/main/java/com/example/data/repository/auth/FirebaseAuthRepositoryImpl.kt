@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+
 class FirebaseAuthRepositoryImpl(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -36,6 +37,47 @@ class FirebaseAuthRepositoryImpl(
         auth.signInWithCredential(credential).await()
     }
 
+    override suspend fun registerWithEmailAndPassword(
+        email: String,
+        password: String,
+        name: String
+    ): Flow<Resource<UserDetailsModel>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                // perform firebase auth register request
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+                val userId = authResult.user?.uid
+
+                if (userId == null) {
+                    val msg = "Register UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.EMAIL.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+
+                // create user details in firestore
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    name = name,
+                    email = email,
+                    createdAt = System.currentTimeMillis()
+                )
+                firestore.collection("users").document(userId).set(userDetails).await()
+                // sendEmailVerification use it to send verification code
+                authResult?.user?.sendEmailVerification()?.await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                logAuthIssueToCrashlytics(
+                    e.message ?: "Unknown error from exception = ${e::class.java}",
+                    AuthProvider.EMAIL.name
+                )
+                emit(Resource.Error(e)) // Emit error
+            }
+        }
+
+    }
+
     private fun login(
         provider: AuthProvider,
         signInRequest: suspend () -> AuthResult,
@@ -48,6 +90,13 @@ class FirebaseAuthRepositoryImpl(
 
             if (userId == null) {
                 val msg = "Sign in UserID not found"
+                logAuthIssueToCrashlytics(msg, provider.name)
+                emit(Resource.Error(Exception(msg)))
+                return@flow
+            }
+
+            if (authResult.user?.isEmailVerified==false) {
+                val msg = "Email not verified"
                 logAuthIssueToCrashlytics(msg, provider.name)
                 emit(Resource.Error(Exception(msg)))
                 return@flow
