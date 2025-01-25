@@ -63,6 +63,12 @@ class RegisterViewModel(
         }
     }
 
+    fun signUpWithGoogle(idToken: String) =viewModelScope.launch(IO) {
+        authRepository.registerWithGoogle(idToken).collect {
+            _registerState.emit(it)
+        }
+    }
+
 
 }
 

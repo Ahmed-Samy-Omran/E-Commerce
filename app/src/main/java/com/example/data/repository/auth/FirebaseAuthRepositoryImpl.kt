@@ -37,47 +37,6 @@ class FirebaseAuthRepositoryImpl(
         auth.signInWithCredential(credential).await()
     }
 
-    override suspend fun registerWithEmailAndPassword(
-        email: String,
-        password: String,
-        name: String
-    ): Flow<Resource<UserDetailsModel>> {
-        return flow {
-            try {
-                emit(Resource.Loading())
-                // perform firebase auth register request
-                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-                val userId = authResult.user?.uid
-
-                if (userId == null) {
-                    val msg = "Register UserID not found"
-                    logAuthIssueToCrashlytics(msg, AuthProvider.EMAIL.name)
-                    emit(Resource.Error(Exception(msg)))
-                    return@flow
-                }
-
-                // create user details in firestore
-                val userDetails = UserDetailsModel(
-                    id = userId,
-                    name = name,
-                    email = email,
-                    createdAt = System.currentTimeMillis()
-                )
-                firestore.collection("users").document(userId).set(userDetails).await()
-                // sendEmailVerification use it to send verification code
-                authResult?.user?.sendEmailVerification()?.await()
-                emit(Resource.Success(userDetails))
-            } catch (e: Exception) {
-                logAuthIssueToCrashlytics(
-                    e.message ?: "Unknown error from exception = ${e::class.java}",
-                    AuthProvider.EMAIL.name
-                )
-                emit(Resource.Error(e)) // Emit error
-            }
-        }
-
-    }
-
     private fun login(
         provider: AuthProvider,
         signInRequest: suspend () -> AuthResult,
@@ -128,6 +87,84 @@ class FirebaseAuthRepositoryImpl(
             emit(Resource.Error(e)) // Emit error
         }
     }
+
+
+    override suspend fun registerWithEmailAndPassword(
+        email: String,
+        password: String,
+        name: String
+    ): Flow<Resource<UserDetailsModel>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                // perform firebase auth register request
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+                val userId = authResult.user?.uid
+
+                if (userId == null) {
+                    val msg = "Register UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.EMAIL.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+
+                // create user details in firestore
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    name = name,
+                    email = email,
+                    createdAt = System.currentTimeMillis()
+                )
+                firestore.collection("users").document(userId).set(userDetails).await()
+                // sendEmailVerification use it to send verification code
+                authResult?.user?.sendEmailVerification()?.await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                logAuthIssueToCrashlytics(
+                    e.message ?: "Unknown error from exception = ${e::class.java}",
+                    AuthProvider.EMAIL.name
+                )
+                emit(Resource.Error(e)) // Emit error
+            }
+        }
+
+    }
+
+    override suspend fun registerWithGoogle(idToken: String): Flow<Resource<UserDetailsModel>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                // perform firebase auth register request
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                val authResult = auth.signInWithCredential(credential).await()
+                val userId = authResult.user?.uid
+
+                if (userId == null) {
+                    val msg = "Register UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.GOOGLE.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+
+                // create user details in firestore
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    name = authResult.user?.displayName ?: "",
+                    email = authResult.user?.email ?: "",
+                    createdAt = System.currentTimeMillis()
+                )
+                firestore.collection("users").document(userId).set(userDetails).await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                logAuthIssueToCrashlytics(
+                    e.message ?: "Unknown error from exception = ${e::class.java}",
+                    AuthProvider.GOOGLE.name
+                )
+                emit(Resource.Error(e)) // Emit error
+            }
+        }
+    }
+
 
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(

@@ -22,6 +22,10 @@ interface FirebaseAuthRepository {
         name: String
     ): Flow<Resource<UserDetailsModel>>
 
+    suspend fun registerWithGoogle(
+        idToken: String
+    ):  Flow<Resource<UserDetailsModel>>
+
     fun logout()
 
 }

@@ -61,7 +61,6 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -93,9 +92,10 @@ class LoginFragment : Fragment() {
                         goToHome()
 
                     }
+
                     is Resource.Error -> {
                         progressDialog.dismiss()
-                        val msg= resource.exception?.message?:getString(R.string.generic_err_msg)
+                        val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)
                         view?.showSnakeBarError(msg)
                     }
                 }
@@ -104,34 +104,29 @@ class LoginFragment : Fragment() {
     }
 
 
-
-
     private fun goToHome() {
         requireActivity().startActivity(Intent(activity, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })
         requireActivity().finish()
     }
+
     private fun initListeners() {
         // Ensure the button ID matches the one in the layout file
         binding.googleSignInBtn.setOnClickListener {
             loginWithGoogleRequest()
         }
 
+        binding.facebookSignInBtn.setOnClickListener {
+            loginWithFacebook()
+        }
         binding.registerTv.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
-        binding.facebookSignInBtn.setOnClickListener {
-            if (isLoggedIn()) {
-                signOut()
-            } else {
-                loginWithFacebook()
-            }
-        }
+
 
     }
-
 
 
     private fun loginWithGoogleRequest() {
@@ -148,7 +143,6 @@ class LoginFragment : Fragment() {
         // Show the account picker menu
         googleSignInClient.signOut() // Ensures the picker menu is shown, not direct login
         val signInIntent = googleSignInClient.signInIntent
-//        startActivityForResult(signInIntent, RC_SIGN_IN)
         launcher.launch(signInIntent)
     }
 
@@ -157,26 +151,26 @@ class LoginFragment : Fragment() {
     ) { result ->
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-           handleSignInResult(task)
-        }else{
-           view?.showSnakeBarError(getString(R.string.google_sign_in_field_msg))
+            handleSignInResult(task)
+        } else {
+            view?.showSnakeBarError(getString(R.string.google_sign_in_field_msg))
         }
     }
 
-private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSignInAccount>) {
-    try {
-        val account = task.getResult(ApiException::class.java)
-        firebaseAuthWithGoogle(account.idToken!!)
+    private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSignInAccount>) {
+        try {
+            val account = task.getResult(ApiException::class.java)
+            firebaseAuthWithGoogle(account.idToken!!)
 
-    } catch (e: Exception) {
-        view?.showSnakeBarError(e.message?:getString(R.string.generic_err_msg))
+        } catch (e: Exception) {
+            view?.showSnakeBarError(e.message ?: getString(R.string.generic_err_msg))
 
-        val msg= e.message?:getString(R.string.generic_err_msg)
-        logAuthIssueToCrashlytics(msg,"Google")
+            val msg = e.message ?: getString(R.string.generic_err_msg)
+            logAuthIssueToCrashlytics(msg, "Google")
+        }
     }
-}
 
-    private fun logAuthIssueToCrashlytics(msg: String,provider:String ) {
+    private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(
             msg,
             CrashlyticsUtils.LOGIN_KEY to msg,
@@ -186,12 +180,8 @@ private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSig
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-      loginViewModel.loginWithGoogle(idToken)
+        loginViewModel.loginWithGoogle(idToken)
     }
-
-
-
-
 
 
     // for facebook
@@ -200,10 +190,12 @@ private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSig
         loginManager.logOut()
         Log.d(TAG, "signOut: ")
     }
+
     private fun isLoggedIn(): Boolean {
         val accessToken = AccessToken.getCurrentAccessToken()
         return accessToken != null && !accessToken.isExpired
     }
+
     private fun loginWithFacebook() {
         loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
@@ -211,9 +203,11 @@ private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSig
                 Log.d(TAG, "onSuccess: $token")
                 firebaseAuthWithFacebook(token)
             }
+
             override fun onCancel() {
                 // Handle login cancel
             }
+
             override fun onError(error: FacebookException) {
                 // Handle login error
                 val msg = error.message ?: getString(R.string.generic_err_msg)
@@ -227,9 +221,11 @@ private fun handleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSig
             listOf("email", "public_profile")
         )
     }
+
     private fun firebaseAuthWithFacebook(token: String) {
         loginViewModel.loginWithFacebook(token)
     }
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
