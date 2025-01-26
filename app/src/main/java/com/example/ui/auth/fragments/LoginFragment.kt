@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -15,14 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.MainActivity
 import com.example.data.models.Resource
-import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.example.e_commerce.BuildConfig
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentLoginBinding
 import com.example.ui.auth.viewmodel.LoginViewModel
 import com.example.ui.auth.viewmodel.LoginViewModelFactory
 import com.example.ui.common.views.ProgressDialog
-import com.example.ui.showSnakeBarError
+import com.example.ui.auth.showSnakeBarError
+import com.example.ui.getGoogleRequestIntent
 import com.example.utils.CrashlyticsUtils
 import com.example.utils.LoginException
 import com.facebook.AccessToken
@@ -35,7 +34,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
@@ -44,8 +42,12 @@ class LoginFragment : Fragment() {
 
 
     // for facebook login
-    private lateinit var callbackManager: CallbackManager
-    private lateinit var loginManager: LoginManager
+    private val callbackManager: CallbackManager by lazy {
+        CallbackManager.Factory.create()
+    }
+    private val loginManager: LoginManager by lazy {
+        LoginManager.getInstance()
+    }
 
 
     private val progressDialog by lazy {
@@ -76,8 +78,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        callbackManager = CallbackManager.Factory.create()
-        loginManager = LoginManager.getInstance()
+
         initListeners()
         initViewModel()
     }
@@ -130,20 +131,9 @@ class LoginFragment : Fragment() {
 
 
     private fun loginWithGoogleRequest() {
-        // Configure Google Sign-In
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.clientServerId) // Replace with your client ID
-            .requestEmail()
-            .requestProfile()
-            .requestServerAuthCode(BuildConfig.clientServerId)
-            .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(requireContext(), googleSignInOptions)
-
-        // Show the account picker menu
-        googleSignInClient.signOut() // Ensures the picker menu is shown, not direct login
-        val signInIntent = googleSignInClient.signInIntent
+        val signInIntent = getGoogleRequestIntent(requireActivity())
         launcher.launch(signInIntent)
+
     }
 
     private val launcher = registerForActivityResult(
@@ -197,6 +187,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginWithFacebook() {
+        if (isLoggedIn()) signOut()
         loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
                 val token = result.accessToken.token

@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.ui.auth
 
 import android.view.View
 import androidx.core.content.ContextCompat

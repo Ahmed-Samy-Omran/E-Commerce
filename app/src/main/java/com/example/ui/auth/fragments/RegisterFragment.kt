@@ -1,6 +1,7 @@
 package com.example.ui.auth.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +12,23 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.models.Resource
-import com.example.e_commerce.BuildConfig
 import com.example.e_commerce.R
-import com.example.e_commerce.databinding.FragmentLoginBinding
 import com.example.e_commerce.databinding.FragmentRegisterBinding
-import com.example.ui.auth.viewmodel.LoginViewModel
-import com.example.ui.auth.viewmodel.LoginViewModelFactory
 import com.example.ui.auth.viewmodel.RegisterViewModel
 import com.example.ui.auth.viewmodel.RegisterViewModelFactory
 import com.example.ui.common.views.ProgressDialog
-import com.example.ui.showSnakeBarError
+import com.example.ui.getGoogleRequestIntent
+import com.example.ui.auth.showSnakeBarError
 import com.example.utils.CrashlyticsUtils
-import com.example.utils.LoginException
 import com.example.utils.RegisterException
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -34,6 +36,14 @@ import kotlinx.coroutines.launch
 @Suppress("DEPRECATION")
 
 class RegisterFragment : Fragment() {
+
+    // for facebook login
+    private val callbackManager: CallbackManager by lazy {
+        CallbackManager.Factory.create()
+    }
+    private val loginManager: LoginManager by lazy {
+        LoginManager.getInstance()
+    }
 
     private val progressDialog by lazy {
         ProgressDialog.createProgressDialog(requireActivity())
@@ -98,25 +108,17 @@ class RegisterFragment : Fragment() {
         }
 
         binding.facebookSignUpBtn.setOnClickListener {
-//            loginWithFacebook()
+            registerWithFacebook()
         }
     }
 
     private fun registerWithGoogleRequest() {
         // Configure Google Sign-In
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.clientServerId) // Replace with your client ID
-            .requestEmail()
-            .requestProfile()
-            .requestServerAuthCode(BuildConfig.clientServerId)
-            .build()
+        val signInIntent = getGoogleRequestIntent(requireActivity())
+        launcher.launch(signInIntent)
+    }
 
-        val googleSignInClient = GoogleSignIn.getClient(requireContext(), googleSignInOptions)
 
-        // Show the account picker menu
-        googleSignInClient.signOut() // Ensures the picker menu is shown, not direct login
-        val signInIntent = googleSignInClient.signInIntent
-        launcher.launch(signInIntent)    }
 
 
     private val launcher = registerForActivityResult(
@@ -158,6 +160,49 @@ class RegisterFragment : Fragment() {
     }
 
 
+    private fun isLoggedIn(): Boolean {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        return accessToken != null && !accessToken.isExpired
+    }
+
+    private fun registerWithFacebook() {
+        if (isLoggedIn()) signOut()
+        loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                val token = result.accessToken.token
+                Log.d(TAG, "onSuccess: $token")
+                firebaseAuthWithFacebook(token)
+            }
+
+            override fun onCancel() {
+                // Handle login cancel
+            }
+
+            override fun onError(error: FacebookException) {
+                // Handle login error
+                val msg = error.message ?: getString(R.string.generic_err_msg)
+                Log.d(TAG, "onError: $msg")
+                view?.showSnakeBarError(msg)
+                logAuthIssueToCrashlytics(msg, "Facebook")
+            }
+        })
+        loginManager.logInWithReadPermissions(
+            this,
+            listOf("email", "public_profile")
+        )
+    }
+
+    private fun signOut() {
+        loginManager.logOut()
+
+    }
+
+    private fun firebaseAuthWithFacebook(token: String) {
+        registerViewModel.registerWithFacebook(token)
+    }
+
+
+
     private fun showLoginSuccessDialog() {
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle("Register Success")
@@ -171,6 +216,10 @@ class RegisterFragment : Fragment() {
             }
             .create()
             .show()
+    }
+
+    companion object {
+        private const val TAG = "RegisterFragment"
     }
 
 }
