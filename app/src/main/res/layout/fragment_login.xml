@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.ui.auth.viewmodel.LoginViewModel" />
@@ -46,10 +48,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="36dp"
-                android:text="@={viewmodel.email}"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email_et_hint"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="@={viewmodel.email}" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/password_et"
@@ -57,10 +59,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:text="@={viewmodel.password}"
                 android:drawableStart="@drawable/ic_password"
                 android:hint="@string/password_et_hint"
                 android:inputType="textPassword"
+                android:text="@={viewmodel.password}"
 
                 />
 
@@ -102,7 +104,7 @@
                 android:id="@+id/googleSignInBtn"
                 style="@style/SocialButtonStyle"
                 android:drawableStart="@drawable/ic_google"
-                android:text="@string/google_signin_btn_msg"  />
+                android:text="@string/google_signin_btn_msg" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/facebook_sign_in_btn"
@@ -112,6 +114,7 @@
                 android:text="@string/facebook_signin_btn_msg" />
 
             <TextView
+                android:id="@+id/forgot_password_tv"
                 style="@style/MediumPrimaryTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
