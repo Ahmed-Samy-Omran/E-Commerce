@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.data.models.Resource
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentRegisterBinding
+import com.example.ui.auth.fragments.LoginFragment.Companion
 import com.example.ui.auth.viewmodel.RegisterViewModel
 import com.example.ui.auth.viewmodel.RegisterViewModelFactory
 import com.example.ui.common.views.ProgressDialog
@@ -31,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.api.ResourceProto.resource
 import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
@@ -78,8 +80,8 @@ class RegisterFragment : Fragment() {
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            registerViewModel.registerState.collect {
-                when (it) {
+            registerViewModel.registerState.collect {resource->
+                when (resource) {
                     is Resource.Loading -> {
                         progressDialog.show()
                     }
@@ -92,6 +94,9 @@ class RegisterFragment : Fragment() {
 
                     is Resource.Error -> {
                         progressDialog.dismiss()
+                        val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)
+                        Log.d(TAG, "initViewModel: $msg")
+                        view?.showSnakeBarError(msg)
                     }
                 }
             }

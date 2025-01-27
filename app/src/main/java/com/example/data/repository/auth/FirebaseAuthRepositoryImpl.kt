@@ -202,6 +202,22 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
+    override suspend fun sendUpdatePasswordEmail(email: String): Flow<Resource<String>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                auth.sendPasswordResetEmail(email).await()
+                emit(Resource.Success("Password reset email sent to $email"))
+            } catch (e: Exception) {
+//                logAuthIssueToCrashlytics(
+//                    e.message ?: "Unknown error from exception = ${e::class.java}",
+//                    AuthProvider.EMAIL.name
+//                )
+                emit(Resource.Error(e)) // Emit error
+            }
+        }
+    }
+
 
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(
