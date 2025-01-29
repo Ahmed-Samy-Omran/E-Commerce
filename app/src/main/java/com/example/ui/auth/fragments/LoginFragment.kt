@@ -21,6 +21,7 @@ import com.example.ui.auth.viewmodel.LoginViewModel
 import com.example.ui.auth.viewmodel.LoginViewModelFactory
 import com.example.ui.common.views.ProgressDialog
 import com.example.ui.auth.showSnakeBarError
+import com.example.ui.common.fragments.BaseFragment
 import com.example.ui.getGoogleRequestIntent
 import com.example.utils.CrashlyticsUtils
 import com.example.utils.LoginException
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 
 
 @Suppress("DEPRECATION")
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
 
 
     // for facebook login
@@ -50,42 +51,32 @@ class LoginFragment : Fragment() {
     }
 
 
-    private val progressDialog by lazy {
-        ProgressDialog.createProgressDialog(requireActivity())
-    }
 
-
-    private val loginViewModel: LoginViewModel by viewModels {
+    override val viewModel: LoginViewModel by viewModels{
         LoginViewModelFactory(contextValue = requireContext())
     }
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = loginViewModel
-
-        return binding.root
-
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun init() {
         initListeners()
         initViewModel()
     }
 
+
+    override fun getLayoutResId(): Int = R.layout.fragment_login
+
+
+
+
+
+
+
+
+
     private fun initViewModel() {
         lifecycleScope.launch {
-            loginViewModel.loginState.collect { resource ->
+            viewModel.loginState.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> progressDialog.show()
                     is Resource.Success -> {
@@ -175,7 +166,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-        loginViewModel.loginWithGoogle(idToken)
+        viewModel.loginWithGoogle(idToken)
     }
 
 
@@ -219,7 +210,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun firebaseAuthWithFacebook(token: String) {
-        loginViewModel.loginWithFacebook(token)
+        viewModel.loginWithFacebook(token)
     }
 
     @Deprecated("Deprecated in Java")
@@ -228,10 +219,6 @@ class LoginFragment : Fragment() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 
     companion object {

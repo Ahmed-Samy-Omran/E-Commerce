@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.models.Resource
 import com.example.e_commerce.R
+import com.example.e_commerce.databinding.FragmentLoginBinding
 import com.example.e_commerce.databinding.FragmentRegisterBinding
 import com.example.ui.auth.fragments.LoginFragment.Companion
 import com.example.ui.auth.viewmodel.RegisterViewModel
@@ -20,6 +21,8 @@ import com.example.ui.auth.viewmodel.RegisterViewModelFactory
 import com.example.ui.common.views.ProgressDialog
 import com.example.ui.getGoogleRequestIntent
 import com.example.ui.auth.showSnakeBarError
+import com.example.ui.auth.viewmodel.LoginViewModel
+import com.example.ui.common.fragments.BaseFragment
 import com.example.utils.CrashlyticsUtils
 import com.example.utils.RegisterException
 import com.facebook.AccessToken
@@ -37,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel>() {
 
     // for facebook login
     private val callbackManager: CallbackManager by lazy {
@@ -47,32 +50,17 @@ class RegisterFragment : Fragment() {
         LoginManager.getInstance()
     }
 
-    private val progressDialog by lazy {
-        ProgressDialog.createProgressDialog(requireActivity())
-    }
 
-    private var _binding: FragmentRegisterBinding? = null
-    private val binding get() = _binding!!
 
-    private val registerViewModel: RegisterViewModel by viewModels {
+    override val viewModel: RegisterViewModel by  viewModels {
         RegisterViewModelFactory(contextValue = requireContext())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = registerViewModel
 
-        return binding.root
+    override fun getLayoutResId(): Int = R.layout.fragment_register
 
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init() {
         initViewModel()
 
         initListeners()
@@ -80,7 +68,7 @@ class RegisterFragment : Fragment() {
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            registerViewModel.registerState.collect {resource->
+            viewModel.registerState.collect {resource->
                 when (resource) {
                     is Resource.Loading -> {
                         progressDialog.show()
@@ -151,7 +139,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-        registerViewModel.signUpWithGoogle(idToken)
+        viewModel.signUpWithGoogle(idToken)
     }
 
 
@@ -203,7 +191,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun firebaseAuthWithFacebook(token: String) {
-        registerViewModel.registerWithFacebook(token)
+        viewModel.registerWithFacebook(token)
     }
 
 
@@ -223,10 +211,7 @@ class RegisterFragment : Fragment() {
             .show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 
     companion object {
         private const val TAG = "RegisterFragment"
