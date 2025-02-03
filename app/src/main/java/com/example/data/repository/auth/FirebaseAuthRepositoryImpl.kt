@@ -54,12 +54,16 @@ class FirebaseAuthRepositoryImpl(
                 return@flow
             }
 
+            val idTokenRequest = authResult.user?.getIdToken(true)?.await()
+            Log.d(TAG, "login: idTokenRequest = ${idTokenRequest?.token}")
+
             if (authResult.user?.isEmailVerified==false) {
                 authResult.user?.sendEmailVerification()?.await()
                 val msg = "Email not verified, verification email sent to user"
                 logAuthIssueToCrashlytics(msg, provider.name)
                 emit(Resource.Error(Exception(msg)))
                 return@flow
+
             }
 
             // get user details from firestore
