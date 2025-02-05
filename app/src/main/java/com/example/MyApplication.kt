@@ -8,9 +8,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.initialize
+import dagger.hilt.android.HiltAndroidApp
 import io.reactivex.schedulers.Schedulers
 
 //manages the lifecycle of the application
+@HiltAndroidApp
 class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
