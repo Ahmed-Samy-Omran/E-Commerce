@@ -12,14 +12,19 @@ import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.example.data.repository.common.AppDataStoreRepositoryImpl
 import com.example.data.repository.user.UserPreferenceRepositoryImpl
 import com.example.utils.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ForgetPasswordViewModel(private val authRepository: FirebaseAuthRepository): ViewModel()  {
+@HiltViewModel
+class ForgetPasswordViewModel @Inject constructor(
+     val authRepository: FirebaseAuthRepository
+): ViewModel()  {
     val email = MutableStateFlow("")
 
     // any changes happen to this flow will be shared with the UI
@@ -38,17 +43,3 @@ class ForgetPasswordViewModel(private val authRepository: FirebaseAuthRepository
 
 }
 
-// create viewmodel factory class
-class ForgetPasswordViewModelFactory(
-    private val authRepository : FirebaseAuthRepository=FirebaseAuthRepositoryImpl()
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ForgetPasswordViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return ForgetPasswordViewModel(
-                authRepository,
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

@@ -18,7 +18,6 @@ import com.example.e_commerce.BuildConfig
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentLoginBinding
 import com.example.ui.auth.viewmodel.LoginViewModel
-import com.example.ui.auth.viewmodel.LoginViewModelFactory
 import com.example.ui.common.views.ProgressDialog
 import com.example.ui.auth.showSnakeBarError
 import com.example.ui.common.fragments.BaseFragment
@@ -35,10 +34,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
+
 class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
 
 
@@ -52,10 +54,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
 
 
 
-    override val viewModel: LoginViewModel by viewModels{
-        LoginViewModelFactory(contextValue = requireContext())
-    }
-
+    override val viewModel: LoginViewModel by viewModels()
 
 
     override fun init() {

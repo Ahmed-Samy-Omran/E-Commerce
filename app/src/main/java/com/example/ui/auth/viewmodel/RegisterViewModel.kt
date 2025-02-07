@@ -14,6 +14,7 @@ import com.example.data.repository.common.AppPreferenceRepository
 import com.example.data.repository.user.UserPreferenceRepository
 import com.example.data.repository.user.UserPreferenceRepositoryImpl
 import com.example.utils.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,10 +23,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel(
-    private val appPreferenceRepository: AppPreferenceRepository,
-    private val userPreferenceRepository: UserPreferenceRepository,
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val authRepository: FirebaseAuthRepository
 ) : ViewModel() {
 
@@ -80,24 +81,3 @@ class RegisterViewModel(
 }
 
 
-// create viewmodel factory class
-class RegisterViewModelFactory(
-    private val contextValue: Context
-) : ViewModelProvider.Factory {
-
-    private val appPreferenceRepository =
-        AppDataStoreRepositoryImpl(AppPreferencesDataSource(contextValue))
-    private val userPreferenceRepository = UserPreferenceRepositoryImpl(contextValue)
-    private val authRepository = FirebaseAuthRepositoryImpl()
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return RegisterViewModel(
-                appPreferenceRepository,
-                userPreferenceRepository,
-                authRepository,
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

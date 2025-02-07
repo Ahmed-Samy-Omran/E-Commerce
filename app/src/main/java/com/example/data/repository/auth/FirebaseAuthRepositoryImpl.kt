@@ -15,10 +15,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 
-class FirebaseAuthRepositoryImpl(
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+class FirebaseAuthRepositoryImpl @Inject constructor(
+    private val auth: FirebaseAuth ,
+    private val firestore: FirebaseFirestore
 ) : FirebaseAuthRepository {
 
     // Example usage for email and password login

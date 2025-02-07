@@ -1,12 +1,14 @@
 package com.example.data.repository.user
 
+import android.app.Application
 import android.content.Context
 import com.example.data.datasource.datastore.userDetailsDataStore
 import com.example.data.models.user.UserDetailsPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class UserPreferenceRepositoryImpl(private val context: Context) : UserPreferenceRepository {
+class UserPreferenceRepositoryImpl @Inject constructor( val context: Application) : UserPreferenceRepository {
     override fun getUserDetails(): Flow<UserDetailsPreferences> {
         return context.userDetailsDataStore.data
     }

@@ -16,15 +16,14 @@ import com.example.e_commerce.databinding.FragmentLoginBinding
 import com.example.ui.auth.fragments.LoginFragment.Companion
 import com.example.ui.auth.showSnakeBarError
 import com.example.ui.auth.viewmodel.ForgetPasswordViewModel
-import com.example.ui.auth.viewmodel.ForgetPasswordViewModelFactory
 import com.example.ui.auth.viewmodel.LoginViewModel
-import com.example.ui.auth.viewmodel.LoginViewModelFactory
 import com.example.ui.common.views.ProgressDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ForgetPasswordFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentForgetPasswordBinding? = null
@@ -34,10 +33,7 @@ class ForgetPasswordFragment : BottomSheetDialogFragment() {
         ProgressDialog.createProgressDialog(requireActivity())
     }
 
-    private val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels {
-        ForgetPasswordViewModelFactory()
-    }
-
+    private val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

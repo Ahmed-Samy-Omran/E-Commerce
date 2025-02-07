@@ -2,8 +2,9 @@ package com.example.data.repository.common
 
 import com.example.data.datasource.datastore.AppPreferencesDataSource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AppDataStoreRepositoryImpl(
+class AppDataStoreRepositoryImpl @Inject constructor(
     private val appPreferencesDataSource: AppPreferencesDataSource
 ) : AppPreferenceRepository {
     override suspend fun saveLoginState(isLoggedIn: Boolean) {
