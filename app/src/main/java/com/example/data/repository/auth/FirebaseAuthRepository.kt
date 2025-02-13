@@ -1,6 +1,8 @@
 package com.example.data.repository.auth
 
 import com.example.data.models.Resource
+import com.example.data.models.auth.RegisterRequestModel
+import com.example.data.models.auth.RegisterResponseModel
 import com.example.data.models.user.UserDetailsModel
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +17,12 @@ interface FirebaseAuthRepository {
     ):  Flow<Resource<UserDetailsModel>>
 
     suspend fun loginWithFacebook(token: String):  Flow<Resource<UserDetailsModel>>
+
+    suspend fun registerWithFacebookWithAPI(token: String): Flow<Resource<RegisterResponseModel>>
+    suspend fun registerWithGoogleWithAPI(
+        idToken: String
+    ): Flow<Resource<RegisterResponseModel>>
+    suspend fun registerEmailAndPasswordWithAPI(registerRequestModel: RegisterRequestModel): Flow<Resource<RegisterResponseModel>>
 
 
 

@@ -2,7 +2,11 @@ package com.example.data.repository.auth
 
 import android.nfc.Tag
 import android.util.Log
+import com.example.data.datasource.networking.CloudFunctionAPI
+import com.example.data.datasource.networking.handleErrorResponse
 import com.example.data.models.Resource
+import com.example.data.models.auth.RegisterRequestModel
+import com.example.data.models.auth.RegisterResponseModel
 import com.example.data.models.user.AuthProvider
 import com.example.data.models.user.UserDetailsModel
 import com.example.utils.CrashlyticsUtils
@@ -19,7 +23,9 @@ import javax.inject.Inject
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth ,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val cloudFunctionAPI: CloudFunctionAPI
+
 ) : FirebaseAuthRepository {
 
     // Example usage for email and password login
@@ -38,6 +44,38 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         auth.signInWithCredential(credential).await()
     }
 
+    override suspend fun registerWithFacebookWithAPI(token: String): Flow<Resource<RegisterResponseModel>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun registerWithGoogleWithAPI(idToken: String): Flow<Resource<RegisterResponseModel>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun registerEmailAndPasswordWithAPI(registerRequestModel: RegisterRequestModel): Flow<Resource<RegisterResponseModel>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                val response = cloudFunctionAPI.registerUser(registerRequestModel)
+                if (response.isSuccessful) {
+                    val registerResponse = response.body()
+                    registerResponse?.data?.let {
+                        emit(Resource.Success(it))
+                    } ?: run {
+                        emit(Resource.Error(Exception(registerResponse?.message)))
+                    }
+                } else {
+                    Log.d(
+                        TAG,
+                        "registerEmailAndPasswordWithAPI: Error registering user = ${response.errorBody()}"
+                    )
+                    emit(Resource.Error(Exception(handleErrorResponse(response.errorBody()!!.charStream()))))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(e))
+            }
+        }
+    }
     private fun login(
         provider: AuthProvider,
         signInRequest: suspend () -> AuthResult,
