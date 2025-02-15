@@ -158,6 +158,9 @@ dependencies {
 
 //    implementation ("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 //    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    
+
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 
 
 

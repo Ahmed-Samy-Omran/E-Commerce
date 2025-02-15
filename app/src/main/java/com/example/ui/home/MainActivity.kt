@@ -1,4 +1,4 @@
-package com.example
+package com.example.ui.home
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.e_commerce.R
+import com.example.e_commerce.databinding.ActivityMainBinding
 import com.example.ui.common.viewmodel.UserViewModel
 import com.example.ui.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,9 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
 
+    private var _binding:ActivityMainBinding ?= null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
@@ -33,11 +37,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        findViewById<View>(R.id.textView).setOnClickListener {
-            logOut()
-        }
+
 
         initViewModel()
     }
@@ -54,12 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun logOut() {
-        lifecycleScope.launch {
-            userViewModel.logOut()
-            goToAuthActivity()
-        }
-    }
+
 
     override fun onResume() {
         super.onResume()
@@ -83,6 +81,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             setTheme(R.style.Theme_ECommerce)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {
