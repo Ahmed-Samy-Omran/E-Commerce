@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             AccountFragment()
 
         )
-//        binding.homeViewPager.offscreenPageLimit = fragments.size // that make all screen created and loaded at once and not necessary to open it to load
+        binding.homeViewPager.offscreenPageLimit = fragments.size // that make all screen created and loaded at once and not necessary to open it to load
         binding.homeViewPager.adapter = HomeViewPagerAdapter(this, fragments)
       // that make when i swipe the viewpager the bottom navigation view change the selected item
         binding.homeViewPager.registerOnPageChangeCallback(

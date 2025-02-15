@@ -1,6 +1,7 @@
 package com.example.ui.offers.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,5 +28,10 @@ class OffersFragment : Fragment() {
 
     companion object {
 
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+       Log.d("onHiddenChanged","OffersFragment=$hidden ")
     }
 }
