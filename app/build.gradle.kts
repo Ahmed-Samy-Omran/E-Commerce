@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.example.e_commerce"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.e_commerce"
@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.googleid)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
