@@ -102,6 +102,7 @@
         <item name="android:layout_height">45dp</item>
         <item name="android:layout_width">45dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/timer_background</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/primary_dark_color</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
