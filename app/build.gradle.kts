@@ -163,6 +163,7 @@ dependencies {
 
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
 
 

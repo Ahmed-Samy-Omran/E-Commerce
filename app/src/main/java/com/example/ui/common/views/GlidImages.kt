@@ -15,41 +15,40 @@ import com.example.e_commerce.R
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, imageUrl: String?) {
-//    val loading = getGlideCircleLoading(view)
+    val loading = getGlideCircleLoading(view)
 
     Glide.with(view.context)
-        .load(imageUrl)
-//        .placeholder(loading)
-//        .diskCacheStrategy(DiskCacheStrategy.ALL) // TODO Don't use cache
+        .load(imageUrl).placeholder(loading)
+        .diskCacheStrategy(DiskCacheStrategy.ALL) // TODO Don't use cache
 //        .signature(Object())
-//        .transform(CenterCrop(), RoundedCorners(16), )
+        .transform(CenterCrop(), RoundedCorners(16), )
         .into(view)
 }
 
-//@BindingAdapter("normalImageUrl")
-//fun categoryUrl(view: ImageView, imageUrl: String?) {
-//    val loading = getGlideCircleLoading(view)
-//
-//    Glide.with(view.context).load(imageUrl).placeholder(loading)
-//        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//        .transform(CenterInside()).into(view)
-//}
-//
-//@BindingAdapter("circleImageUrl")
-//fun circleNormalImage(view: ImageView, imageUrl: String?) {
-//    val loading = getGlideCircleLoading(view)
-//    Glide.with(view.context).load(imageUrl).placeholder(loading)
-//        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//        .transform(CircleCrop()).into(view)
-//}
-//
-//fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
-//    return CircularProgressDrawable(view.context).apply {
-//        strokeWidth = 5f
-//        centerRadius = 30f
-//        setColorSchemeColors(ContextCompat.getColor(view.context, R.color.primary_color))
-//        start()
-//    }
-//}
+@BindingAdapter("normalImageUrl")
+fun categoryUrl(view: ImageView, imageUrl: String?) {
+    val loading = getGlideCircleLoading(view)
+
+    Glide.with(view.context).load(imageUrl).placeholder(loading)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .transform(CenterInside()).into(view)
+}
+
+@BindingAdapter("circleImageUrl")
+fun circleNormalImage(view: ImageView, imageUrl: String?) {
+    val loading = getGlideCircleLoading(view)
+    Glide.with(view.context).load(imageUrl).placeholder(loading)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .transform(CircleCrop()).into(view)
+}
+
+fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
+    return CircularProgressDrawable(view.context).apply {
+        strokeWidth = 5f
+        centerRadius = 30f
+        setColorSchemeColors(ContextCompat.getColor(view.context, R.color.primary_color))
+        start()
+    }
+}
 
 

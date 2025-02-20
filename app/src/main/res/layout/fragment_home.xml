@@ -96,35 +96,36 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/neutral_light" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/sale_ads_view_pager"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="wrap_content">
 
-                <!--                         <RelativeLayout&ndash;&gt;-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content">-->
+                    <com.example.utils.NestedScrollableHost
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <!--                    <com.training.ecommerce.utils.NestedScrollableHost-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content">-->
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/sale_ads_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <!--                        <androidx.viewpager2.widget.ViewPager2-->
-                <!--                            android:id="@+id/sale_ads_view_pager"-->
-                <!--                            android:layout_width="match_parent"-->
-                <!--                            android:layout_height="220dp"-->
-                <!--                            android:nestedScrollingEnabled="false"-->
-                <!--                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+                    </com.example.utils.NestedScrollableHost>
 
-                <!--                    </com.training.ecommerce.utils.NestedScrollableHost>-->
+                    <!--                    <include-->
+                    <!--                        android:id="@+id/sale_ads_shimmer_view"-->
+                    <!--                        layout="@layout/sale_ad_shimmer_view" />-->
 
-                <!--                    <include-->
-                <!--                        android:id="@+id/sale_ads_shimmer_view"-->
-                <!--                        layout="@layout/sale_ad_shimmer_view" />-->
+                </RelativeLayout>
 
-                <!--                </RelativeLayout>-->
+                <LinearLayout
+                    android:id="@+id/indicator_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
 
             </LinearLayout>
 

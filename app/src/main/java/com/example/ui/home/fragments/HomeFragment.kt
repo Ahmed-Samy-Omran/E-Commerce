@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
+import com.example.ui.common.views.CircleView
 import com.example.ui.home.adapter.SalesAdAdapter
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.utils.DepthPageTransformer
@@ -48,11 +50,49 @@ class HomeFragment : Fragment() {
                 endAt = System.currentTimeMillis() + 7200000 // 2 hours from now
             )
         )
-
+        initializeIndicators(salesAds.size)
         val adapter = SalesAdAdapter(salesAds)
         binding.saleAdsViewPager.adapter = adapter
         binding.saleAdsViewPager.setPageTransformer(DepthPageTransformer())
 
+        binding.saleAdsViewPager.registerOnPageChangeCallback(object :
+            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                updateIndicators(position)
+            }
+        })
+    }
+
+    private var indicators = mutableListOf<CircleView>()
+
+    private fun initializeIndicators(count: Int) {
+        for (i in 0 until count) {
+            val circleView = CircleView(requireContext())
+            val params = LinearLayout.LayoutParams(
+                16, 16
+            )
+            params.setMargins(8, 0, 8, 0) // Margin between circles
+            circleView.setLayoutParams(params)
+            circleView.setRadius(8f) // Set radius
+            circleView.setColor(     // change here the color you want
+                if (i == 0) requireContext().getColor(R.color.primary_color) else requireContext().getColor(
+                    R.color.neutral_grey
+                )
+            ) // First indicator is red
+            indicators.add(circleView)
+            binding.indicatorView.addView(circleView)
+        }
+    }
+
+    private fun updateIndicators(position: Int) {
+        for (i in 0 until indicators.size) {
+            indicators[i].setColor(  // change here the color you want
+                if (i == position) requireContext().getColor(R.color.primary_color) else requireContext().getColor(
+                    R.color.neutral_grey
+                )
+            )
+        }
     }
 
     companion object {
