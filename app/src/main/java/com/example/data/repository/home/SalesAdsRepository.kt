@@ -6,5 +6,5 @@ import com.example.ui.home.model.SalesAdUIModel
 import kotlinx.coroutines.flow.Flow
 
 interface SalesAdsRepository {
-    fun getSalesAds():Flow<Resource<List<SalesAdModel>>>
+    fun getSalesAds():Flow<Resource<List<SalesAdUIModel>>>
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.models.Resource
 import com.example.data.models.sale_ads.SalesAdModel
 import com.example.data.repository.home.SalesAdsRepository
+import com.example.ui.home.model.SalesAdUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val salesAdsRepository: SalesAdsRepository
 ) : ViewModel() {
-    val salesAdsStateTemp: StateFlow<Resource<List<SalesAdModel>>> =
+    val salesAdsStateTemp =
         salesAdsRepository.getSalesAds().stateIn(
             viewModelScope + IO,
             started = SharingStarted.Eagerly,

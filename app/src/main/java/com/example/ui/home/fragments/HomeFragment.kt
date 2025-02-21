@@ -5,6 +5,8 @@ import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.data.models.Resource
+import com.example.data.models.sale_ads.SalesAdModel
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.ui.common.fragments.BaseFragment
@@ -35,31 +37,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            viewModel.salesAdsStateTemp.collect {
-                Log.d(TAG, "initViewModel: $it")
+            viewModel.salesAdsStateTemp.collect {resources->
+                when(resources){
+                    is Resource.Loading -> {
+                        Log.d(TAG, "iniViewModel: Loading")
+                    }
+                    is Resource.Success -> {
+                        initSalesAdsView(resources.data)
+                    }
+                    is Resource.Error -> {
+                        Log.d(TAG, "iniViewModel: Error")
+                    }
+                }
             }
         }
     }
 
     private fun initViews() {
         Log.d(TAG, "onViewCreated: HomeFragment")
-        initSalesAdsView()
+
     }
 
-    private fun initSalesAdsView() {
+    private fun initSalesAdsView(salesAds: List<SalesAdUIModel>?) {
 
-        val salesAds = listOf(
-            SalesAdUIModel(
-                title = "Super Flash Sale",
-                imageUrl = "https://firebasestorage.googleapis.com/v0/b/e-commerce-39c78.appspot.com/o/temps%2Fpromo_image.png?alt=media&token=6b4e45d7-b3d8-4823-b72e-53f1e3134e25",
-                endAt = System.currentTimeMillis() + 3600000 // 1 hour from now
-            ), SalesAdUIModel(
-                title = "Limited Offer",
-                imageUrl = "https://firebasestorage.googleapis.com/v0/b/e-commerce-39c78.appspot.com/o/temps%2Fsale-banner-template-with-special-sale-vector.jpg?alt=media&token=b53a1702-4f9b-4d4c-811f-4d860c67da71",
-                endAt = System.currentTimeMillis() + 7200000 // 2 hours from now
-            )
-        )
-
+        if (salesAds.isNullOrEmpty()) {
+            return
+        }
         initializeIndicators(salesAds.size)
         val adapter = SalesAdAdapter(salesAds)
         binding.saleAdsViewPager.adapter = adapter

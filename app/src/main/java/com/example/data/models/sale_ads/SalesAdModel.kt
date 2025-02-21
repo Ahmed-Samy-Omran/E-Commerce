@@ -41,8 +41,8 @@ data class SalesAdModel(
 
     ) : Parcelable{
 
-    fun toUIModel(): SalesAdModel {
-        return SalesAdModel(
+    fun toUIModel(): SalesAdUIModel {
+        return SalesAdUIModel(
             title = this.title,
             description = this.description,
             imageUrl = this.imageUrl,
