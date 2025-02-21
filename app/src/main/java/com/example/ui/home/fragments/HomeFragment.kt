@@ -1,43 +1,52 @@
 package com.example.ui.home.fragments
 
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
+import com.example.ui.common.fragments.BaseFragment
 import com.example.ui.common.views.CircleView
 import com.example.ui.home.adapter.SalesAdAdapter
 import com.example.ui.home.model.SalesAdUIModel
+import com.example.ui.home.viewmodel.HomeViewModel
 import com.example.utils.DepthPageTransformer
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
+
+    override val viewModel: HomeViewModel by viewModels()
+    override fun getLayoutResId(): Int = R.layout.fragment_home
 
 
-class HomeFragment : Fragment() {
-
-    private var _binding: FragmentHomeBinding? = null
-    val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun init() {
+        initViews()
+        initViewModel()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return binding.root    }
+    private fun initViewModel() {
+        lifecycleScope.launch {
+            viewModel.salesAdsStateTemp.collect {
+                Log.d(TAG, "initViewModel: $it")
+            }
+        }
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initViews() {
         Log.d(TAG, "onViewCreated: HomeFragment")
+        initSalesAdsView()
+    }
 
+    private fun initSalesAdsView() {
 
         val salesAds = listOf(
             SalesAdUIModel(
@@ -50,18 +59,37 @@ class HomeFragment : Fragment() {
                 endAt = System.currentTimeMillis() + 7200000 // 2 hours from now
             )
         )
+
         initializeIndicators(salesAds.size)
         val adapter = SalesAdAdapter(salesAds)
         binding.saleAdsViewPager.adapter = adapter
         binding.saleAdsViewPager.setPageTransformer(DepthPageTransformer())
 
         binding.saleAdsViewPager.registerOnPageChangeCallback(object :
-            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 updateIndicators(position)
             }
         })
+        // that responsible for the auto slide of the viewpager every 5 seconds
+        lifecycleScope.launch(IO) {
+            tickerFlow(5000).collect {
+                withContext(Main) {
+                    binding.saleAdsViewPager.setCurrentItem(
+                        (binding.saleAdsViewPager.currentItem + 1) % salesAds.size, true
+                    )
+                }
+            }
+        }
+    }
+
+
+    private fun tickerFlow(period: Long) = flow {
+        while (true) {
+            emit(Unit)
+            delay(period)
+        }
     }
 
     private var indicators = mutableListOf<CircleView>()

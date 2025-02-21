@@ -1,14 +1,17 @@
 package com.example.ui.home.model
 
-import android.util.Log
-import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Date
-
 data class SalesAdUIModel(
-    val title: String? = null,
-    val description: String? = null,
-    val imageUrl: String? = null,
-    val endAt: Long? = null,
+    val title: String? = null, val description: String? = null,
+
+    var imageUrl: String? = null, val type: String? = null,
+
+    var productId: String? = null,
+
+    var categoryId: String? = null,
+
+    var externalLink: String? = null,
+
+    var endAt: Long? = null
 )
 enum class SalesAdType {
     PRODUCT,

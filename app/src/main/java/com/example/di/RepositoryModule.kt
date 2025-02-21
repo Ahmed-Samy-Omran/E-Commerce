@@ -4,6 +4,8 @@ import com.example.data.repository.auth.FirebaseAuthRepository
 import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.example.data.repository.common.AppDataStoreRepositoryImpl
 import com.example.data.repository.common.AppPreferenceRepository
+import com.example.data.repository.home.SalesAdsRepository
+import com.example.data.repository.home.SalesAdsRepositoryImpl
 import com.example.data.repository.user.UserFirestoreRepository
 import com.example.data.repository.user.UserFirestoreRepositoryImpl
 import com.example.data.repository.user.UserPreferenceRepository
@@ -44,5 +46,14 @@ abstract class RepositoryModule {
     abstract fun provideUserFirestoreRepository(
         userFirestoreRepositoryImpl: UserFirestoreRepositoryImpl
     ): UserFirestoreRepository
+
+
+
+    @Binds
+    @Singleton
+    abstract fun provideSalesAdsRepository(
+        salesAdsRepositoryImpl: SalesAdsRepositoryImpl
+    ): SalesAdsRepository
+
 
 }
