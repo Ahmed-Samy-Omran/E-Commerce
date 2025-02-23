@@ -114,10 +114,10 @@
 
                     </com.example.utils.NestedScrollableHost>
 
-                    <!--                    <include-->
-                    <!--                        android:id="@+id/sale_ads_shimmer_view"-->
-                    <!--                        layout="@layout/sale_ad_shimmer_view" />-->
 
+                    <include
+                        android:id="@+id/sale_ads_shimmer_view"
+                        layout="@layout/sale_ad_shimmer_view" />
                 </RelativeLayout>
 
                 <LinearLayout

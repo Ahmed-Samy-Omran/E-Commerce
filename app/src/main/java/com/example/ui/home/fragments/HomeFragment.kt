@@ -1,6 +1,7 @@
 package com.example.ui.home.fragments
 
 import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -43,6 +44,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                         Log.d(TAG, "iniViewModel: Loading")
                     }
                     is Resource.Success -> {
+                        binding.saleAdsShimmerView.root.stopShimmer()
+                        binding.saleAdsShimmerView.root.visibility = View.GONE
                         initSalesAdsView(resources.data)
                     }
                     is Resource.Error -> {
