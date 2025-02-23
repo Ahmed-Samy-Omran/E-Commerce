@@ -12,6 +12,7 @@ import java.util.Date
 @Parcelize
 data class SalesAdModel(
 
+    val id: String? = null,
 
     val title: String? = null,
     val description: String? = null,
@@ -43,6 +44,7 @@ data class SalesAdModel(
 
     fun toUIModel(): SalesAdUIModel {
         return SalesAdUIModel(
+            id = this.id,
             title = this.title,
             description = this.description,
             imageUrl = this.imageUrl,
