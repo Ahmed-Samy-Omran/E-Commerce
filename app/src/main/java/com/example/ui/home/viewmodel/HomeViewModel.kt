@@ -19,14 +19,16 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val salesAdsRepository: SalesAdsRepository
 ) : ViewModel() {
-    val salesAdsStateTemp =
-        salesAdsRepository.getSalesAds().stateIn(
-            viewModelScope + IO,
-            started = SharingStarted.Eagerly,
-            initialValue = Resource.Loading()
-        )
 
-    init {
-//        getSalesAds()
+    val salesAdsStateTemp = salesAdsRepository.getSalesAds().stateIn(
+        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
+    )
+
+    fun stopTimer() {
+        salesAdsStateTemp.value.data?.forEach { it.stopCountdown() }
+    }
+
+    fun startTimer() {
+        salesAdsStateTemp.value.data?.forEach { it.startCountdown() }
     }
 }

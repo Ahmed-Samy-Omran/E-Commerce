@@ -2,14 +2,23 @@ package com.example.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.databinding.ItemSalesAdBinding
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.utils.CountdownTimer
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
-class SalesAdAdapter(private val salesAds: List<SalesAdUIModel>) :
+class SalesAdAdapter(
+    private val lifecycleScope: LifecycleCoroutineScope,
+    private val salesAds: List<SalesAdUIModel>
+) :
     RecyclerView.Adapter<SalesAdAdapter.SalesAdViewHolder>() {
 
     val timersList = mutableMapOf<String, CountdownTimer>()
@@ -18,18 +27,10 @@ class SalesAdAdapter(private val salesAds: List<SalesAdUIModel>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(salesAd: SalesAdUIModel) {
+            salesAd.startCountdown()
+            binding.lifecycleScope = lifecycleScope
             binding.salesAd = salesAd
-            salesAd.endAt?.let {
-                timersList[salesAd.id ?: ""]?.cancel()
-                timersList.remove(salesAd.id ?: "")
-                val timer = CountdownTimer(it) { hours, minutes, seconds ->
-                    binding.hoursTextView.text = hours.toString()
-                    binding.minutesTextView.text = minutes.toString()
-                    binding.secondsTextView.text = seconds.toString()
-                }
-                timer.start()
-                timersList.put(salesAd.id ?: "", timer)
-            }
+
             binding.executePendingBindings()
         }
     }
@@ -48,8 +49,19 @@ class SalesAdAdapter(private val salesAds: List<SalesAdUIModel>) :
     // Cancel all timers when the adapter is detached from the RecyclerView
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        timersList.forEach { (_, timer) ->
-            timer.cancel()
+        salesAds.forEach { it.stopCountdown() }
+    }
+}
+
+@BindingAdapter("countdownTimer", "lifecycleScope")
+fun timerChanges(
+    view: TextView,
+    timerState: MutableStateFlow<String>?,
+    lifecycleScope: LifecycleCoroutineScope?
+) {
+    lifecycleScope?.launch {
+        timerState?.collectLatest {
+            view.text = it
         }
     }
 }

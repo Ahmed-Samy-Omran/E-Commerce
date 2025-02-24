@@ -67,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             return
         }
         initializeIndicators(salesAds.size)
-        val adapter = SalesAdAdapter(salesAds)
+        val adapter = SalesAdAdapter(lifecycleScope, salesAds)
         binding.saleAdsViewPager.adapter = adapter
         binding.saleAdsViewPager.setPageTransformer(DepthPageTransformer())
 
@@ -129,6 +129,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.startTimer()
+    }
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopTimer()
+    }
     companion object {
         private const val TAG = "HomeFragment"
     }

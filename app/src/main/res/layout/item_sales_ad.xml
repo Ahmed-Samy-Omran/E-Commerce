@@ -8,9 +8,9 @@
             name="salesAd"
             type="com.example.ui.home.model.SalesAdUIModel" />
 
-<!--        <variable-->
-<!--            name="lifecycleScope"-->
-<!--            type="androidx.lifecycle.LifecycleCoroutineScope" />-->
+        <variable
+            name="lifecycleScope"
+            type="androidx.lifecycle.LifecycleCoroutineScope" />
     </data>
 
     <RelativeLayout
@@ -20,9 +20,7 @@
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        >
-
+        android:paddingBottom="8dp">
 
 
         <ImageView
@@ -56,7 +54,8 @@
             <TextView
                 android:id="@+id/hoursTextView"
                 style="@style/SaleTimerItemTextStyle"
-
+                app:countdownTimer="@{salesAd.hours}"
+                app:lifecycleScope="@{lifecycleScope}"
                 tools:text="08" />
 
             <TextView
@@ -72,7 +71,8 @@
             <TextView
                 android:id="@+id/minutesTextView"
                 style="@style/SaleTimerItemTextStyle"
-
+                app:countdownTimer="@{salesAd.minutes}"
+                app:lifecycleScope="@{lifecycleScope}"
                 tools:text="34" />
 
             <TextView
@@ -80,7 +80,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:padding="8dp"
+
                 android:text=":"
+
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -88,6 +90,8 @@
             <TextView
                 android:id="@+id/secondsTextView"
                 style="@style/SaleTimerItemTextStyle"
+                app:countdownTimer="@{salesAd.seconds}"
+                app:lifecycleScope="@{lifecycleScope}"
 
                 tools:text="52" />
         </LinearLayout>
