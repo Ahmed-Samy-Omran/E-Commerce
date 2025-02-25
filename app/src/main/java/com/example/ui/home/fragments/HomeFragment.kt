@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.data.models.Resource
 import com.example.data.models.sale_ads.SalesAdModel
@@ -12,7 +13,9 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.ui.common.fragments.BaseFragment
 import com.example.ui.common.views.CircleView
+import com.example.ui.home.adapter.CategoriesAdapter
 import com.example.ui.home.adapter.SalesAdAdapter
+import com.example.ui.home.model.CategoryUIModel
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.home.viewmodel.HomeViewModel
 import com.example.utils.DepthPageTransformer
@@ -54,7 +57,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             }
         }
+
+
+
+        lifecycleScope.launch {
+            viewModel.categoriesState.collect { resources ->
+                when (resources) {
+                    is Resource.Loading -> {
+                        Log.d(TAG, "iniViewModel: categories Loading")
+                    }
+
+                    is Resource.Success -> {
+//                        binding.categoriesShimmerView.root.stopShimmer()
+//                        binding.categoriesShimmerView.root.visibility = View.GONE
+                        Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
+                        initCategoriesView(resources.data)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d(TAG, "iniViewModel: categories Error")
+                    }
+                }
+            }
+        }
+
+
     }
+
+    private fun initCategoriesView(data: List<CategoryUIModel>?) {
+        if (data.isNullOrEmpty()) {
+            return
+        }
+        val categoriesAdapter = CategoriesAdapter(data)
+        binding.categoriesRecyclerView.apply {
+            adapter = categoriesAdapter
+            setHasFixedSize(true)   // because the recyclerview size is fixed and small so we can set it to true to increase performance
+            isNestedScrollingEnabled = false
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+        }
+    }
+
+
 
     private fun initViews() {
         Log.d(TAG, "onViewCreated: HomeFragment")
@@ -67,17 +112,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             return
         }
         initializeIndicators(salesAds.size)
-        val adapter = SalesAdAdapter(lifecycleScope, salesAds)
-        binding.saleAdsViewPager.adapter = adapter
-        binding.saleAdsViewPager.setPageTransformer(DepthPageTransformer())
-
-        binding.saleAdsViewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                updateIndicators(position)
-            }
-        })
+        val salesAdapter = SalesAdAdapter(lifecycleScope, salesAds)
+        binding.saleAdsViewPager.apply {
+            adapter = salesAdapter
+            setPageTransformer(DepthPageTransformer())
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    updateIndicators(position)
+                }
+            })
+        }
         // that responsible for the auto slide of the viewpager every 5 seconds
         lifecycleScope.launch(IO) {
             tickerFlow(5000).collect {

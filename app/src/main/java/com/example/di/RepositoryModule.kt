@@ -2,6 +2,8 @@ package com.example.di
 
 import com.example.data.repository.auth.FirebaseAuthRepository
 import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
+import com.example.data.repository.categories.CategoriesRepository
+import com.example.data.repository.categories.CategoriesRepositoryImpl
 import com.example.data.repository.common.AppDataStoreRepositoryImpl
 import com.example.data.repository.common.AppPreferenceRepository
 import com.example.data.repository.home.SalesAdsRepository
@@ -54,6 +56,12 @@ abstract class RepositoryModule {
     abstract fun provideSalesAdsRepository(
         salesAdsRepositoryImpl: SalesAdsRepositoryImpl
     ): SalesAdsRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideCategoriesRepository(
+        categoriesRepositoryImpl: CategoriesRepositoryImpl
+    ): CategoriesRepository
 
 
 }
