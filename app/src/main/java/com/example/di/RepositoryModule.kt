@@ -8,6 +8,8 @@ import com.example.data.repository.common.AppDataStoreRepositoryImpl
 import com.example.data.repository.common.AppPreferenceRepository
 import com.example.data.repository.home.SalesAdsRepository
 import com.example.data.repository.home.SalesAdsRepositoryImpl
+import com.example.data.repository.products.ProductsRepository
+import com.example.data.repository.products.ProductsRepositoryImpl
 import com.example.data.repository.user.UserFirestoreRepository
 import com.example.data.repository.user.UserFirestoreRepositoryImpl
 import com.example.data.repository.user.UserPreferenceRepository
@@ -62,6 +64,13 @@ abstract class RepositoryModule {
     abstract fun provideCategoriesRepository(
         categoriesRepositoryImpl: CategoriesRepositoryImpl
     ): CategoriesRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun provideProductsRepository(
+        productsRepositoryImpl: ProductsRepositoryImpl
+    ): ProductsRepository
 
 
 }

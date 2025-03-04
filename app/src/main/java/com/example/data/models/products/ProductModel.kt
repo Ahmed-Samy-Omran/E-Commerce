@@ -19,10 +19,10 @@ data class ProductModel(
     var images: List<String>? = null,
 
     var prices: List<ProductPriceModel>? = null,
-
-    @get:PropertyName("has_offer")
-    @set:PropertyName("has_offer")
-    var hasOffer: Boolean? = null,
+//
+//    @get:PropertyName("has_offer")
+//    @set:PropertyName("has_offer")
+//    var hasOffer: Boolean? = null,
 
     @get:PropertyName("offer_percentage")
     @set:PropertyName("offer_percentage")
@@ -46,3 +46,8 @@ data class ProductPriceModel (
     var countryId: String? = null,
     var price: Float? = null,
 ) : Parcelable
+
+enum class ProductSaleType(val type: String) {
+    FLASH_SALE("flash_sale"),
+    MEGA_SALE("mega_sale")
+}
