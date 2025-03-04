@@ -116,6 +116,12 @@
         <item name="colorControlActivated">@color/primary_yellow</item>
     </style>
 
+    <style name="MediumTitleTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_dark_color</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
 
 
 </resources>
