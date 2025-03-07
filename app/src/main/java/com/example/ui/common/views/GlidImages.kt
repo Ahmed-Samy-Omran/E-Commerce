@@ -25,6 +25,24 @@ fun loadImage(view: ImageView, imageUrl: String?) {
         .into(view)
 }
 
+
+@BindingAdapter("normalImageUrl")
+fun categoryUrl(view: ImageView, imageUrl: String?) {
+    val loading = getGlideCircleLoading(view)
+
+    Glide.with(view.context).load(imageUrl).placeholder(loading)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .transform(CenterInside()).into(view)
+}
+
+@BindingAdapter("circleImageUrl")
+fun circleNormalImage(view: ImageView, imageUrl: String?) {
+    val loading = getGlideCircleLoading(view)
+    Glide.with(view.context).load(imageUrl).placeholder(loading)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .transform(CircleCrop()).into(view)
+}
+
 fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
     return CircularProgressDrawable(view.context).apply {
         strokeWidth = 5f

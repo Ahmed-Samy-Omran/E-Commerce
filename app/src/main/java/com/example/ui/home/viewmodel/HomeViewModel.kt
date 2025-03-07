@@ -9,6 +9,7 @@ import com.example.data.models.sale_ads.SalesAdModel
 import com.example.data.repository.categories.CategoriesRepository
 import com.example.data.repository.home.SalesAdsRepository
 import com.example.data.repository.products.ProductsRepository
+import com.example.data.repository.user.UserPreferenceRepository
 import com.example.ui.home.model.SalesAdUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -25,13 +27,15 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val salesAdsRepository: SalesAdsRepository,
     private val categoriesRepository: CategoriesRepository,
-    private val productsRepository: ProductsRepository
+    private val productsRepository: ProductsRepository,
+    private val userPreferenceRepository: UserPreferenceRepository
 ) : ViewModel() {
 
     val salesAdsStateTemp = salesAdsRepository.getSalesAds().stateIn(
         viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
     )
-        // i apply stateIn to my flow to convert it from cold flow to hot flow
+
+    // i apply stateIn to my flow to convert it from cold flow to hot flow
     val categoriesState = categoriesRepository.getCategories().stateIn(
         viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = Resource.Loading()
     )
@@ -43,6 +47,18 @@ class HomeViewModel @Inject constructor(
     fun startTimer() {
         salesAdsStateTemp.value.data?.forEach { it.startCountdown() }
     }
+
+//    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
+//        val country = userPreferenceRepository.getUserCountry().first()
+//
+//        productsRepository.getSaleProducts(
+//            country.id, ProductSaleType.FLASH_SALE.type, 10
+//        ).collectLatest { products ->
+//            Log.d(TAG, "Flash sale products: $products")
+//        }
+//    }
+
+
     fun getFlashSaleProducts() = viewModelScope.launch(IO) {
         productsRepository.getSaleProducts(
             "EO8zdYKPeomrYLG7zYY3", ProductSaleType.FLASH_SALE.type, 10

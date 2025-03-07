@@ -1,5 +1,7 @@
 package com.example.di
 
+import com.example.data.repository.auth.CountryRepository
+import com.example.data.repository.auth.CountryRepositoryImpl
 import com.example.data.repository.auth.FirebaseAuthRepository
 import com.example.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.example.data.repository.categories.CategoriesRepository
@@ -72,5 +74,11 @@ abstract class RepositoryModule {
         productsRepositoryImpl: ProductsRepositoryImpl
     ): ProductsRepository
 
+
+    @Binds
+    @Singleton
+    abstract fun provideCountryRepositoryImpl(
+        countryRepositoryImpl: CountryRepositoryImpl
+    ): CountryRepository
 
 }

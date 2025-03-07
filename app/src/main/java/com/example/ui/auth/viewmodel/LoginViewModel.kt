@@ -82,8 +82,8 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun savePreferenceData(userDetailsModel: UserDetailsModel) {
         appPreferenceRepository.saveLoginState(true)
-        userPreferenceRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
-    }
+        val country = userPreferenceRepository.getUserCountry().first()
+        userPreferenceRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences(country))  }
 
     companion object {
         private const val TAG = "LoginViewModel"

@@ -1,6 +1,8 @@
 package com.example.data.repository.products
 
+import android.util.Log
 import com.example.data.models.products.ProductModel
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,10 +26,10 @@ class ProductsRepositoryImpl @Inject constructor(
         countryID: String, saleType: String, pageLimit: Int
     ): Flow<List<ProductModel>> {
         return flow {
+            Log.d("ProductsRepositoryImpl", "getSaleProducts: $countryID, $saleType")
             val products = firestore.collection("products")
-                .whereEqualTo("countries.EO8zdYKPeomrYLG7zYY3.sale_type", saleType)
-                .limit(pageLimit.toLong()).get().await()
-                .toObjects(ProductModel::class.java)
+                .whereEqualTo(FieldPath.of("countries", countryID, "sale_type"), saleType)
+                .limit(pageLimit.toLong()).get().await().toObjects(ProductModel::class.java)
             emit(products)
         }
     }
