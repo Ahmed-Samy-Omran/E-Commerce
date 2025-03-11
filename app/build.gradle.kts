@@ -165,7 +165,9 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
-
+    implementation ("com.google.android.gms:play-services-base:18.5.0")
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("com.google.android.gms:play-services-maps:19.1.0")
 
 }
 // Allow references to generated code

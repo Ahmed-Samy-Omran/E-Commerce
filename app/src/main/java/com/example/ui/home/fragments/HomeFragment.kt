@@ -18,6 +18,7 @@ import com.example.ui.home.adapter.SalesAdAdapter
 import com.example.ui.home.model.CategoryUIModel
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.home.viewmodel.HomeViewModel
+import com.example.ui.products.adapter.ProductAdapter
 import com.example.utils.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
@@ -33,32 +34,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModel: HomeViewModel by viewModels()
     override fun getLayoutResId(): Int = R.layout.fragment_home
 
-
     override fun init() {
         initViews()
-        initViewModel()
+        iniViewModel()
     }
 
-    private fun initViewModel() {
+    private fun iniViewModel() {
         lifecycleScope.launch {
-            viewModel.salesAdsStateTemp.collect {resources->
-                when(resources){
+            viewModel.salesAdsStateTemp.collect { resources ->
+                when (resources) {
                     is Resource.Loading -> {
                         Log.d(TAG, "iniViewModel: Loading")
                     }
+
                     is Resource.Success -> {
                         binding.saleAdsShimmerView.root.stopShimmer()
                         binding.saleAdsShimmerView.root.visibility = View.GONE
                         initSalesAdsView(resources.data)
                     }
+
                     is Resource.Error -> {
                         Log.d(TAG, "iniViewModel: Error")
                     }
                 }
             }
         }
-
-//        binding.searchTv.paintFlags = binding.searchTv.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG;
 
         lifecycleScope.launch {
             viewModel.categoriesState.collect { resources ->
@@ -80,7 +80,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             }
         }
+
         viewModel.getFlashSaleProducts()
+
+        lifecycleScope.launch {
+            viewModel.flashSaleState.collect { productsList ->
+                if (productsList.isNotEmpty()) {
+                    Log.d(TAG, "iniViewModel: flashSaleState = ${productsList.size}")
+                    flashSaleAdapter.submitList(productsList)
+                }
+            }
+        }
 
     }
 
@@ -91,7 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         val categoriesAdapter = CategoriesAdapter(data)
         binding.categoriesRecyclerView.apply {
             adapter = categoriesAdapter
-            setHasFixedSize(true)   // because the recyclerview size is fixed and small so we can set it to true to increase performance
+            setHasFixedSize(true)
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(
                 requireContext(), LinearLayoutManager.HORIZONTAL, false
@@ -99,18 +109,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-
-
+    private val flashSaleAdapter by lazy { ProductAdapter() }
     private fun initViews() {
-        Log.d(TAG, "onViewCreated: HomeFragment")
+        binding.flashSaleProductsRv.apply {
+            adapter = flashSaleAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+        }
 
     }
 
     private fun initSalesAdsView(salesAds: List<SalesAdUIModel>?) {
-
         if (salesAds.isNullOrEmpty()) {
             return
         }
+
         initializeIndicators(salesAds.size)
         val salesAdapter = SalesAdAdapter(lifecycleScope, salesAds)
         binding.saleAdsViewPager.apply {
@@ -123,7 +137,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             })
         }
-        // that responsible for the auto slide of the viewpager every 5 seconds
+
         lifecycleScope.launch(IO) {
             tickerFlow(5000).collect {
                 withContext(Main) {
@@ -133,8 +147,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             }
         }
-    }
 
+        // add animation from top to bottom
+        binding.saleAdsViewPager.animate().translationY(0f).alpha(1f).setDuration(500).start()
+
+    }
 
     private fun tickerFlow(period: Long) = flow {
         while (true) {
@@ -154,11 +171,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             params.setMargins(8, 0, 8, 0) // Margin between circles
             circleView.setLayoutParams(params)
             circleView.setRadius(10f) // Set radius
-            circleView.setColor(     // change here the color you want
+            circleView.setColor(
                 if (i == 0) requireContext().getColor(R.color.primary_color) else requireContext().getColor(
                     R.color.neutral_grey
                 )
             ) // First indicator is red
+            circleView.setOnClickListener {
+                binding.saleAdsViewPager.setCurrentItem(i, true)
+            }
             indicators.add(circleView)
             binding.indicatorView.addView(circleView)
         }
@@ -166,7 +186,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun updateIndicators(position: Int) {
         for (i in 0 until indicators.size) {
-            indicators[i].setColor(  // change here the color you want
+            indicators[i].setColor(
                 if (i == position) requireContext().getColor(R.color.primary_color) else requireContext().getColor(
                     R.color.neutral_grey
                 )
@@ -178,10 +198,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         super.onResume()
         viewModel.startTimer()
     }
+
     override fun onPause() {
         super.onPause()
         viewModel.stopTimer()
     }
+
     companion object {
         private const val TAG = "HomeFragment"
     }

@@ -27,10 +27,21 @@ class ProductsRepositoryImpl @Inject constructor(
     ): Flow<List<ProductModel>> {
         return flow {
             Log.d("ProductsRepositoryImpl", "getSaleProducts: $countryID, $saleType")
-            val products = firestore.collection("products")
-                .whereEqualTo(FieldPath.of("countries", countryID, "sale_type"), saleType)
-                .limit(pageLimit.toLong()).get().await().toObjects(ProductModel::class.java)
+            val products = firestore.collection("products").whereEqualTo("sale_type", saleType)
+                .whereEqualTo("country_id", countryID).orderBy("price").limit(pageLimit.toLong())
+                .get().await().toObjects(ProductModel::class.java)
             emit(products)
+
+//            //fix
+//            val products = firestore.collection("products")
+//                .whereEqualTo("sale_type", saleType)
+//                .whereEqualTo("country_id", countryID) // Add this
+//                .orderBy("price")
+//                .limit(pageLimit.toLong())
+//                .get()
+//                .await()
+//                .toObjects(ProductModel::class.java)
+//            emit(products)
         }
     }
 }
