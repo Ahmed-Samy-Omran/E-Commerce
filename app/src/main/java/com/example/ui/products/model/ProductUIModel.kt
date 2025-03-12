@@ -19,8 +19,11 @@ data class ProductUIModel(
     }
 
     fun getFormattedPriceAfterSale(): String {
-        if (saleType == null || salePercentage == null) return getFormattedPrice()
-        val newPrice = salePercentage.let { price.minus(price * it / 100) }
+        if (salePercentage == null || salePercentage <= 0) return getFormattedPrice()
+
+        val discountAmount = (price * salePercentage) / 100 // Ensure proper integer division
+        val newPrice = price - discountAmount
+
         return "$currencySymbol$newPrice"
     }
 

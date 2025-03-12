@@ -81,16 +81,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         }
 
-        viewModel.getFlashSaleProducts()
-
+        // ✅ Observe Flash Sale Products
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
                 if (productsList.isNotEmpty()) {
                     Log.d(TAG, "iniViewModel: flashSaleState = ${productsList.size}")
-                    flashSaleAdapter.submitList(productsList)
+                    flashSaleAdapter.submitList(productsList) // Update RecyclerView
                 }
             }
         }
+
+//        viewModel.getFlashSaleProducts()
+//
+//        lifecycleScope.launch {
+//            viewModel.flashSaleState.collect { productsList ->
+//                if (productsList.isNotEmpty()) {
+//                    Log.d(TAG, "iniViewModel: flashSaleState = ${productsList.size}")
+//                    flashSaleAdapter.submitList(productsList)
+//                }
+//            }
+//        }
 
     }
 

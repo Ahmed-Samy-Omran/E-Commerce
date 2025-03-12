@@ -24,7 +24,7 @@
             app:imageUrl="@{product.getFirstImage()}"
 
             />
-<!--        android:src="@drawable/product_placeholder"-->
+        <!--        android:src="@drawable/product_placeholder"-->
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/MediumTitleTextStyle"
             android:layout_width="wrap_content"
@@ -54,30 +54,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="@{product.salePercentage != null ? android.view.View.VISIBLE : android.view.View.GONE}"            >
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/MessageTextStyle"
                 android:id="@+id/old_price"
+                style="@style/MessageTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{product.getFormattedPrice()}"
                 android:foreground="@drawable/line_through_text"
+                android:text="@{product.getFormattedPrice()}"
                 android:textSize="10sp"
                 tools:text="$534,33" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
                 android:id="@+id/sale_percentage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/poppins_bold"
+                android:text="@{product.getFormattedSale()}"
                 android:textColor="@color/primary_red"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:text="@{product.getFormattedSale()}"
                 tools:text="$534,33" />
 
         </LinearLayout>

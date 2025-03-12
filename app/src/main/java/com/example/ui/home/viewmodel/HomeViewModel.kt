@@ -21,8 +21,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -52,20 +54,28 @@ class HomeViewModel @Inject constructor(
         initialValue = CountryData.getDefaultInstance()
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val flashSaleState = countryState.mapLatest {
-        Log.d(TAG, "Countryid for flah sale: ${it.id}")
-        productsRepository.getSaleProducts(it.id ?: "0", ProductSaleType.FLASH_SALE.type, 10)
-    }.mapLatest { it.first().map { getProductModel(it) } }.stateIn(
-        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList()
-    )
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    val flashSaleState = countryState.mapLatest {
+//        Log.d(TAG, "Countryid for flah sale: ${it.id}")
+//        productsRepository.getSaleProducts(it.id ?: "0", ProductSaleType.FLASH_SALE.type, 10)
+//    }.mapLatest { it.first().map { getProductModel(it) } }.stateIn(
+//        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList()
+//    )
+//
+//    private fun getProductModel(product: ProductModel): ProductUIModel {
+//        val productUIModel = product.toProductUIModel().copy(
+//            currencySymbol = countryState.value?.currencySymbol ?: ""
+//        )
+//        return productUIModel
+//    }
 
-    private fun getProductModel(product: ProductModel): ProductUIModel {
-        val productUIModel = product.toProductUIModel().copy(
-            currencySymbol = countryState.value?.currencySymbol ?: ""
-        )
-        return productUIModel
-    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val flashSaleState = countryState.flatMapLatest { country ->
+        Log.d(TAG, "Country ID for flash sale: ${country.id}")
+        productsRepository.getSaleProducts(country.id, ProductSaleType.FLASH_SALE.type, 10)
+    }.catch { emit(emptyList()) } // Prevent crashes if an error occurs
+        .stateIn(viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList())
 
     fun stopTimer() {
         salesAdsStateTemp.value.data?.forEach { it.stopCountdown() }
@@ -75,15 +85,15 @@ class HomeViewModel @Inject constructor(
         salesAdsStateTemp.value.data?.forEach { it.startCountdown() }
     }
 
-    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
-        val country = userPreferenceRepository.getUserCountry().first()
-
-        productsRepository.getSaleProducts(
-            country.id, ProductSaleType.FLASH_SALE.type, 10
-        ).collectLatest { products ->
-            Log.d(TAG, "Flash sale products: $products")
-        }
-    }
+//    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
+//        val country = userPreferenceRepository.getUserCountry().first()
+//
+//        productsRepository.getSaleProducts(
+//            country.id, ProductSaleType.FLASH_SALE.type, 10
+//        ).collectLatest { products ->
+//            Log.d(TAG, "Flash sale products: $products")
+//        }
+//    }
 
 
 //    fun getFlashSaleProducts() = viewModelScope.launch(IO) {

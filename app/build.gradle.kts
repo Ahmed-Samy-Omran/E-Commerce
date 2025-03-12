@@ -169,6 +169,9 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
     implementation("com.google.android.gms:play-services-maps:19.1.0")
 
+
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+
 }
 // Allow references to generated code
 kapt {

@@ -18,7 +18,8 @@ fun ProductUIModel.toProductModel(): ProductModel {
 }
 
 fun ProductModel.toProductUIModel(): ProductUIModel {
-    return ProductUIModel(id = id ?: throw IllegalArgumentException("Product ID is missing"),
+    return ProductUIModel(
+        id = id ?: throw IllegalArgumentException("Product ID is missing"),
         name = name ?: "No Name",
         description = description ?: "No Description",
         categoriesIDs = categoriesIDs ?: emptyList(),
@@ -26,5 +27,7 @@ fun ProductModel.toProductUIModel(): ProductUIModel {
         price = price ?: 0,
         salePercentage = salePercentage,
         saleType = saleType,
-        colors = colors ?: emptyList())
+        colors = colors ?: emptyList(),
+
+    )
 }
