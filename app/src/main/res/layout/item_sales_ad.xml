@@ -33,15 +33,19 @@
 
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_margin="18dp"
-            android:fontFamily="@font/poppins_bold"
+            android:layout_margin="10dp"
+            android:breakStrategy="simple"
+            android:ellipsize="end"
+            android:fontFamily="@font/swanky"
+            android:maxLines="2"
             android:text="@{salesAd.title}"
             android:textColor="@android:color/white"
-            android:textSize="28sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
 
         <LinearLayout
             android:id="@+id/timerLayout"
@@ -51,12 +55,13 @@
             android:layout_margin="18dp"
             android:orientation="horizontal">
 
-            <TextView
+            <com.example.utils.FlipClockDigit
                 android:id="@+id/hoursTextView"
                 style="@style/SaleTimerItemTextStyle"
                 app:countdownTimer="@{salesAd.hours}"
-                app:lifecycleScope="@{lifecycleScope}"
-                tools:text="08" />
+
+                app:lifecycleScope="@{lifecycleScope}" />
+            <!--android:background="@drawable/flip_card_background"    -->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,35 +70,31 @@
                 android:padding="8dp"
                 android:text=":"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.example.utils.FlipClockDigit
                 android:id="@+id/minutesTextView"
                 style="@style/SaleTimerItemTextStyle"
                 app:countdownTimer="@{salesAd.minutes}"
-                app:lifecycleScope="@{lifecycleScope}"
-                tools:text="34" />
+                app:lifecycleScope="@{lifecycleScope}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:padding="8dp"
-
                 android:text=":"
-
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.example.utils.FlipClockDigit
                 android:id="@+id/secondsTextView"
                 style="@style/SaleTimerItemTextStyle"
                 app:countdownTimer="@{salesAd.seconds}"
-                app:lifecycleScope="@{lifecycleScope}"
-
-                tools:text="52" />
+                app:lifecycleScope="@{lifecycleScope}" />
         </LinearLayout>
+
+
     </RelativeLayout>
 </layout>

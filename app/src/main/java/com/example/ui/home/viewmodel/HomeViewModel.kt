@@ -54,20 +54,9 @@ class HomeViewModel @Inject constructor(
         initialValue = CountryData.getDefaultInstance()
     )
 
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    val flashSaleState = countryState.mapLatest {
-//        Log.d(TAG, "Countryid for flah sale: ${it.id}")
-//        productsRepository.getSaleProducts(it.id ?: "0", ProductSaleType.FLASH_SALE.type, 10)
-//    }.mapLatest { it.first().map { getProductModel(it) } }.stateIn(
-//        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList()
-//    )
-//
-//    private fun getProductModel(product: ProductModel): ProductUIModel {
-//        val productUIModel = product.toProductUIModel().copy(
-//            currencySymbol = countryState.value?.currencySymbol ?: ""
-//        )
-//        return productUIModel
-//    }
+
+
+
 
 
     @OptIn(ExperimentalCoroutinesApi::class)

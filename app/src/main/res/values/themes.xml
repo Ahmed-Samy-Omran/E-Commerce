@@ -99,16 +99,17 @@
     </style>
 
     <style name="SaleTimerItemTextStyle">
-        <item name="android:layout_height">45dp</item>
-        <item name="android:layout_width">45dp</item>
+
+        <item name="android:inAnimation">@anim/flip_in</item>
+        <item name="android:outAnimation">@anim/flip_out</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_width">42dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/timer_background</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/primary_dark_color</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
-        <item name="android:padding">8dp</item>
         <item name="fontFamily">@font/poppins_bold</item>
-<!--        <item name="android:background">@drawable/timer_background</item>-->
+       <item name="android:background">@drawable/flip_card_background</item>
     </style>
 
     <style name="RatingBarStyle" parent="Theme.AppCompat">
@@ -122,6 +123,11 @@
         <item name="fontFamily">@font/poppins_bold</item>
     </style>
 
+
+    <declare-styleable name="FlipClockDigit">
+        <attr name="countdownTimer" format="reference" />
+        <attr name="lifecycleScope" format="reference" />
+    </declare-styleable>
 
 
 </resources>

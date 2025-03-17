@@ -1,15 +1,14 @@
 package com.example.ui.home.adapter
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.databinding.ItemSalesAdBinding
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.utils.CountdownTimer
-import kotlinx.coroutines.cancel
+import com.example.utils.FlipClockDigit
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class SalesAdAdapter(
     private val lifecycleScope: LifecycleCoroutineScope,
-    private val salesAds: List<SalesAdUIModel>
+    private val salesAds: List<SalesAdUIModel>,
 ) :
     RecyclerView.Adapter<SalesAdAdapter.SalesAdViewHolder>() {
 
@@ -54,14 +53,19 @@ class SalesAdAdapter(
 }
 
 @BindingAdapter("countdownTimer", "lifecycleScope")
-fun timerChanges(
-    view: TextView,
-    timerState: MutableStateFlow<String>?,
+    fun timerChanges(
+view: FlipClockDigit,
+timerState: MutableStateFlow<String>?,
     lifecycleScope: LifecycleCoroutineScope?
 ) {
+    val job: Job? = null // Track coroutine job
+
     lifecycleScope?.launch {
-        timerState?.collectLatest {
-            view.text = it
+        job?.cancel() // Cancel previous coroutine if exists
+
+        timerState?.collectLatest { value ->
+            val digit = value.toIntOrNull() ?: 0 // Default to 0 if invalid
+            view.setDigit(digit)
         }
     }
 }

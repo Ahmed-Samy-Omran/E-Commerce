@@ -172,6 +172,10 @@ dependencies {
 
     implementation ("com.google.firebase:firebase-firestore-ktx")
 
+    // flip clock
+    implementation("com.google.accompanist:accompanist-pager:0.26.3-beta")
+
+
 }
 // Allow references to generated code
 kapt {
