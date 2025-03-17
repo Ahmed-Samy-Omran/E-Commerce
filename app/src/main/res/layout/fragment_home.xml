@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.example.ui.home.viewmodel.HomeViewModel" />
@@ -161,13 +163,16 @@
 
 
                 <LinearLayout
+                    android:id="@+id/flash_sale_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp"
-                    android:paddingBottom="8dp">
+                    android:paddingBottom="8dp"
+                    android:tag="flash_sale_layout"
+                    app:isVisible="@{viewmodel.isEmptyFlashSale}">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TitleTextStyle"
@@ -190,6 +195,45 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
+                    android:tag="flash_sale_rv"
+                    app:isVisible="@{viewmodel.isEmptyFlashSale}"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <LinearLayout
+                    android:id="@+id/mega_sale_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:tag="mega_sale_layout"
+                    app:isVisible="@{viewmodel.isEmptyMegaSale}">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TitleTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/mega_sale" />
+
+                    <TextView
+                        android:id="@+id/mega_see_more_tv"
+                        style="@style/MediumPrimaryTextViewStyle"
+                        android:layout_gravity="center"
+                        android:text="@string/see_more"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mega_sale_products_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingStart="8dp"
+                    android:tag="mega_sale_rv"
+                    app:isVisible="@{viewmodel.isEmptyMegaSale}"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>

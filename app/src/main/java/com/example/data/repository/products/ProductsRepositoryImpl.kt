@@ -14,36 +14,7 @@ import javax.inject.Inject
 class ProductsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : ProductsRepository {
-//    override fun getCategoryProducts(categoryID: String, pageLimit: Int): Flow<List<ProductModel>> {
-//        return flow {
-//            val products =
-//                firestore.collection("products").whereArrayContains("categories_ids", categoryID)
-//                    .limit(pageLimit.toLong()).get().await().toObjects(ProductModel::class.java)
-//
-//            emit(products)
-//        }
-//    }
-//
-//    override fun getSaleProducts(
-//        countryID: String, saleType: String, pageLimit: Int
-//    ): Flow<List<ProductModel>> {
-//        return flow {
-//            Log.d("ProductsRepositoryImpl", "getSaleProducts: $countryID, $saleType")
-//            val products = firestore.collection("products").whereEqualTo("sale_type", saleType)
-//                .whereEqualTo("country_id", countryID).orderBy("price").limit(pageLimit.toLong())
-//                .get().await().toObjects(ProductModel::class.java)
-//            emit(products)
 
-    //            //fix
-//            val products = firestore.collection("products")
-//                .whereEqualTo("sale_type", saleType)
-//                .whereEqualTo("country_id", countryID) // Add this
-//                .orderBy("price")
-//                .limit(pageLimit.toLong())
-//                .get()
-//                .await()
-//                .toObjects(ProductModel::class.java)
-//            emit(products)
     override fun getCategoryProducts(categoryID: String, pageLimit: Int): Flow<List<ProductUIModel>> = flow {
         try {
             val snapshot = firestore.collection("products")

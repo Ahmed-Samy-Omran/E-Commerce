@@ -13,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="6dp">
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             app:normalImageUrl="@{category.icon}"
             android:background="@drawable/circle_border_bg"
             android:padding="24dp" />
