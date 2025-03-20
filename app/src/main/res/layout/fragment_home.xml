@@ -240,7 +240,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:padding="8dp"
-                    android:visibility="@{viewmodel.recommendedSectionDataState == null ? View.GONE : View.VISIBLE}">
+                    android:visibilities="@{viewmodel.isRecommendedSection}">
 
                     <ImageView
                         android:id="@+id/recommended_product_iv"
