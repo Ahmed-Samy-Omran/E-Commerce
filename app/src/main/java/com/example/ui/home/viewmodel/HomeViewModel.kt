@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.Resource
 import com.example.data.models.products.ProductModel
@@ -13,8 +14,10 @@ import com.example.data.models.user.CountryData
 import com.example.data.repository.categories.CategoriesRepository
 import com.example.data.repository.home.SalesAdsRepository
 import com.example.data.repository.products.ProductsRepository
+import com.example.data.repository.special_sections.SpecialSectionsRepository
 import com.example.data.repository.user.UserPreferenceRepository
 import com.example.domain.models.toProductUIModel
+import com.example.domain.models.toSpecialSectionUIModel
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.products.model.ProductUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +42,8 @@ class HomeViewModel @Inject constructor(
     private val salesAdsRepository: SalesAdsRepository,
     private val categoriesRepository: CategoriesRepository,
     private val productsRepository: ProductsRepository,
-    private val userPreferenceRepository: UserPreferenceRepository
+    private val userPreferenceRepository: UserPreferenceRepository,
+    private val specialSectionsRepository: SpecialSectionsRepository
 ) : ViewModel() {
 
     val salesAdsStateTemp = salesAdsRepository.getSalesAds().stateIn(
@@ -77,6 +81,14 @@ class HomeViewModel @Inject constructor(
     }.catch { emit(emptyList()) } // Prevent crashes if an error occurs
         .stateIn(viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = emptyList())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val recommendedSectionDataState = specialSectionsRepository.recommendProductsSection().stateIn(
+        viewModelScope + IO, started = SharingStarted.Eagerly, initialValue = null
+    ).mapLatest { it?.toSpecialSectionUIModel()}
+
+    val isRecommendedSection = recommendedSectionDataState.map { it == null}.asLiveData()
+
+
     val isEmptyFlashSale: StateFlow<Boolean> = flashSaleState.map {
         val isEmpty = it.isEmpty()
         Log.d(TAG, "isEmptyFlashSale: $isEmpty")
@@ -84,6 +96,7 @@ class HomeViewModel @Inject constructor(
     }.stateIn(
         viewModelScope, started = SharingStarted.Eagerly, initialValue = true
     )
+
 
     val isEmptyMegaSale: StateFlow<Boolean> = megaSaleState.map {
         val isEmpty = it.isEmpty()
@@ -127,8 +140,3 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-@BindingAdapter("isVisible")
-fun setVisibility(view: View, isEmpty: Boolean) {
-    Log.d("HomeViewModel", "tage = ${view.tag}, setVisibility: $isEmpty")
-    view.visibility = if (isEmpty) View.GONE else View.VISIBLE
-}

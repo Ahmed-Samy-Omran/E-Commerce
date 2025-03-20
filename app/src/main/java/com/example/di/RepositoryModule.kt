@@ -12,6 +12,8 @@ import com.example.data.repository.home.SalesAdsRepository
 import com.example.data.repository.home.SalesAdsRepositoryImpl
 import com.example.data.repository.products.ProductsRepository
 import com.example.data.repository.products.ProductsRepositoryImpl
+import com.example.data.repository.special_sections.SpecialSectionsRepository
+import com.example.data.repository.special_sections.SpecialSectionsRepositoryImpl
 import com.example.data.repository.user.UserFirestoreRepository
 import com.example.data.repository.user.UserFirestoreRepositoryImpl
 import com.example.data.repository.user.UserPreferenceRepository
@@ -80,5 +82,11 @@ abstract class RepositoryModule {
     abstract fun provideCountryRepositoryImpl(
         countryRepositoryImpl: CountryRepositoryImpl
     ): CountryRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideSpecialSectionsRepositoryImpl(
+        specialSectionsRepository: SpecialSectionsRepositoryImpl
+    ): SpecialSectionsRepository
 
 }

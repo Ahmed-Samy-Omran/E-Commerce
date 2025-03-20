@@ -2,21 +2,16 @@ package com.example.ui.auth.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.data.models.Resource
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentForgetPasswordBinding
-import com.example.e_commerce.databinding.FragmentLoginBinding
-import com.example.ui.auth.fragments.LoginFragment.Companion
-import com.example.ui.auth.showSnakeBarError
+import com.example.ui.showSnakeBarError
 import com.example.ui.auth.viewmodel.ForgetPasswordViewModel
-import com.example.ui.auth.viewmodel.LoginViewModel
 import com.example.ui.common.views.ProgressDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

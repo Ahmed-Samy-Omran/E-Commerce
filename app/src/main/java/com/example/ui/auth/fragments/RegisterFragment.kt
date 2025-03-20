@@ -12,7 +12,7 @@ import com.example.e_commerce.databinding.FragmentRegisterBinding
 import com.example.ui.auth.viewmodel.RegisterViewModel
 
 import com.example.ui.getGoogleRequestIntent
-import com.example.ui.auth.showSnakeBarError
+import com.example.ui.showSnakeBarError
 
 import com.example.ui.common.fragments.BaseFragment
 import com.example.utils.CrashlyticsUtils

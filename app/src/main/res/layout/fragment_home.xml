@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -172,7 +173,7 @@
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
                     android:tag="flash_sale_layout"
-                    app:isVisible="@{viewmodel.isEmptyFlashSale}">
+                    android:visibilities="@{viewmodel.isEmptyFlashSale}">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TitleTextStyle"
@@ -196,7 +197,6 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
                     android:tag="flash_sale_rv"
-                    app:isVisible="@{viewmodel.isEmptyFlashSale}"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
                 <LinearLayout
@@ -209,7 +209,7 @@
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
                     android:tag="mega_sale_layout"
-                    app:isVisible="@{viewmodel.isEmptyMegaSale}">
+                    android:visibilities="@{viewmodel.isEmptyMegaSale}">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TitleTextStyle"
@@ -233,8 +233,47 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
                     android:tag="mega_sale_rv"
-                    app:isVisible="@{viewmodel.isEmptyMegaSale}"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <RelativeLayout
+                    android:id="@+id/recommended_product_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="8dp"
+                    android:visibility="@{viewmodel.recommendedSectionDataState == null ? View.GONE : View.VISIBLE}">
+
+                    <ImageView
+                        android:id="@+id/recommended_product_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/promo_image" />
+
+                    <TextView
+                        android:id="@+id/recommended_product_title_iv"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+
+                        tools:text="Recommended Product" />
+
+                    <TextView
+                        android:id="@+id/recommended_product_description_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="We recommend the best for you" />
+                </RelativeLayout>
 
             </LinearLayout>
 
