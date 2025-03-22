@@ -11,6 +11,7 @@ fun ProductUIModel.toProductModel(): ProductModel {
         categoriesIDs = categoriesIDs,
         images = images,
         price = price,
+        rate = rate,
         salePercentage = salePercentage,
         saleType = saleType,
         colors = colors
@@ -25,6 +26,7 @@ fun ProductModel.toProductUIModel(): ProductUIModel {
         categoriesIDs = categoriesIDs ?: emptyList(),
         images = images ?: emptyList(),
         price = price ?: 0,
+        rate = rate ?: 0f,
         salePercentage = salePercentage,
         saleType = saleType,
         colors = colors ?: emptyList(),

@@ -11,7 +11,8 @@ data class ProductUIModel(
     val salePercentage: Int?,       // Offer percentage can be nullable to indicate no current offers.
     val saleType: String?,           // Sale type can be nullable if not all products are on sale.
     val colors: List<String>,       // Colors can be an empty list if no color options are available.
-    val currencySymbol: String = ""     // Default currency is USD.
+    val currencySymbol: String = ""  ,   // Default currency is USD
+    val rate: Float,
 ) {
 
     fun getFormattedPrice(): String {
@@ -42,6 +43,7 @@ data class ProductUIModel(
         result = 31 * result + categoriesIDs.hashCode()
         result = 31 * result + images.hashCode()
         result = 31 * result + price
+        result = 31 * result + rate.hashCode()
         result = 31 * result + (salePercentage ?: 0)
         result = 31 * result + (saleType?.hashCode() ?: 0)
         result = 31 * result + colors.hashCode()
@@ -60,6 +62,7 @@ data class ProductUIModel(
         if (categoriesIDs != other.categoriesIDs) return false
         if (images != other.images) return false
         if (price != other.price) return false
+        if (rate != other.rate) return false
         if (salePercentage != other.salePercentage) return false
         if (saleType != other.saleType) return false
         if (colors != other.colors) return false
