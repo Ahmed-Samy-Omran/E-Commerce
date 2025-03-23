@@ -1,11 +1,14 @@
 package com.example.data.repository.products
 
 import android.util.Log
+import com.example.data.models.Resource
 import com.example.data.models.products.ProductModel
 import com.example.domain.models.toProductUIModel
 import com.example.ui.products.model.ProductUIModel
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -79,4 +82,33 @@ class ProductsRepositoryImpl @Inject constructor(
             products // Return original products if fetching offers fails
         }
     }
+
+
+    override suspend fun getAllProductsPaging(
+        countryID: String, pageLimit: Long, lastDocument: DocumentSnapshot?
+    ) = flow<Resource<QuerySnapshot>> {
+        try {
+            emit(Resource.Loading())
+
+            var firstQuery = firestore.collection("products").orderBy("price")
+
+            if (lastDocument != null) {
+                firstQuery = firstQuery.startAfter(lastDocument)
+            }
+
+            firstQuery = firstQuery.limit(pageLimit)
+
+            val products = firstQuery.get().await()
+            emit(Resource.Success(products))
+        } catch (e: Exception) {
+            Log.d(TAG, "getAllProductsPaging: ${e.message}")
+            emit(Resource.Error(e))
+        }
+    }
+
+
+    companion object {
+        private const val TAG = "ProductsRepositoryImpl"
+    }
 }
+

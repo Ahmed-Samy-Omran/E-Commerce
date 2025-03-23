@@ -20,12 +20,14 @@ import com.example.domain.models.toProductUIModel
 import com.example.domain.models.toSpecialSectionUIModel
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.products.model.ProductUIModel
+import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -89,6 +91,9 @@ class HomeViewModel @Inject constructor(
     val isRecommendedSection = recommendedSectionDataState.map { it == null}.asLiveData()
 
 
+
+
+
     val isEmptyFlashSale: StateFlow<Boolean> = flashSaleState.map {
         val isEmpty = it.isEmpty()
         Log.d(TAG, "isEmptyFlashSale: $isEmpty")
@@ -105,6 +110,9 @@ class HomeViewModel @Inject constructor(
     }.stateIn(
         viewModelScope, started = SharingStarted.Eagerly, initialValue = true
     )
+
+
+
 
 
     fun stopTimer() {
@@ -134,6 +142,55 @@ class HomeViewModel @Inject constructor(
 //            Log.d(TAG, "Flash sale products: $products")
 //        }
 //    }
+private fun getProductModel(product: ProductModel): ProductUIModel {
+    val productUIModel = product.toProductUIModel().copy(
+        currencySymbol = countryState.value?.currencySymbol ?: ""
+    )
+    return productUIModel
+}
+
+    private val _allProductsState: MutableStateFlow<List<ProductUIModel>> =
+        MutableStateFlow(emptyList())
+    val allProductsState = _allProductsState.asStateFlow()
+    val isLoadingAllProducts = MutableStateFlow(false)
+    val isFinishedLoadAllProducts = MutableStateFlow(false)
+    var lastDocumentSnapshot: DocumentSnapshot? = null
+
+    fun getNextProducts() = viewModelScope.launch(IO) {
+        if (isFinishedLoadAllProducts.value) return@launch
+        if (isLoadingAllProducts.value) return@launch
+        isLoadingAllProducts.emit(true)
+
+        val countryId = countryState.first().id ?: "0"
+        productsRepository.getAllProductsPaging(countryId, 2, lastDocumentSnapshot)
+            .collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        isLoadingAllProducts.emit(false)
+                        resource.data?.let { docs ->
+                            if (docs.isEmpty) {
+                                isFinishedLoadAllProducts.emit(true)
+                                return@collectLatest
+                            } else {
+                                lastDocumentSnapshot = docs.documents.lastOrNull()
+                                val lstProducts = docs.toObjects(ProductModel::class.java)
+                                    .map { getProductModel(it) }
+                                _allProductsState.emit(_allProductsState.value + lstProducts)
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        isLoadingAllProducts.emit(false)
+                        Log.d(TAG, "getNextProducts: ${resource.exception?.message}")
+                    }
+
+                    is Resource.Loading -> {
+                        isLoadingAllProducts.emit(true)
+                    }
+                }
+            }
+    }
 
     companion object {
         private const val TAG = "HomeViewModel"
