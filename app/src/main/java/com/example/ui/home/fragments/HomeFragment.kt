@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.data.models.Resource
-import com.example.data.models.sale_ads.SalesAdModel
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.ui.common.fragments.BaseFragment
@@ -23,6 +22,7 @@ import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.home.model.SpecialSectionUIModel
 import com.example.ui.home.viewmodel.HomeViewModel
 import com.example.ui.products.adapter.ProductAdapter
+import com.example.ui.products.adapter.ProductViewType
 import com.example.utils.DepthPageTransformer
 import com.example.utils.GridSpacingItemDecoration
 import com.example.utils.HorizontalSpaceItemDecoration
@@ -160,8 +160,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private val flashSaleAdapter by lazy { ProductAdapter() }
-    private val megaSaleAdapter by lazy { ProductAdapter() }
+    private val flashSaleAdapter by lazy { ProductAdapter(viewType = ProductViewType.LIST) }
+    private val megaSaleAdapter by lazy { ProductAdapter(viewType = ProductViewType.LIST) }
     private val allProductsAdapter by lazy { ProductAdapter() }
 
     private fun initViews() {

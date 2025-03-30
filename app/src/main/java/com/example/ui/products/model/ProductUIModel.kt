@@ -1,5 +1,10 @@
 package com.example.ui.products.model
 
+import android.os.Parcelable
+import androidx.annotation.Keep
+import com.example.data.models.products.ProductSizeModel
+import kotlinx.parcelize.Parcelize
+
 data class ProductUIModel(
     val id: String,
     val name: String,
@@ -10,14 +15,16 @@ data class ProductUIModel(
     val priceAfterSale: Int? = null,      // Default price after sale is 0.
     val salePercentage: Int?,       // Offer percentage can be nullable to indicate no current offers.
     val saleType: String?,           // Sale type can be nullable if not all products are on sale.
-    val colors: List<String>,       // Colors can be an empty list if no color options are available.
-    val currencySymbol: String = ""  ,   // Default currency is USD
+    val colors: List<ProductColorUIModel>,      // Colors can be an empty list if no color options are available.
+    val currencySymbol: String = "",   // Default currency is USD
     val rate: Float,
+    val sizes: List<ProductSizeModel>,
 ) {
 
     fun getFormattedPrice(): String {
         return "$currencySymbol$price"
     }
+
 
     fun getFormattedPriceAfterSale(): String {
         if (salePercentage == null || salePercentage <= 0) return getFormattedPrice()
@@ -71,3 +78,20 @@ data class ProductUIModel(
     }
 
 }
+
+
+@Keep
+@Parcelize
+data class ProductColorUIModel(
+    var size: String? = null,
+    var stock: Int? = null,
+    var color: String? = null
+) : Parcelable
+
+
+@Keep
+@Parcelize
+data class ProductSizeUIModel(
+    var size: String? = null,
+    var stock: Int? = null
+) : Parcelable

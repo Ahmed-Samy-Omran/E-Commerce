@@ -12,7 +12,8 @@
     </data>
 
     <LinearLayout
-        android:layout_width="126dp"
+        android:id="@+id/product_item_layout"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_bg"
         android:orientation="vertical"
@@ -20,7 +21,7 @@
 
         <ImageView
             android:id="@+id/product_image"
-            android:layout_width="110dp"
+            android:layout_width="match_parent"
             android:layout_height="110dp"
             app:imageUrl="@{product.getFirstImage()}"
 

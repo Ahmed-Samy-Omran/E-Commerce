@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
 //    }
 
 
-//    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
+    //    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
 //        productsRepository.getSaleProducts(
 ////            country.id
 //            "EO8zdYKPeomrYLG7zYY3", ProductSaleType.FLASH_SALE.type, 10
@@ -142,12 +142,12 @@ class HomeViewModel @Inject constructor(
 //            Log.d(TAG, "Flash sale products: $products")
 //        }
 //    }
-private fun getProductModel(product: ProductModel): ProductUIModel {
-    val productUIModel = product.toProductUIModel().copy(
-        currencySymbol = countryState.value?.currencySymbol ?: ""
-    )
-    return productUIModel
-}
+    private fun getProductModel(product: ProductModel): ProductUIModel {
+        val productUIModel = product.toProductUIModel().copy(
+            currencySymbol = countryState.value?.currencySymbol ?: ""
+        )
+        return productUIModel
+    }
 
     private val _allProductsState: MutableStateFlow<List<ProductUIModel>> =
         MutableStateFlow(emptyList())
@@ -196,4 +196,3 @@ private fun getProductModel(product: ProductModel): ProductUIModel {
         private const val TAG = "HomeViewModel"
     }
 }
-
