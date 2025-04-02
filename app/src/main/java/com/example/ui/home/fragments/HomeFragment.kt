@@ -1,5 +1,6 @@
 package com.example.ui.home.fragments
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -21,8 +22,11 @@ import com.example.ui.home.model.CategoryUIModel
 import com.example.ui.home.model.SalesAdUIModel
 import com.example.ui.home.model.SpecialSectionUIModel
 import com.example.ui.home.viewmodel.HomeViewModel
+import com.example.ui.products.ProductDetailsActivity
+import com.example.ui.products.ProductDetailsActivity.Companion.PRODUCT_UI_MODEL_EXTRA
 import com.example.ui.products.adapter.ProductAdapter
 import com.example.ui.products.adapter.ProductViewType
+import com.example.ui.products.model.ProductUIModel
 import com.example.utils.DepthPageTransformer
 import com.example.utils.GridSpacingItemDecoration
 import com.example.utils.HorizontalSpaceItemDecoration
@@ -160,9 +164,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private val flashSaleAdapter by lazy { ProductAdapter(viewType = ProductViewType.LIST) }
-    private val megaSaleAdapter by lazy { ProductAdapter(viewType = ProductViewType.LIST) }
-    private val allProductsAdapter by lazy { ProductAdapter() }
+    private val flashSaleAdapter by lazy {
+        ProductAdapter(viewType = ProductViewType.LIST) {
+            goToProductDetails(it)
+        }
+    }
+    private val megaSaleAdapter by lazy {
+        ProductAdapter(viewType = ProductViewType.LIST) {
+            goToProductDetails(it)
+        }
+    }
+    private val allProductsAdapter by lazy { ProductAdapter { goToProductDetails(it) } }
 
     private fun initViews() {
         binding.flashSaleProductsRv.apply {
@@ -262,6 +274,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 )
             )
         }
+    }
+    private fun goToProductDetails(product: ProductUIModel) {
+        requireActivity().startActivity(
+            Intent(
+            requireActivity(), ProductDetailsActivity::class.java
+        ).apply {
+            putExtra(PRODUCT_UI_MODEL_EXTRA, product)
+        })
     }
 
     override fun onResume() {

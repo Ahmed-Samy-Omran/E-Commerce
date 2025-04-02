@@ -22,4 +22,6 @@ interface ProductsRepository {
     suspend fun getAllProductsPaging(
         countryID: String, pageLimit: Long, lastDocument: DocumentSnapshot? = null
     ): Flow<Resource<QuerySnapshot>>
+
+    fun listenToProductDetails(productID: String): Flow<ProductModel>
 }

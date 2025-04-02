@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.google.googleid)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.navigation.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
