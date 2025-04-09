@@ -3,6 +3,11 @@
     android:height="20dp"
     android:viewportWidth="20"
     android:viewportHeight="20">
+
+
+  <group android:name="rotationGroup"
+      android:pivotX="10"
+      android:pivotY="10">
   <path
       android:pathData="M6.063,6.625C6.373,6.625 6.625,6.373 6.625,6.063C6.625,5.752 6.373,5.5 6.063,5.5C5.752,5.5 5.5,5.752 5.5,6.063C5.5,6.373 5.752,6.625 6.063,6.625Z"
       android:strokeLineJoin="round"
@@ -17,4 +22,6 @@
       android:fillColor="#00000000"
       android:strokeColor="#9098B1"
       android:strokeLineCap="round"/>
+
+  </group>
 </vector>

@@ -20,8 +20,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -175,6 +175,9 @@ dependencies {
 
     // flip clock
     implementation("com.google.accompanist:accompanist-pager:0.26.3-beta")
+
+    // bottom navigation animations
+    implementation ("np.com.susanthapa:curved_bottom_navigation:0.6.5")
 
 
 }

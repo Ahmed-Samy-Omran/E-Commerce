@@ -1,41 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.example.ui.home.MainActivity">
+    android:background="@color/white">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/home_view_pager"
+    <!-- Fragment Container - This is where fragments will be displayed -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:nestedScrollingEnabled="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-       />
+        android:layout_height="match_parent"
+        android:layout_above="@id/nav_view" />
 
-    <View
+
+    <!-- Curved Bottom Navigation -->
+    <np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView
+        android:id="@+id/nav_view"
+        style="@style/CurvedBottomNavStyle"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/neutral_light"
-        android:paddingBottom="4dp" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        style="@style/Widget.App.BottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:background="?android:attr/windowBackground"
-        app:itemIconSize="20dp"
-        app:itemIconTint="@drawable/home_nav_items_color"
-        app:itemPaddingBottom="10dp"
-        app:itemPaddingTop="10dp"
-        app:itemTextColor="@drawable/home_nav_items_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/home_nav_menu" />
+</RelativeLayout><!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<RelativeLayout-->
+    <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/main"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@color/white"-->
+    <!--    tools:context="com.example.ui.home.MainActivity">-->
 
-</LinearLayout>
+    <!--    <androidx.viewpager2.widget.ViewPager2-->
+    <!--        android:id="@+id/home_view_pager"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:nestedScrollingEnabled="false"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+    <!--    <np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView-->
+    <!--        android:id="@+id/bottom_navigation_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:cbn_animDuration="300"-->
+    <!--        app:cbn_bg="@color/white"-->
+    <!--        app:cbn_elevation="8dp"-->
+    <!--        app:cbn_fabBg="@color/white"-->
+    <!--        app:cbn_fabElevation="12dp"-->
+    <!--        app:cbn_selectedColor="@color/black"-->
+    <!--        app:cbn_unSelectedColor="@color/neutral_grey" />-->
+
+    <!--</RelativeLayout>-->
+
+    <!--fourth try-->
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/main"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@color/white"-->
+    <!--    android:orientation="vertical"-->
+    <!--    tools:context="com.example.ui.home.MainActivity">-->
+
+    <!--    <androidx.viewpager2.widget.ViewPager2-->
+    <!--        android:id="@+id/home_view_pager"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:nestedScrollingEnabled="false"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="1dp"-->
+    <!--        android:background="@color/neutral_light"-->
+    <!--        android:paddingBottom="4dp" />-->
+
+    <!--    <np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView-->
+    <!--        android:id="@+id/bottom_navigation_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom"-->
+    <!--        app:cbn_animDuration="300"-->
+    <!--        app:cbn_bg="@color/white"-->
+    <!--        app:cbn_elevation="6dp"-->
+    <!--        app:cbn_fabBg="@color/white"-->
+    <!--        app:cbn_fabElevation="4dp"-->
+    <!--        app:cbn_selectedColor="@color/black"-->
+    <!--        app:cbn_unSelectedColor="@color/neutral_grey" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <!-- second try -->
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:id="@+id/main"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@color/white"-->
+    <!--    tools:context="com.example.ui.home.MainActivity">-->
+
+    <!--    &lt;!&ndash; Main content &ndash;&gt;-->
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_above="@id/bottom_nav_container"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <androidx.viewpager2.widget.ViewPager2-->
+    <!--            android:id="@+id/home_view_pager"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:nestedScrollingEnabled="false"-->
+    <!--            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+    <!--        <View-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="1dp"-->
+    <!--            android:background="@color/neutral_light"-->
+    <!--            android:paddingBottom="4dp" />-->
+    <!--    </LinearLayout>-->
+
+    <!--    &lt;!&ndash; Curved Bottom Navigation Container &ndash;&gt;-->
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/bottom_nav_container"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="70dp"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:background="@android:color/transparent"-->
+    <!--        android:elevation="16dp">-->
+
+    <!--        &lt;!&ndash; Custom curved background &ndash;&gt;-->
+    <!--        <com.example.utils.CurvedBottomNavigationView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:background="@color/white" />-->
+
+    <!--        &lt;!&ndash; Actual BottomNavigationView &ndash;&gt;-->
+    <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--            android:id="@+id/bottom_navigation_view"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:background="@android:color/transparent"-->
+    <!--            app:itemIconSize="24dp"-->
+    <!--            app:itemIconTint="@drawable/home_nav_items_color"-->
+    <!--            app:itemTextColor="@drawable/home_nav_items_color"-->
+    <!--            app:labelVisibilityMode="labeled"-->
+    <!--            app:menu="@menu/home_nav_menu" />-->
+    <!--    </FrameLayout>-->
+    <!--</RelativeLayout>-->
+
+    <!-- first try -->
+    <!--    <?xml version="1.0" encoding="utf-8"?>-->
+    <!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--        xmlns:tools="http://schemas.android.com/tools"-->
+    <!--        android:id="@+id/main"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@color/white"-->
+    <!--        android:orientation="vertical"-->
+    <!--        tools:context="com.example.ui.home.MainActivity">-->
+
+    <!--            <androidx.viewpager2.widget.ViewPager2-->
+    <!--                android:id="@+id/home_view_pager"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="0dp"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:nestedScrollingEnabled="false"-->
+    <!--                app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+    <!--        <View-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="1dp"-->
+    <!--            android:background="@color/neutral_light"-->
+    <!--            android:paddingBottom="4dp" />-->
+
+
+    <!--        &lt;!&ndash;    <com.google.android.material.bottomnavigation.BottomNavigationView&ndash;&gt;-->
+    <!--        &lt;!&ndash;        android:id="@+id/bottom_navigation_view"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        style="@style/Widget.App.BottomNavigationView"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        android:layout_height="58dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        android:background="?android:attr/windowBackground"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:itemIconSize="20dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:itemIconTint="@drawable/home_nav_items_color"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:itemPaddingBottom="10dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:itemPaddingTop="10dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:itemTextColor="@drawable/home_nav_items_color"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:labelVisibilityMode="labeled"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        app:menu="@menu/home_nav_menu" />&ndash;&gt;-->
+
+
+    <!--    </LinearLayout>-->
+

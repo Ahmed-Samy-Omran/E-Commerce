@@ -15,11 +15,6 @@ class AccountFragment : Fragment() {
 
     var dataInitialized = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,9 +23,6 @@ class AccountFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_account, container, false)
     }
 
-    companion object {
-
-    }
 
     override fun onResume() {
         // that make me control the fragment is visible or not to avoid the fragment to be initialized more than one time
@@ -38,16 +30,16 @@ class AccountFragment : Fragment() {
         if (isVisible&& !dataInitialized){
             dataInitialized=true
             Log.d("onViewCreated","AccountFragment")
-            initViews()
-            initViewModel()
+//            initViews()
+//            initViewModel()
         }
     }
 
-    private fun initViewModel() {
-        TODO("Not yet implemented")
-    }
-
-    private fun initViews() {
-        TODO("Not yet implemented")
-    }
+//    private fun initViewModel() {
+//        TODO("Not yet implemented")
+//    }
+//
+//    private fun initViews() {
+//        TODO("Not yet implemented")
+//    }
 }

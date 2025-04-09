@@ -7,11 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.e_commerce.R
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ExploreFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class ExploreFragment : Fragment() {
 
 
