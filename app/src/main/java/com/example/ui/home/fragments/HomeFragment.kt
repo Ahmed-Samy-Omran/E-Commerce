@@ -3,7 +3,6 @@ package com.example.ui.home.fragments
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +18,7 @@ import com.example.ui.common.views.loadImage
 import com.example.ui.common.views.sliderIndicatorsView
 import com.example.ui.common.views.updateIndicators
 import com.example.ui.home.adapter.CategoriesAdapter
+import com.example.ui.home.adapter.ShimmerAdapter
 import com.example.ui.home.adapter.SalesAdAdapter
 import com.example.ui.home.model.CategoryUIModel
 import com.example.ui.home.model.SalesAdUIModel
@@ -54,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun iniViewModel() {
         lifecycleScope.launch {
+            // Observe Sales Ads
             viewModel.salesAdsStateTemp.collect { resources ->
                 when (resources) {
                     is Resource.Loading -> {
@@ -72,29 +73,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             }
         }
+            // Observe Categories
+            lifecycleScope.launch {
+                viewModel.categoriesState.collect { resources ->
+                    when (resources) {
+                        is Resource.Loading -> {
+                            Log.d(TAG, "Categories Loading...")
+                            showCategoriesShimmer()
+                        }
+                        is Resource.Success -> {
+                            Log.d(TAG, "Categories Loaded Successfully.")
+                            initCategoriesView(resources.data)
 
-        lifecycleScope.launch {
-            viewModel.categoriesState.collect { resources ->
-                when (resources) {
-                    is Resource.Loading -> {
-                        Log.d(TAG, "iniViewModel: categories Loading")
-                    }
-
-                    is Resource.Success -> {
-//                        binding.categoriesShimmerView.root.stopShimmer()
-//                        binding.categoriesShimmerView.root.visibility = View.GONE
-                        Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
-                        initCategoriesView(resources.data)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d(TAG, "iniViewModel: categories Error")
+                        }
+                        is Resource.Error -> {
+                            binding.categoriesRecyclerView.visibility = View.VISIBLE                        }
                     }
                 }
             }
-        }
-
-        // ✅ Observe Flash Sale Products
+        // Observe Flash Sale Products
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
 //                if (productsList.isNotEmpty()) {
@@ -137,6 +134,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
+    private fun showCategoriesShimmer() {
+        binding.categoriesRecyclerView.adapter =
+            ShimmerAdapter(6, R.layout.categories_shimmer_view)
+    }
+
     private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
         loadImage(binding.recommendedProductIv, sectionData.image)
         binding.recommendedProductTitleIv.text = sectionData.title
@@ -150,21 +152,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
+
     private fun initCategoriesView(data: List<CategoryUIModel>?) {
-        if (data.isNullOrEmpty()) {
-            return
-        }
+        if (data.isNullOrEmpty()) return
+
         val categoriesAdapter = CategoriesAdapter(data)
-        binding.categoriesRecyclerView.apply {
-            adapter = categoriesAdapter
-            setHasFixedSize(true)
-            isNestedScrollingEnabled = false
-            layoutManager = LinearLayoutManager(
-                requireContext(), LinearLayoutManager.HORIZONTAL, false
-            )
-            addItemDecoration(HorizontalSpaceItemDecoration(16))
-        }
+        binding.categoriesRecyclerView.adapter = categoriesAdapter
     }
+
+//    private fun initCategoriesView(data: List<CategoryUIModel>?) {
+//        if (data.isNullOrEmpty()) {
+//            return
+//        }
+//        val categoriesAdapter = CategoriesAdapter(data)
+//        binding.categoriesRecyclerView.apply {
+//            adapter = categoriesAdapter
+//            setHasFixedSize(true)
+//            isNestedScrollingEnabled = false
+//            layoutManager = LinearLayoutManager(
+//                requireContext(), LinearLayoutManager.HORIZONTAL, false
+//            )
+//            addItemDecoration(HorizontalSpaceItemDecoration(16))
+//        }
+//    }
 
     private val flashSaleAdapter by lazy {
         ProductAdapter(viewType = ProductViewType.LIST) {
@@ -179,13 +189,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private val allProductsAdapter by lazy { ProductAdapter { goToProductDetails(it) } }
 
     private fun initViews() {
+        // Flash Sale RecyclerView
         binding.flashSaleProductsRv.apply {
             adapter = flashSaleAdapter
             layoutManager = LinearLayoutManager(
                 requireContext(), LinearLayoutManager.HORIZONTAL, false
             )
         }
-
+            // Mega Sale RecyclerView
         binding.megaSaleProductsRv.apply {
             adapter = megaSaleAdapter
             layoutManager = LinearLayoutManager(
@@ -193,7 +204,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             )
             addItemDecoration(HorizontalSpaceItemDecoration(16))
         }
-
+            // All Products RecyclerView
         binding.allProductsRv.apply {
             adapter = allProductsAdapter
             layoutManager = GridLayoutManager(
@@ -201,6 +212,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             )
             addItemDecoration(GridSpacingItemDecoration(2, 16, true))
         }
+
+
+        // Categories RecyclerView initially with shimmer adapter
+        binding.categoriesRecyclerView.apply {
+            adapter =   ShimmerAdapter(6, R.layout.categories_shimmer_view)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+
 
     }
 
