@@ -37,7 +37,14 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding, Produ
     }
 
     private fun initView(it: ProductUIModel) {
-        it.name.let { binding.titleTv.text = it }
+
+        binding.product = it
+        it.name.let { binding.titleTv.text = it
+        binding.productName.text=it
+        }
+        it.rate.let { binding.productRate.rating = it }
+        it.price.let { binding.price.text = it.toString() }
+
         initImagesView(it.images)
     }
 

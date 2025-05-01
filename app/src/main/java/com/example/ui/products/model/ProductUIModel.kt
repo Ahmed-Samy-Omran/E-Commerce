@@ -1,6 +1,7 @@
 package com.example.ui.products.model
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.Keep
 import com.example.data.models.products.ProductSizeModel
 import kotlinx.parcelize.Parcelize
@@ -18,23 +19,25 @@ data class ProductUIModel(
     val salePercentage: Int?,       // Offer percentage can be nullable to indicate no current offers.
     val saleType: String?,           // Sale type can be nullable if not all products are on sale.
     val colors: List<ProductColorUIModel>,      // Colors can be an empty list if no color options are available.
-    val currencySymbol: String = "",   // Default currency is USD
+    val currencySymbol: String = "LE",   // Default currency is USD
     val rate: Float,
     val sizes: List<ProductSizeModel>,
 ) : Parcelable  {
 
     fun getFormattedPrice(): String {
-        return "$currencySymbol$price"
-    }
+        Log.d("ProductUIModel", "price: $price, symbol: $currencySymbol")
+        return "$price ${currencySymbol.ifEmpty { "LE" }}"
 
+    }
 
     fun getFormattedPriceAfterSale(): String {
         if (salePercentage == null || salePercentage <= 0) return getFormattedPrice()
 
-        val discountAmount = (price * salePercentage) / 100 // Ensure proper integer division
+        val discountAmount = (price * salePercentage) / 100
         val newPrice = price - discountAmount
 
-        return "$currencySymbol$newPrice"
+        val symbol = currencySymbol.ifEmpty { "LE" }
+        return "$newPrice $symbol"
     }
 
     fun getFormattedSale(): String {

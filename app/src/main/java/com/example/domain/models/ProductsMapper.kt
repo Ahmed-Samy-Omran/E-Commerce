@@ -56,7 +56,8 @@ fun ProductModel.toProductUIModel(): ProductUIModel {
                 size = it.size,
                 stock = it.stock
             )
-        } ?: emptyList()
+        } ?: emptyList(),
+        currencySymbol = "LE"
 
     )
 }

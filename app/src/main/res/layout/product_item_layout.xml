@@ -31,9 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:lines="2"
             android:text="@{product.name}"
-            tools:text="@string/category" />
+            android:layout_weight="1"
+            android:ellipsize="none"
+            android:singleLine="false"
+            tools:text="Nike Air Zoom" />
 
         <androidx.appcompat.widget.AppCompatRatingBar
             style="?android:attr/ratingBarStyleSmall"
