@@ -18,7 +18,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -116,11 +117,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="13dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="13dp"
                     android:gravity="center_vertical"
-                    >
+                    android:orientation="horizontal">
 
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -131,9 +131,9 @@
                         android:layout_weight="1"
                         android:ellipsize="none"
                         android:singleLine="false"
-                        tools:text="Nike Air Zoom Pegasus 36 Miami"
                         android:textColor="@color/primary_dark_color"
-                        android:textSize="23sp" />
+                        android:textSize="23sp"
+                        tools:text="Nike Air Zoom Pegasus 36 Miami" />
 
                     <ImageButton
                         android:layout_width="36dp"
@@ -156,36 +156,46 @@
                     android:stepSize="1"
                     android:theme="@style/RatingBarStyle" />
                 <!--                <RatingBar-->
-<!--                    android:id="@+id/product_rate"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wra"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    android:numStars="5"-->
-<!--                    android:isIndicator="true"-->
-<!--                    android:progressDrawable="@drawable/rating_star_yellow"-->
-<!--                    android:stepSize="1" />-->
+                <!--                    android:id="@+id/product_rate"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wra"-->
+                <!--                    android:layout_marginStart="16dp"-->
+                <!--                    android:numStars="5"-->
+                <!--                    android:isIndicator="true"-->
+                <!--                    android:progressDrawable="@drawable/rating_star_yellow"-->
+                <!--                    android:stepSize="1" />-->
 
                 <TextView
                     android:id="@+id/price"
                     style="@style/MediumPrimaryTextViewStyle"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:textSize="20sp"
+                    android:layout_marginTop="8dp"
                     android:text="@{product.getFormattedPriceAfterSale()}"
+                    android:textSize="20sp"
 
                     tools:text="$299,43" />
 
 
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-
+                    android:layout_marginTop="10dp"
+                    android:text="@string/select_size"
                     android:textColor="@color/primary_dark_color"
-                    android:textStyle="bold"
                     android:textSize="18sp"
-                    android:text="@string/select_size" />
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sizesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    tools:listitem="@layout/item_size" />
 
 
             </LinearLayout>
