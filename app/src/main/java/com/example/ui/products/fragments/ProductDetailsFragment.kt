@@ -6,13 +6,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.data.models.products.ProductSizeModel
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
 import com.example.ui.common.fragments.BaseFragment
 import com.example.ui.common.views.CircleView
 import com.example.ui.common.views.sliderIndicatorsView
 import com.example.ui.common.views.updateIndicators
+import com.example.ui.products.adapter.ProductColorAdapter
 import com.example.ui.products.adapter.ProductSizeAdapter
+import com.example.ui.products.model.ProductColorUIModel
 import com.example.ui.products.model.ProductUIModel
 import com.example.ui.products.viewmodel.ProductDetailsViewModel
 import com.example.utils.DepthPageTransformer
@@ -21,55 +24,42 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding, ProductDetailsViewModel>() {
+class ProductDetailsFragment :
+    BaseFragment<FragmentProductDetailsBinding, ProductDetailsViewModel>() {
 
     override val viewModel: ProductDetailsViewModel by activityViewModels()
+
     private lateinit var sizeAdapter: ProductSizeAdapter
+    private lateinit var colorAdapter: ProductColorAdapter
 
     override fun getLayoutResId(): Int = R.layout.fragment_product_details
 
     override fun init() {
-        initViewModel()
+        observeProduct()
+        observeColorMap()
+        observeSelectedColor()
     }
 
-    private fun initViewModel() {
+    private fun observeProduct() {
         lifecycleScope.launch {
-            viewModel.productDetailsState.collectLatest {
-                initView(it)
+            viewModel.productDetailsState.collectLatest { product ->
+                product?.let { initUI(it) }
             }
         }
     }
 
-    private fun initView(it: ProductUIModel) {
-
-        binding.product = it
-        it.name.let { binding.titleTv.text = it
-        binding.productName.text=it
-        }
-        it.rate.let { binding.productRate.rating = it }
-        it.price.let { binding.price.text = it.toString() }
-
-        it.sizes.let { sizesList ->
-            sizeAdapter = ProductSizeAdapter(sizesList) { selectedSize ->
-                // Handle selected size here
-                // For now, just log or show a toast
-                Toast.makeText(requireContext(), "Selected size: ${selectedSize.size}", Toast.LENGTH_SHORT).show()
-            }
-
-            binding.sizesRecyclerView.apply {
-                adapter = sizeAdapter
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(20)) // 16 pixels spacing
-            }
-        }
-
-        initImagesView(it.images)
+    private fun initUI(product: ProductUIModel) {
+        binding.product = product
+        binding.productName.text = product.name
+        binding.productRate.rating = product.rate
+        binding.price.text = product.getFormattedPrice()
+        initImages(product.images)
     }
 
-    private var indicators = mutableListOf<CircleView>()
-    private fun initImagesView(images: List<String>) {
-
+    private fun initImages(images: List<String>) {
+        val indicators = mutableListOf<CircleView>()
         sliderIndicatorsView(
             requireContext(),
             binding.productImagesViewPager,
@@ -77,18 +67,62 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding, Produ
             indicators,
             images.size
         )
-        binding.productImagesViewPager.apply {
-            adapter = ProductImagesAdapter(images)
-            setPageTransformer(DepthPageTransformer())
+        binding.productImagesViewPager.adapter = ProductImagesAdapter(images)
+    }
 
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    updateIndicators(requireContext(), indicators, position)
+    private fun observeColorMap() {
+        lifecycleScope.launch {
+            viewModel.colorMap.collectLatest { colorMap ->
+                val colorModels = colorMap.keys.map { ProductColorUIModel(color = it) }
+                setupColorRecyclerView(colorModels)
+
+                // Auto-select first color
+                colorModels.firstOrNull()?.color?.let { firstColor ->
+                    viewModel.selectColor(firstColor)
                 }
-            })
+            }
         }
     }
 
-    companion object
+    private fun observeSelectedColor() {
+        lifecycleScope.launch {
+            viewModel.selectedColor.collectLatest { selectedColor ->
+                val sizeModels = viewModel.colorMap.value[selectedColor]
+                    ?.mapNotNull { it.size }
+                    ?.distinct()
+                    ?.map { ProductSizeModel(size = it, stock = 1) }
+                    ?: emptyList()
+
+                setupSizeRecyclerView(sizeModels)
+            }
+        }
+    }
+
+    private fun setupColorRecyclerView(colors: List<ProductColorUIModel>) {
+        colorAdapter = ProductColorAdapter(colors) { colorModel ->
+            colorModel.color?.let { viewModel.selectColor(it) }
+        }
+
+        binding.colorsRecyclerView.apply {
+            adapter = colorAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+    }
+
+    private fun setupSizeRecyclerView(sizes: List<ProductSizeModel>) {
+        sizeAdapter = ProductSizeAdapter(sizes) { sizeModel ->
+            sizeModel.size?.let { viewModel.selectSize(it) }
+        }
+
+        binding.sizesRecyclerView.apply {
+            adapter = sizeAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(HorizontalSpaceItemDecoration(16))
+        }
+
+        sizes.firstOrNull()?.size?.let { viewModel.selectSize(it) }
+    }
 }

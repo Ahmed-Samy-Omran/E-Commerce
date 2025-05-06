@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.models.products.ProductSizeModel
 import com.example.e_commerce.R
-import com.example.e_commerce.databinding.ItemSizeBinding
+import com.example.e_commerce.databinding.ItemProductSizeBinding
 
 class ProductSizeAdapter(
     private val sizes: List<ProductSizeModel>,
@@ -18,7 +18,7 @@ class ProductSizeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SizeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemSizeBinding.inflate(inflater, parent, false)
+        val binding = ItemProductSizeBinding.inflate(inflater, parent, false)
         return SizeViewHolder(binding)
     }
 
@@ -28,7 +28,7 @@ class ProductSizeAdapter(
 
     override fun getItemCount(): Int = sizes.size
 
-    inner class SizeViewHolder(private val binding: ItemSizeBinding) :
+    inner class SizeViewHolder(private val binding: ItemProductSizeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {

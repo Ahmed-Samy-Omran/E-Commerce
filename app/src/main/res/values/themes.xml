@@ -136,4 +136,27 @@
     </declare-styleable>
 
 
+    <style name="SectionTitleTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">@color/primary_dark_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <!-- B: Common style for RecyclerViews (horizontal list) -->
+    <style name="HorizontalRecyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+
+
 </resources>
