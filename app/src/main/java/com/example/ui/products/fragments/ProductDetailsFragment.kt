@@ -36,12 +36,22 @@ class ProductDetailsFragment :
         observeProduct()
         observeSizes()
         observeSelectedSize()
+        observeDescription()
+
+    }
+
+    private fun observeDescription() {
+        lifecycleScope.launch {
+            viewModel.description.collectLatest { description ->
+                binding.productDescriptionTextView.text = description ?: "No description available"
+            }
+        }
     }
 
     private fun observeProduct() {
         lifecycleScope.launch {
             viewModel.productDetailsState.collectLatest { product ->
-                product?.let { initUI(it) }
+                product.let { initUI(it) }
             }
         }
     }
@@ -51,6 +61,8 @@ class ProductDetailsFragment :
         binding.productName.text = product.name
         binding.productRate.rating = product.rate
         binding.price.text = product.getFormattedPrice()
+        binding.titleTv.text = product.name  // Fix: Set title in the AppBar
+
         initImages(product.images)
     }
 
@@ -109,7 +121,8 @@ class ProductDetailsFragment :
 
             binding.colorsRecyclerView.apply {
                 adapter = colorAdapter
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                 // Clear existing decorations before adding to avoid stacking
                 if (itemDecorationCount == 0) {
@@ -121,6 +134,7 @@ class ProductDetailsFragment :
         // Update the adapter's list using submitList for efficient updates
         colorAdapter.submitList(colors)
     }
+
     private fun setupSizeRecyclerView(sizes: List<ProductSizeModel>) {
         sizeAdapter = ProductSizeAdapter(sizes) { sizeModel ->
             sizeModel.size?.let { viewModel.selectSize(it) }

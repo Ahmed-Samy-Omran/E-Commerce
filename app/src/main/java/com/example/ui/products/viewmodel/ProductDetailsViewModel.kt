@@ -42,6 +42,9 @@ class ProductDetailsViewModel @Inject constructor(
     private val _sizeMap = MutableStateFlow<Map<String, List<ProductColorUIModel>>>(emptyMap())
     val sizeMap: StateFlow<Map<String, List<ProductColorUIModel>>> = _sizeMap
 
+    private val _description = MutableStateFlow<String?>(null)
+    val description: StateFlow<String?> = _description.asStateFlow()
+
 
     fun selectSize(size: String) {
         _selectedSize.value = size
@@ -62,6 +65,9 @@ class ProductDetailsViewModel @Inject constructor(
         productsRepository.listenToProductDetails(productUiModel.id).collectLatest { productModel ->
             val uiModel = productModel.toProductUIModel()
             _productDetailsState.value = uiModel
+
+            // Update the description state
+            _description.value = uiModel.description
 
             // Group color options by size instead of color
             val sizeGroupedMap = uiModel.colors

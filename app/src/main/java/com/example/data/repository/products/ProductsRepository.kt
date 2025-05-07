@@ -24,4 +24,7 @@ interface ProductsRepository {
     ): Flow<Resource<QuerySnapshot>>
 
     fun listenToProductDetails(productID: String): Flow<ProductModel>
+
+
+
 }
