@@ -5,25 +5,21 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.data.models.products.ProductSizeModel
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
 import com.example.ui.common.fragments.BaseFragment
 import com.example.ui.common.views.CircleView
 import com.example.ui.common.views.sliderIndicatorsView
-import com.example.ui.common.views.updateIndicators
 import com.example.ui.products.adapter.ProductColorAdapter
 import com.example.ui.products.adapter.ProductSizeAdapter
 import com.example.ui.products.model.ProductColorUIModel
 import com.example.ui.products.model.ProductUIModel
 import com.example.ui.products.viewmodel.ProductDetailsViewModel
-import com.example.utils.DepthPageTransformer
 import com.example.utils.HorizontalSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class ProductDetailsFragment :
@@ -38,8 +34,8 @@ class ProductDetailsFragment :
 
     override fun init() {
         observeProduct()
-        observeColorMap()
-        observeSelectedColor()
+        observeSizes()
+        observeSelectedSize()
     }
 
     private fun observeProduct() {
@@ -70,10 +66,29 @@ class ProductDetailsFragment :
         binding.productImagesViewPager.adapter = ProductImagesAdapter(images)
     }
 
-    private fun observeColorMap() {
+    private fun observeSizes() {
         lifecycleScope.launch {
-            viewModel.colorMap.collectLatest { colorMap ->
-                val colorModels = colorMap.keys.map { ProductColorUIModel(color = it) }
+            viewModel.sizeMap.collectLatest { sizeMap ->
+                val sizes = sizeMap.keys.map { ProductSizeModel(size = it, stock = 1) }
+                setupSizeRecyclerView(sizes)
+
+                // Auto-select first size
+                sizes.firstOrNull()?.size?.let { firstSize ->
+                    viewModel.selectSize(firstSize)
+                }
+            }
+        }
+    }
+
+    private fun observeSelectedSize() {
+        lifecycleScope.launch {
+            viewModel.selectedSize.collectLatest { selectedSize ->
+                val colorModels = viewModel.sizeMap.value[selectedSize]
+                    ?.mapNotNull { it.color }
+                    ?.distinct()
+                    ?.map { ProductColorUIModel(color = it) }
+                    ?: emptyList()
+
                 setupColorRecyclerView(colorModels)
 
                 // Auto-select first color
@@ -84,33 +99,28 @@ class ProductDetailsFragment :
         }
     }
 
-    private fun observeSelectedColor() {
-        lifecycleScope.launch {
-            viewModel.selectedColor.collectLatest { selectedColor ->
-                val sizeModels = viewModel.colorMap.value[selectedColor]
-                    ?.mapNotNull { it.size }
-                    ?.distinct()
-                    ?.map { ProductSizeModel(size = it, stock = 1) }
-                    ?: emptyList()
-
-                setupSizeRecyclerView(sizeModels)
-            }
-        }
-    }
 
     private fun setupColorRecyclerView(colors: List<ProductColorUIModel>) {
-        colorAdapter = ProductColorAdapter(colors) { colorModel ->
-            colorModel.color?.let { viewModel.selectColor(it) }
+        // Initialize the adapter if not already initialized
+        if (!::colorAdapter.isInitialized) {
+            colorAdapter = ProductColorAdapter { colorModel ->
+                colorModel.color?.let { viewModel.selectColor(it) }
+            }
+
+            binding.colorsRecyclerView.apply {
+                adapter = colorAdapter
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+                // Clear existing decorations before adding to avoid stacking
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(HorizontalSpaceItemDecoration(45))
+                }
+            }
         }
 
-        binding.colorsRecyclerView.apply {
-            adapter = colorAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(HorizontalSpaceItemDecoration(16))
-        }
+        // Update the adapter's list using submitList for efficient updates
+        colorAdapter.submitList(colors)
     }
-
     private fun setupSizeRecyclerView(sizes: List<ProductSizeModel>) {
         sizeAdapter = ProductSizeAdapter(sizes) { sizeModel ->
             sizeModel.size?.let { viewModel.selectSize(it) }

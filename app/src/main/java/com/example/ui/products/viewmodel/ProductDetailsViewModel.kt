@@ -33,11 +33,14 @@ class ProductDetailsViewModel @Inject constructor(
     private val _productDetailsState = MutableStateFlow(productUiModel)
     val productDetailsState = _productDetailsState.asStateFlow()
 
-    private val _colorMap = MutableStateFlow<Map<String, List<ProductColorUIModel>>>(emptyMap())
-    val colorMap = _colorMap.asStateFlow()
 
     private val _selectedSize = MutableStateFlow<String?>(null)
     val selectedSize: StateFlow<String?> = _selectedSize
+
+
+    // Store the map of sizes -> List of colors
+    private val _sizeMap = MutableStateFlow<Map<String, List<ProductColorUIModel>>>(emptyMap())
+    val sizeMap: StateFlow<Map<String, List<ProductColorUIModel>>> = _sizeMap
 
 
     fun selectSize(size: String) {
@@ -60,57 +63,14 @@ class ProductDetailsViewModel @Inject constructor(
             val uiModel = productModel.toProductUIModel()
             _productDetailsState.value = uiModel
 
-            val colorGroupedMap = uiModel.colors
-                .groupBy { it.color ?: "" }
+            // Group color options by size instead of color
+            val sizeGroupedMap = uiModel.colors
+                .groupBy { it.size ?: "" }
                 .mapValues { it.value.filter { it.stock ?: 0 > 0 } }
-                .filterValues { it.isNotEmpty() }
+                .filterKeys { it.isNotBlank() }
 
-            _colorMap.value = colorGroupedMap
+            _sizeMap.value = sizeGroupedMap
         }
     }
 }
 
-//@HiltViewModel
-//class ProductDetailsViewModel @Inject constructor() : ViewModel() {
-//
-//    private val _productDetailsState = MutableStateFlow<ProductUIModel?>(null)
-//    val productDetailsState: StateFlow<ProductUIModel?> = _productDetailsState
-//
-//    private val _selectedSize = MutableStateFlow<String?>(null)
-//    val selectedSize: StateFlow<String?> = _selectedSize
-//
-//    private val _selectedColor = MutableStateFlow<String?>(null)
-//    val selectedColor: StateFlow<String?> = _selectedColor
-//
-//    val sizeMap = MutableStateFlow<Map<String, List<ProductColorUIModel>>>(emptyMap())
-//    val colorMap = MutableStateFlow<Map<String, List<ProductColorUIModel>>>(emptyMap())
-//
-//    fun setProductDetails(product: ProductUIModel) {
-//        _productDetailsState.value = product
-//        buildSizeColorMaps(product.colors)
-//    }
-//
-//    fun selectSize(size: String) {
-//        _selectedSize.value = size
-//    }
-//
-//    fun selectColor(color: String) {
-//        _selectedColor.value = color
-//    }
-//
-//    private fun buildSizeColorMaps(colors: List<ProductColorUIModel>) {
-//        val sizeToColors = mutableMapOf<String, MutableList<ProductColorUIModel>>()
-//        val colorToSizes = mutableMapOf<String, MutableList<ProductColorUIModel>>()
-//
-//        for (colorModel in colors) {
-//            val size = colorModel.size ?: continue
-//            val color = colorModel.color ?: continue
-//
-//            sizeToColors.getOrPut(size) { mutableListOf() }.add(colorModel)
-//            colorToSizes.getOrPut(color) { mutableListOf() }.add(colorModel)
-//        }
-//
-//        sizeMap.value = sizeToColors
-//        colorMap.value = colorToSizes
-//    }
-//}
