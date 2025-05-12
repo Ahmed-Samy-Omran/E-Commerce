@@ -123,25 +123,7 @@ class HomeViewModel @Inject constructor(
         salesAdsStateTemp.value.data?.forEach { it.startCountdown() }
     }
 
-//    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
-//        val country = userPreferenceRepository.getUserCountry().first()
-//
-//        productsRepository.getSaleProducts(
-//            country.id, ProductSaleType.FLASH_SALE.type, 10
-//        ).collectLatest { products ->
-//            Log.d(TAG, "Flash sale products: $products")
-//        }
-//    }
 
-
-    //    fun getFlashSaleProducts() = viewModelScope.launch(IO) {
-//        productsRepository.getSaleProducts(
-////            country.id
-//            "EO8zdYKPeomrYLG7zYY3", ProductSaleType.FLASH_SALE.type, 10
-//        ).collectLatest { products ->
-//            Log.d(TAG, "Flash sale products: $products")
-//        }
-//    }
     private fun getProductModel(product: ProductModel): ProductUIModel {
         val productUIModel = product.toProductUIModel().copy(
             currencySymbol = countryState.value?.currencySymbol ?: ""

@@ -160,21 +160,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.categoriesRecyclerView.adapter = categoriesAdapter
     }
 
-//    private fun initCategoriesView(data: List<CategoryUIModel>?) {
-//        if (data.isNullOrEmpty()) {
-//            return
-//        }
-//        val categoriesAdapter = CategoriesAdapter(data)
-//        binding.categoriesRecyclerView.apply {
-//            adapter = categoriesAdapter
-//            setHasFixedSize(true)
-//            isNestedScrollingEnabled = false
-//            layoutManager = LinearLayoutManager(
-//                requireContext(), LinearLayoutManager.HORIZONTAL, false
-//            )
-//            addItemDecoration(HorizontalSpaceItemDecoration(16))
-//        }
-//    }
+
 
     private val flashSaleAdapter by lazy {
         ProductAdapter(viewType = ProductViewType.LIST) {

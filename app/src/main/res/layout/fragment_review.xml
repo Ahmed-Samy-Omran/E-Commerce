@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+
+        <data>
+
+            <import type="android.view.View" />
+
+            <variable
+                name="viewmodel"
+                type="com.example.ui.products.viewmodel.ProductDetailsViewModel" />
+
+            <variable
+                name="product"
+                type="com.example.ui.products.model.ProductUIModel" />
+        </data>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@color/white"
+                    app:layout_collapseMode="pin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingTop="26dp">
+
+                        <ImageView
+                            android:id="@+id/back_iv"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_back_arrow" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/review_title_tv"
+                            style="@style/TitleTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            tools:text="5 Review"   />
+
+
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+<!--                <HorizontalScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:scrollbars="none">-->
+                    <!-- Star Rating Filter -->
+                    <!--        <LinearLayout-->
+                    <!--            style="?android:attr/buttonBarStyle"-->
+                    <!--            android:layout_width="match_parent"-->
+                    <!--            android:layout_height="wrap_content"-->
+                    <!--            android:orientation="horizontal"-->
+                    <!--            android:gravity="center"-->
+                    <!--            android:padding="8dp"-->
+                    <!--            android:layout_margin="8dp"-->
+                    <!--            android:layout_marginTop="16dp"-->
+                    <!--            android:layout_marginBottom="16dp"-->
+                    <!--            >-->
+
+                    <!--            &lt;!&ndash; All Review Button &ndash;&gt;-->
+                    <!--            <Button-->
+                    <!--                android:id="@+id/all_review_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="All Review"-->
+                    <!--                android:textColor="@color/primary_color"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp" />-->
+
+                    <!--            &lt;!&ndash; Star Buttons &ndash;&gt;-->
+
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_0_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 0"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_1_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 1"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_2_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 2"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_3_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 3"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_4_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 4"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+
+                    <!--            <Button-->
+                    <!--                android:id="@+id/star_5_btn"-->
+                    <!--                style="?android:attr/buttonBarButtonStyle"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:text="★ 5"-->
+                    <!--                android:textColor="@color/yellow"-->
+                    <!--                android:background="@drawable/review_star_bg"-->
+                    <!--                android:paddingHorizontal="16dp"-->
+                    <!--                android:paddingVertical="8dp"-->
+                    <!--                android:layout_marginStart="8dp" />-->
+                    <!--        </LinearLayout>-->
+
+<!--                    <com.google.android.material.chip.ChipGroup-->
+<!--                        android:id="@+id/starChipGroup"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        app:selectionRequired="true"-->
+<!--                        app:singleSelection="true" />-->
+
+
+<!--                </HorizontalScrollView>-->
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingHorizontal="16dp"
+                        android:clipToPadding="false"
+                        android:scrollbars="vertical"
+                        tools:listitem="@layout/item_review" />
+            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+    </layout>

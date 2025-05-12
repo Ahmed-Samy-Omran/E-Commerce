@@ -90,6 +90,7 @@ class ProductsRepositoryImpl @Inject constructor(
         countryID: String, pageLimit: Long, lastDocument: DocumentSnapshot?
     ) = flow<Resource<QuerySnapshot>> {
         try {
+
             emit(Resource.Loading())
 
             var firstQuery = firestore.collection("products").orderBy("price")

@@ -4,6 +4,7 @@ import ProductImagesAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.data.models.products.ProductSizeModel
 import com.example.e_commerce.R
@@ -64,6 +65,10 @@ class ProductDetailsFragment :
         binding.titleTv.text = product.name  // Fix: Set title in the AppBar
 
         initImages(product.images)
+
+        binding.moveToReview.setOnClickListener {
+            findNavController().navigate(R.id.action_productDetailsFragment_to_reviewFragment)
+        }
     }
 
     private fun initImages(images: List<String>) {

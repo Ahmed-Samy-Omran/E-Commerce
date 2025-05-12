@@ -1,14 +1,20 @@
 package com.example.ui.products.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.models.Resource
 import com.example.data.repository.products.ProductsRepository
+import com.example.data.repository.reviews.ReviewsRepo
 import com.example.domain.models.toProductUIModel
+import com.example.domain.models.toReviewModel
+import com.example.domain.models.toReviewUIModel
 import com.example.ui.products.ProductDetailsActivity
 import com.example.ui.products.model.ProductColorUIModel
 import com.example.ui.products.model.ProductUIModel
+import com.example.ui.reviews.model.ReviewUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val productsRepository: ProductsRepository
+    private val productsRepository: ProductsRepository,
+    private val reviewRepository: ReviewsRepo
 ) : ViewModel() {
 
     private val productUiModel: ProductUIModel by lazy {
@@ -57,8 +64,13 @@ class ProductDetailsViewModel @Inject constructor(
         _selectedColor.value = color
     }
 
+    private val _reviews = MutableStateFlow<List<ReviewUIModel>>(emptyList())
+    val reviews: StateFlow<List<ReviewUIModel>> = _reviews
+
+
     init {
         listenToProductDetails()
+        fetchReviews()
     }
 
     private fun listenToProductDetails() = viewModelScope.launch(IO) {
@@ -77,6 +89,56 @@ class ProductDetailsViewModel @Inject constructor(
 
             _sizeMap.value = sizeGroupedMap
         }
+    }
+//
+//    fun fetchReviews() = viewModelScope.launch(IO) {
+//        reviewRepository.getReviews(productUiModel.id).collectLatest { resource ->
+//            when (resource) {
+//                is Resource.Success -> {
+//                    val uiReviews = resource.data?.map { it.toReviewUIModel() } ?: emptyList()
+//                    _reviews.emit(uiReviews)
+//                }
+//                is Resource.Error -> {
+//                    Log.e(TAG, "Error fetching reviews: ${resource.exception?.message}")
+//                }
+//                is Resource.Loading -> {
+//                    // Optionally handle loading state
+//                }
+//            }
+//        }
+//    }
+
+    fun fetchReviews() = viewModelScope.launch(IO) {
+        Log.d(TAG, "Fetching reviews for product ID: ${productUiModel.id}")
+
+        reviewRepository.getReviews(productUiModel.id).collectLatest { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val uiReviews = resource.data?.map { it.toReviewUIModel() } ?: emptyList()
+                    Log.d(TAG, "Fetched ${uiReviews.size} reviews")
+                    _reviews.emit(uiReviews)
+                }
+                is Resource.Error -> {
+                    Log.e(TAG, "Error fetching reviews: ${resource.exception?.message}")
+                }
+                is Resource.Loading -> {
+                    Log.d(TAG, "Fetching reviews: Loading")
+                }
+            }
+        }
+    }
+
+
+
+//    fun addReview(review: ReviewUIModel) = viewModelScope.launch(IO) {
+//        val reviewModel = review.toReviewModel()
+//        reviewRepository.addReview(reviewModel)
+//        fetchReviews()
+//    }
+
+
+    companion object {
+        private const val TAG = "ProductDetailsViewModel"
     }
 }
 
