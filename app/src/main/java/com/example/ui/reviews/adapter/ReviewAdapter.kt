@@ -1,8 +1,11 @@
 package com.example.ui.reviews.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ItemReviewBinding
 import com.example.ui.reviews.model.ReviewUIModel
+import com.example.utils.FullscreenImageDialog
+
 
 
 class ReviewAdapter : ListAdapter<ReviewUIModel, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
@@ -37,7 +42,6 @@ class ReviewAdapter : ListAdapter<ReviewUIModel, ReviewAdapter.ReviewViewHolder>
                 .circleCrop()
                 .into(binding.userImg)
 
-
             // Clear previous images before adding new ones
             binding.reviewImagesContainer.removeAllViews()
 
@@ -49,13 +53,34 @@ class ReviewAdapter : ListAdapter<ReviewUIModel, ReviewAdapter.ReviewViewHolder>
                     }
                     scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
                     Glide.with(this).load(imageUrl).into(this)
+
+                    // Set click listener to show the image in a fullscreen dialog
+                    setOnClickListener {
+                        showFullscreenImage(imageUrl)
+                    }
                 }
                 binding.reviewImagesContainer.addView(imageView)
                 Log.d("ReviewAdapter", "Image URL: $imageUrl")
             }
         }
-    }
 
+        private fun showFullscreenImage(imageUrl: String) {
+            val dialog = android.app.Dialog(binding.root.context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+            dialog.setContentView(R.layout.dialog_fullscreen_image)
+
+            val fullscreenImageView = dialog.findViewById<ImageView>(R.id.fullscreenImageView)
+            Glide.with(fullscreenImageView.context)
+                .load(imageUrl)
+                .into(fullscreenImageView)
+
+            // Close the dialog when clicking on the image
+            fullscreenImageView.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
     class ReviewDiffCallback : DiffUtil.ItemCallback<ReviewUIModel>() {
         override fun areItemsTheSame(oldItem: ReviewUIModel, newItem: ReviewUIModel): Boolean {
             return oldItem.id == newItem.id

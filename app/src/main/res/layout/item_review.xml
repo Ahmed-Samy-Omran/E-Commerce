@@ -67,20 +67,19 @@
             android:textIsSelectable="true"
             tools:text="air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites." />
 
-        <!-- Review Images (Horizontal Scroll) -->
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-
-            android:layout_marginTop="8dp">
-
-            <LinearLayout
-                android:id="@+id/reviewImagesContainer"
+            <!-- Review Images (Horizontal Scroll) -->
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:id="@+id/reviewImagesContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
         <!-- Review Date -->
         <TextView
