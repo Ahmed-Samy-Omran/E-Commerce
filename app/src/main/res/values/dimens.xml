@@ -1,3 +1,8 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <!-- Original size was 160dp, let's make it smaller -->
+    <dimen name="review_image_size">70dp</dimen>
+    <dimen name="review_image_margin">8dp</dimen>
+
+    <!-- Optional: Add a corner radius for rounded corners -->
+    <dimen name="review_image_corner_radius">8dp</dimen>
 </resources>
