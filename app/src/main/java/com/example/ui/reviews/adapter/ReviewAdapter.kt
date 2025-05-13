@@ -56,9 +56,11 @@
                                 marginEnd = resources.getDimensionPixelSize(R.dimen.review_image_margin)
                             }
                             scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+
+
                             Glide.with(this)
                                 .load(imageUrl)
-
+                                .error(R.drawable.error_ic)
                                 .override(resources.getDimensionPixelSize(R.dimen.review_image_size))
                                 .into(this)
 
