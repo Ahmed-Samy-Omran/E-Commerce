@@ -12,12 +12,28 @@
     import com.bumptech.glide.Glide
     import com.example.e_commerce.R
     import com.example.e_commerce.databinding.ItemReviewBinding
+    import com.example.ui.reviews.ReviewFilter
     import com.example.ui.reviews.model.ReviewUIModel
     import com.example.utils.FullscreenImageDialog
     import com.google.android.material.imageview.ShapeableImageView
 
 
     class ReviewAdapter : ListAdapter<ReviewUIModel, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
+
+        // NEW: Store original list for filtering
+        private var originalList: List<ReviewUIModel> = emptyList()
+
+        // NEW: Filter function that works with ListAdapter
+        fun filterReviews(rating: Int?) {
+            val filtered = ReviewFilter.filterReviews(originalList, rating)
+            submitList(filtered.toList()) // Ensures a new list instance is passed
+        }
+        // NEW: Update original list when new data is submitted
+        override fun submitList(list: List<ReviewUIModel>?) {
+            originalList = list ?: emptyList()
+            super.submitList(list)
+        }
+
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
             val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
