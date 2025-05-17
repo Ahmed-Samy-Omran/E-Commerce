@@ -168,7 +168,6 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:paddingHorizontal="16dp"
-                    android:scrollbars="vertical"
                     tools:listitem="@layout/item_review" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
