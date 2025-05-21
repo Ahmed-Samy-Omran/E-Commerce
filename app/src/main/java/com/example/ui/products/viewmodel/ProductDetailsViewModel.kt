@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.Resource
+import com.example.data.models.reviews.ReviewModel
 import com.example.data.repository.products.ProductsRepository
 import com.example.data.repository.reviews.ReviewsRepo
 import com.example.domain.models.toProductUIModel
@@ -15,6 +16,7 @@ import com.example.ui.products.ProductDetailsActivity
 import com.example.ui.products.model.ProductColorUIModel
 import com.example.ui.products.model.ProductUIModel
 import com.example.ui.reviews.model.ReviewUIModel
+import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,6 +70,10 @@ class ProductDetailsViewModel @Inject constructor(
     val reviews: StateFlow<List<ReviewUIModel>> = _reviews
 
 
+    // Pagination variables
+
+
+
     init {
         listenToProductDetails()
         fetchReviews()
@@ -84,50 +90,39 @@ class ProductDetailsViewModel @Inject constructor(
             // Group color options by size instead of color
             val sizeGroupedMap = uiModel.colors
                 .groupBy { it.size ?: "" }
-                .mapValues { it.value.filter { it.stock ?: 0 > 0 } }
+                .mapValues { it.value.filter { (it.stock ?: 0) > 0 } }
                 .filterKeys { it.isNotBlank() }
 
             _sizeMap.value = sizeGroupedMap
         }
     }
-//
-//    fun fetchReviews() = viewModelScope.launch(IO) {
-//        reviewRepository.getReviews(productUiModel.id).collectLatest { resource ->
-//            when (resource) {
-//                is Resource.Success -> {
-//                    val uiReviews = resource.data?.map { it.toReviewUIModel() } ?: emptyList()
-//                    _reviews.emit(uiReviews)
-//                }
-//                is Resource.Error -> {
-//                    Log.e(TAG, "Error fetching reviews: ${resource.exception?.message}")
-//                }
-//                is Resource.Loading -> {
-//                    // Optionally handle loading state
-//                }
-//            }
-//        }
-//    }
+
+
+
+
 
     fun fetchReviews() = viewModelScope.launch(IO) {
         Log.d(TAG, "Fetching reviews for product ID: ${productUiModel.id}")
-
-        reviewRepository.getReviews(productUiModel.id).collectLatest { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val uiReviews = resource.data?.map { it.toReviewUIModel() } ?: emptyList()
-                    Log.d(TAG, "Fetched ${uiReviews.size} reviews")
-                    _reviews.emit(uiReviews)
-                }
-                is Resource.Error -> {
-                    Log.e(TAG, "Error fetching reviews: ${resource.exception?.message}")
-                }
-                is Resource.Loading -> {
-                    Log.d(TAG, "Fetching reviews: Loading")
+        try {
+            reviewRepository.getReviews(productUiModel.id).collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val uiReviews = resource.data?.map { it.toReviewUIModel() }
+                        Log.d(TAG, "Fetched ${uiReviews?.size ?: 0} reviews")
+                        uiReviews?.let { _reviews.emit(it) }
+                    }
+                    is Resource.Error -> {
+                        Log.e(TAG, "Error fetching reviews: ${resource.exception?.message}")
+                    }
+                    is Resource.Loading -> {
+                        Log.d(TAG, "Fetching reviews: Loading")
+                    }
                 }
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception in fetchReviews: ${e.message}")
         }
     }
-
 
 
 //    fun addReview(review: ReviewUIModel) = viewModelScope.launch(IO) {

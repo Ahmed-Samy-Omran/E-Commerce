@@ -2,6 +2,8 @@ package com.example.data.models.reviews
 
 import android.os.Parcelable
 import androidx.annotation.Keep
+import com.example.utils.formatTimestamp
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
 import kotlinx.parcelize.Parcelize
 
@@ -24,4 +26,8 @@ data class ReviewModel(
     @set:PropertyName("user_id")
     var userId: String? = null
 
-):Parcelable
+):Parcelable{
+    fun Timestamp?.toFormattedDate(): String {
+        return formatTimestamp(this) // Your existing function
+    }
+}

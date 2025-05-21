@@ -1,11 +1,13 @@
 package com.example.ui.products.fragments
 
 import ProductImagesAdapter
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.data.models.products.ProductSizeModel
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
@@ -17,6 +19,9 @@ import com.example.ui.products.adapter.ProductSizeAdapter
 import com.example.ui.products.model.ProductColorUIModel
 import com.example.ui.products.model.ProductUIModel
 import com.example.ui.products.viewmodel.ProductDetailsViewModel
+import com.example.ui.reviews.ReviewFilter
+import com.example.ui.reviews.adapter.ReviewAdapter
+import com.example.ui.reviews.model.ReviewUIModel
 import com.example.utils.HorizontalSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,6 +36,9 @@ class ProductDetailsFragment :
     private lateinit var sizeAdapter: ProductSizeAdapter
     private lateinit var colorAdapter: ProductColorAdapter
 
+    private val reviewAdapter = ReviewAdapter()
+    private var allReviews: MutableList<ReviewUIModel> = mutableListOf()
+
     override fun getLayoutResId(): Int = R.layout.fragment_product_details
 
     override fun init() {
@@ -38,8 +46,29 @@ class ProductDetailsFragment :
         observeSizes()
         observeSelectedSize()
         observeDescription()
+        setupReviewRecyclerView()
+        observeReviews()
+
+
+
 
     }
+
+    private fun observeReviews() {
+        lifecycleScope.launch {
+            viewModel.reviews.collectLatest { reviews ->
+                if (reviews.isNotEmpty()) {
+                    Log.d("ProductDetailsFragment", "Received ${reviews.size} reviews")
+                    allReviews = listOf(reviews.first()).toMutableList()
+                    reviewAdapter.submitList(allReviews)
+                } else {
+                    Log.d("ProductDetailsFragment", "No reviews available")
+                }
+            }
+        }
+    }
+
+
 
     private fun observeDescription() {
         lifecycleScope.launch {
@@ -153,5 +182,14 @@ class ProductDetailsFragment :
         }
 
         sizes.firstOrNull()?.size?.let { viewModel.selectSize(it) }
+    }
+
+    private fun setupReviewRecyclerView() {
+
+        binding.reviewsRecyclerView.apply {
+            adapter = reviewAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
     }
 }

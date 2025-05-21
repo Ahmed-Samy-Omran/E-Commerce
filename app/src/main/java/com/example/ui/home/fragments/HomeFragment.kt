@@ -94,10 +94,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         // Observe Flash Sale Products
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
-//                if (productsList.isNotEmpty()) {
-//                    Log.d(TAG, "iniViewModel: flashSaleState = ${productsList.size}")
-//                    flashSaleAdapter.submitList(productsList) // Update RecyclerView
-//                }
 
                 flashSaleAdapter.submitList(productsList)
                 binding.invalidateAll()

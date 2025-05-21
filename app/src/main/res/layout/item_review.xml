@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,36 +58,36 @@
             style="@style/MessageTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:ellipsize="end"
-            android:maxLines="5"
             android:hyphenationFrequency="full"
             android:lineSpacingExtra="4dp"
+            android:maxLines="5"
             android:textIsSelectable="true"
             tools:text="air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites." />
 
-            <!-- Review Images (Horizontal Scroll) -->
-            <HorizontalScrollView
+        <!-- Review Images (Horizontal Scroll) -->
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/reviewImagesContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp">
-
-                <LinearLayout
-                    android:id="@+id/reviewImagesContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
         <!-- Review Date -->
         <TextView
             android:id="@+id/reviewDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
             android:textColor="@color/neutral_grey"
             tools:text="December 10, 2016" />
 
