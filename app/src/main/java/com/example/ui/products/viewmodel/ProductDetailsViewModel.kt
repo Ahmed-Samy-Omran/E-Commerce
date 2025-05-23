@@ -79,6 +79,24 @@ class ProductDetailsViewModel @Inject constructor(
         fetchReviews()
     }
 
+//    private fun listenToProductDetails() = viewModelScope.launch(IO) {
+//        productsRepository.listenToProductDetails(productUiModel.id).collectLatest { productModel ->
+//            val uiModel = productModel.toProductUIModel()
+//            _productDetailsState.value = uiModel
+//
+//            // Update the description state
+//            _description.value = uiModel.description
+//
+//            // Group color options by size instead of color
+//            val sizeGroupedMap = uiModel.colors
+//                .groupBy { it.size ?: "" }
+//                .mapValues { it.value.filter { (it.stock ?: 0) > 0 } }
+//                .filterKeys { it.isNotBlank() }
+//
+//            _sizeMap.value = sizeGroupedMap
+//        }
+//    }
+
     private fun listenToProductDetails() = viewModelScope.launch(IO) {
         productsRepository.listenToProductDetails(productUiModel.id).collectLatest { productModel ->
             val uiModel = productModel.toProductUIModel()
@@ -87,17 +105,30 @@ class ProductDetailsViewModel @Inject constructor(
             // Update the description state
             _description.value = uiModel.description
 
-            // Group color options by size instead of color
-            val sizeGroupedMap = uiModel.colors
-                .groupBy { it.size ?: "" }
-                .mapValues { it.value.filter { (it.stock ?: 0) > 0 } }
-                .filterKeys { it.isNotBlank() }
+            // Check if the product is a bag (e.g., sizes is empty)
+            val isBag = uiModel.sizes.isEmpty()
 
-            _sizeMap.value = sizeGroupedMap
+            if (isBag) {
+                // For bags, use colors directly without size grouping
+                // Convert ProductColorModel to ProductColorUIModel and filter by stock > 0
+                val bagColors = uiModel.colors.map { ProductColorUIModel(color = it.color) }
+                    .filter { it.color != null && (it.stock ?: 0) > 0 } ?: emptyList()
+                _sizeMap.value = mapOf("" to bagColors) // Use empty string key as a fallback
+            } else {
+                // For non-bag products, group colors by size
+                val sizeGroupedMap = uiModel.colors
+                    .groupBy { it.size ?: "" }
+                    .mapValues { it.value.filter { (it.stock ?: 0) > 0 } }
+                    .filterKeys { it.isNotBlank() }
+                _sizeMap.value = sizeGroupedMap
+            }
+
+            // Auto-select the first size if available (for non-bags)
+            if (!isBag && uiModel.sizes?.isNotEmpty() == true) {
+                uiModel.sizes.firstOrNull()?.size?.let { _selectedSize.value = it }
+            }
         }
     }
-
-
 
 
 

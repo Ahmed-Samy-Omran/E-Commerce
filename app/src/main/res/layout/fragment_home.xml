@@ -263,15 +263,14 @@
 
                     <TextView
                         android:id="@+id/recommended_product_title_iv"
-                        android:layout_width="300dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="4dp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp"
-
+                        android:layout_marginStart="65dp"
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/adam"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
                         tools:text="Recommended Product" />
 
                     <TextView

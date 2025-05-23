@@ -138,7 +138,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
         loadImage(binding.recommendedProductIv, sectionData.image)
         binding.recommendedProductTitleIv.text = sectionData.title
-        binding.recommendedProductDescriptionIv.text = sectionData.description
+//        binding.recommendedProductDescriptionIv.text = sectionData.description
         binding.recommendedProductLayout.setOnClickListener {
             Toast.makeText(
                 requireContext(),

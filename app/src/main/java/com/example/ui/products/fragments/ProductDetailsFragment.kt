@@ -2,6 +2,7 @@ package com.example.ui.products.fragments
 
 import ProductImagesAdapter
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -98,7 +99,19 @@ class ProductDetailsFragment :
         binding.moveToReview.setOnClickListener {
             findNavController().navigate(R.id.action_productDetailsFragment_to_reviewFragment)
         }
+
+        // Check if the product is a bag based on categories_ids
+        val isBag = product.categoriesIDs.contains("KvqnQX2dNNDkMpnXqY1g")
+        binding.selectSizeTv.visibility = if (isBag) View.GONE else View.VISIBLE
+
+        if (isBag && product.colors.isEmpty().not()) {
+            // For bags, set colors directly from product.colors
+            val colorModels = product.colors.map { ProductColorUIModel(color = it.color) } ?: emptyList()
+            setupColorRecyclerView(colorModels)
+            colorModels.firstOrNull()?.color?.let { viewModel.selectColor(it) }
+        }
     }
+
 
     private fun initImages(images: List<String>) {
         val indicators = mutableListOf<CircleView>()
@@ -126,14 +139,25 @@ class ProductDetailsFragment :
         }
     }
 
+
+
     private fun observeSelectedSize() {
         lifecycleScope.launch {
             viewModel.selectedSize.collectLatest { selectedSize ->
-                val colorModels = viewModel.sizeMap.value[selectedSize]
-                    ?.mapNotNull { it.color }
-                    ?.distinct()
-                    ?.map { ProductColorUIModel(color = it) }
-                    ?: emptyList()
+                val isBag = viewModel.productDetailsState.value.categoriesIDs.contains("KvqnQX2dNNDkMpnXqY1g")
+
+                val colorModels = if (isBag) {
+                    // For bags, use colors directly from product.colors
+                    viewModel.productDetailsState.value.colors.map { ProductColorUIModel(color = it.color) }
+                        ?: emptyList()
+                } else {
+                    // For non-bags, use size-based color selection
+                    viewModel.sizeMap.value[selectedSize]
+                        ?.mapNotNull { it.color }
+                        ?.distinct()
+                        ?.map { ProductColorUIModel(color = it) }
+                        ?: emptyList()
+                }
 
                 setupColorRecyclerView(colorModels)
 

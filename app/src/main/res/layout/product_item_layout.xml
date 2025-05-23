@@ -26,15 +26,16 @@
             app:imageUrl="@{product.getFirstImage()}"
 
             />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/MediumTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{product.name}"
             android:layout_weight="1"
             android:ellipsize="none"
             android:singleLine="false"
+            android:text="@{product.name}"
             tools:text="Nike Air Zoom" />
 
         <androidx.appcompat.widget.AppCompatRatingBar
@@ -42,9 +43,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:theme="@style/RatingBarStyle"
+            android:progressTint="@color/primary_yellow"
             android:rating="@{product.rate}"
-            android:stepSize="1" />
+            android:stepSize="1"
+            android:theme="@style/RatingBarStyle" />
 
 
         <TextView

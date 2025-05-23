@@ -43,6 +43,7 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:progressTint="@color/primary_yellow"
                     android:layout_marginStart="16dp"
                     android:numStars="5"
                     android:stepSize="1"
