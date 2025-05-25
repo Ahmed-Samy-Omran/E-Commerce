@@ -92,42 +92,140 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 }
             }
         // Observe Flash Sale Products
+//        lifecycleScope.launch {
+//            viewModel.flashSaleState.collect { productsList ->
+//
+//                flashSaleAdapter.submitList(productsList)
+//                binding.invalidateAll()
+//            }
+//
+//        }
+
+//        lifecycleScope.launch {
+//            viewModel.megaSaleState.collect { productsList ->
+//                megaSaleAdapter.submitList(productsList)
+//                binding.invalidateAll()
+//            }
+//        }
+
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
-
-                flashSaleAdapter.submitList(productsList)
-                binding.invalidateAll()
+                if (productsList.isEmpty()) {
+                    binding.flashSaleProductsRv.adapter = ShimmerAdapter(6, R.layout.item_product_shimmer)
+                } else {
+                    binding.flashSaleProductsRv.adapter = flashSaleAdapter
+                    flashSaleAdapter.submitList(productsList)
+                }
             }
-
         }
 
+        // Mega Sale
         lifecycleScope.launch {
             viewModel.megaSaleState.collect { productsList ->
-                megaSaleAdapter.submitList(productsList)
-                binding.invalidateAll()
+                if (productsList.isEmpty()) {
+                    binding.megaSaleProductsRv.adapter = ShimmerAdapter(6, R.layout.item_product_shimmer)
+                } else {
+                    binding.megaSaleProductsRv.adapter = megaSaleAdapter
+                    megaSaleAdapter.submitList(productsList)
+                }
             }
         }
 
+
+//        lifecycleScope.launch {
+//            viewModel.recommendedSectionDataState.collectLatest { recommendedSectionData ->
+//                Log.d(TAG, "Recommended section data: $recommendedSectionData")
+//                recommendedSectionData?.let {
+//                    setupRecommendedViewData(it)
+//                } ?: run {
+//                    Log.d(TAG, "Recommended section data is null")
+//                    //                    binding.recommendedProductLayout.visibility = View.GONE
+//                }
+//
+//                viewModel.getNextProducts()
+//                lifecycleScope.launch {
+//                    viewModel.allProductsState.collectLatest { productsList ->
+//                        allProductsAdapter.submitList(productsList)
+//                        binding.invalidateAll()
+//                    }
+//                }
+//            }
+//        }
 
         lifecycleScope.launch {
             viewModel.recommendedSectionDataState.collectLatest { recommendedSectionData ->
-                Log.d(TAG, "Recommended section data: $recommendedSectionData")
-                recommendedSectionData?.let {
-                    setupRecommendedViewData(it)
-                } ?: run {
-                    Log.d(TAG, "Recommended section data is null")
-                    //                    binding.recommendedProductLayout.visibility = View.GONE
-                }
 
+                Log.d(TAG, "Recommended section data: $recommendedSectionData")
+
+//                if (recommendedSectionData == null) {
+//                    // Show shimmer for recommended section
+//                    binding.recommendedProductLayout.removeAllViews()
+//                    val shimmer = layoutInflater.inflate(
+//                        R.layout.recommended_product_shimmer,
+//                        binding.recommendedProductLayout,
+//                        false
+//                    )
+//                    binding.recommendedProductLayout.addView(shimmer)
+//                } else {
+//                    // Show actual content
+//                    setupRecommendedViewData(recommendedSectionData)
+//                }
+
+
+                if (recommendedSectionData == null) {
+                    // Show shimmer
+                    binding.recommendedShimmerView.root.visibility = View.VISIBLE
+                    binding.recommendedShimmerView.root.startShimmer()
+                    binding.recommendedProductLayout.visibility = View.GONE
+
+                    // Optional: Add timeout logic
+                    launch {
+                        delay(10000) // 10 seconds timeout
+                        // Re-check the flow's latest state
+                        viewModel.recommendedSectionDataState.collectLatest { data ->
+                            if (data == null) {
+                                Log.d(TAG, "Recommended section data timeout")
+                                binding.recommendedShimmerView.root.stopShimmer()
+                                binding.recommendedShimmerView.root.visibility = View.GONE
+                                // Optionally show an error message
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Failed to load recommended section",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            // Exit after checking once
+                            return@collectLatest
+                        }
+                    }
+                } else {
+                    // Stop shimmer and show content
+                    binding.recommendedShimmerView.root.stopShimmer()
+                    binding.recommendedShimmerView.root.visibility = View.GONE
+                    binding.recommendedProductLayout.visibility = View.VISIBLE
+                    setupRecommendedViewData(recommendedSectionData)
+                }
                 viewModel.getNextProducts()
+
                 lifecycleScope.launch {
                     viewModel.allProductsState.collectLatest { productsList ->
-                        allProductsAdapter.submitList(productsList)
+
+                        if (productsList.isEmpty()) {
+                            // Show shimmer for all products
+                            binding.allProductsRv.adapter =
+                                ShimmerAdapter(6, R.layout.item_product_shimmer)
+                        } else {
+                            // Show actual products
+                            binding.allProductsRv.adapter = allProductsAdapter
+                            allProductsAdapter.submitList(productsList)
+                        }
+
                         binding.invalidateAll()
                     }
                 }
             }
         }
+
     }
 
     private fun showCategoriesShimmer() {
@@ -135,10 +233,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             ShimmerAdapter(6, R.layout.categories_shimmer_view)
     }
 
+//    private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
+//        loadImage(binding.recommendedProductIv, sectionData.image)
+//        binding.recommendedProductTitleIv.text = sectionData.title
+////        binding.recommendedProductDescriptionIv.text = sectionData.description
+//        binding.recommendedProductLayout.setOnClickListener {
+//            Toast.makeText(
+//                requireContext(),
+//                "Recommended Product Clicked, goto ${sectionData.type}",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//    }
+
     private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
+        // Stop and hide shimmer
+        binding.recommendedShimmerView.root.stopShimmer()
+        binding.recommendedShimmerView.root.visibility = View.GONE
+
+        // Show real layout
+        binding.recommendedProductLayout.visibility = View.VISIBLE
+
+        // Populate data
         loadImage(binding.recommendedProductIv, sectionData.image)
         binding.recommendedProductTitleIv.text = sectionData.title
-//        binding.recommendedProductDescriptionIv.text = sectionData.description
+
         binding.recommendedProductLayout.setOnClickListener {
             Toast.makeText(
                 requireContext(),
@@ -147,6 +266,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             ).show()
         }
     }
+
+//    private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
+//        // Stop and hide shimmer
+//        binding.recommendedShimmerView.root.stopShimmer()
+//        binding.recommendedShimmerView.root.visibility = View.GONE
+//
+//        // Show real layout
+//        binding.recommendedProductLayout.visibility = View.VISIBLE
+//
+//        // Populate data
+//        loadImage(binding.recommendedProductIv, sectionData.image)
+//        binding.recommendedProductTitleIv.text = sectionData.title
+//
+//        binding.recommendedProductLayout.setOnClickListener {
+//            Toast.makeText(
+//                requireContext(),
+//                "Recommended Product Clicked, goto ${sectionData.type}",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//    }
 
 
     private fun initCategoriesView(data: List<CategoryUIModel>?) {
@@ -269,11 +409,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.startTimer()
+
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.stopTimer()
+        binding.recommendedShimmerView.root.stopShimmer()
     }
 
     companion object {

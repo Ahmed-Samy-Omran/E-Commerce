@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recommendedShimmerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_centerInParent="true"
+    app:shimmer_auto_start="true"
+    app:shimmer_duration="1500">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:background="@color/neutral_grey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:alpha="0.4" />
+
+        <TextView
+            android:background="@color/neutral_light"
+            android:layout_width="301dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="24dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lines="1"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<com.facebook.shimmer.ShimmerFrameLayout-->
+    <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="220dp"-->
+    <!--    android:layout_centerInParent="true"-->
+    <!--    app:shimmer_auto_start="true">-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:paddingStart="16dp"-->
+    <!--        android:paddingTop="16dp"-->
+    <!--        android:paddingEnd="16dp"-->
+    <!--        android:paddingBottom="8dp">-->
+
+    <!--        <ImageView-->
+    <!--            android:background="@color/neutral_grey"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:alpha="0.4"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:scaleType="centerCrop" />-->
+
+    <!--        <TextView-->
+    <!--            android:background="@color/neutral_light"-->
+    <!--            android:layout_width="301dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_alignParentTop="true"-->
+    <!--            android:layout_margin="24dp"-->
+    <!--            android:fontFamily="@font/poppins_bold"-->
+    <!--            android:lines="1"-->
+    <!--            android:textColor="@android:color/white"-->
+    <!--            android:textSize="32sp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--    </RelativeLayout>-->
+
+    <!--</com.facebook.shimmer.ShimmerFrameLayout>-->
+
+

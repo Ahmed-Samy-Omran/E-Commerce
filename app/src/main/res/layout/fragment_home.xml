@@ -247,6 +247,11 @@
                     android:tag="mega_sale_rv"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+                <include
+                    android:id="@+id/recommendedShimmerView"
+                    layout="@layout/recommended_product_shimmer"
+                    android:visibility="visible" />
+
                 <RelativeLayout
                     android:id="@+id/recommended_product_layout"
                     android:layout_width="match_parent"
