@@ -29,12 +29,9 @@ import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-
-class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
-
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     // for facebook login
     private val callbackManager: CallbackManager by lazy {
@@ -44,30 +41,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         LoginManager.getInstance()
     }
 
-
-
     override val viewModel: LoginViewModel by viewModels()
-
 
     override fun init() {
         initListeners()
         initViewModel()
 
-        val countryFragment = CountriesFragment()
-        countryFragment.isCancelable = false
-        countryFragment.show(parentFragmentManager, "country-fragment")
+//        val countryFragment = CountriesFragment()
+//        countryFragment.isCancelable = false
+//        countryFragment.show(parentFragmentManager, "country-fragment")
     }
 
-
     override fun getLayoutResId(): Int = R.layout.fragment_login
-
-
-
-
-
-
-
-
 
     private fun initViewModel() {
         lifecycleScope.launch {
@@ -77,9 +62,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
                     is Resource.Success -> {
                         progressDialog.dismiss()
                         goToHome()
-
                     }
-
                     is Resource.Error -> {
                         progressDialog.dismiss()
                         val msg = resource.exception?.message ?: getString(R.string.generic_err_msg)
@@ -91,10 +74,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         }
     }
 
-
     private fun goToHome() {
+        // Changed: Use FLAG_ACTIVITY_CLEAR_TOP and FLAG_ACTIVITY_SINGLE_TOP to reuse MainActivity instance
         requireActivity().startActivity(Intent(activity, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         })
         requireActivity().finish()
     }
@@ -113,18 +96,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         }
 
         binding.forgotPasswordTv.setOnClickListener {
-           val forgotPasswordFragment = ForgetPasswordFragment()
+            val forgotPasswordFragment = ForgetPasswordFragment()
             forgotPasswordFragment.show(parentFragmentManager, "forgot-password")
-         }
-
-
+        }
     }
-
 
     private fun loginWithGoogleRequest() {
         val signInIntent = getGoogleRequestIntent(requireActivity())
         launcher.launch(signInIntent)
-
     }
 
     private val launcher = registerForActivityResult(
@@ -142,10 +121,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         try {
             val account = task.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account.idToken!!)
-
         } catch (e: Exception) {
             view?.showSnakeBarError(e.message ?: getString(R.string.generic_err_msg))
-
             val msg = e.message ?: getString(R.string.generic_err_msg)
             logAuthIssueToCrashlytics(msg, "Google")
         }
@@ -156,7 +133,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
             msg,
             CrashlyticsUtils.LOGIN_KEY to msg,
             CrashlyticsUtils.LOGIN_PROVIDER to provider
-
         )
     }
 
@@ -164,9 +140,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         viewModel.loginWithGoogle(idToken)
     }
 
-
     // for facebook
-
     private fun signOut() {
         loginManager.logOut()
         Log.d(TAG, "signOut: ")
@@ -214,10 +188,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding,LoginViewModel>() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-
-
     companion object {
         private const val TAG = "LoginFragment"
-//        private const val RC_SIGN_IN = 9001
     }
 }
