@@ -2,6 +2,9 @@
 
 **E-Commerce App is a feature-rich Android application designed to provide a seamless online shopping experience. This project is currently in progress, integrating modern Android technologies and best practices to ensure scalability and efficiency.**
 
+## App Demo 🎥
+https://drive.google.com/file/d/1r5arO9KGTaJMAUiHrQmmgnR0asT91qkJ/view?usp=drive_link
+
 This project is perfect for those looking to explore Android development, architecture patterns, Firebase, and API integration in a real-world e-commerce application.
 
 ## Built With 🛠
