@@ -26,6 +26,7 @@ fun ReviewModel.toReviewUIModel(): ReviewUIModel {
         rating = rate ?: 0,
         reviewImages = reviewImages ?: emptyList(),
         reviewText = reviewText ?: "No review",
-        formattedDate = formatTimestamp(timeStamp)  // Format the Timestamp to a readable date
+        formattedDate = formatTimestamp(timeStamp),  // Format the Timestamp to a readable date
+        userId = userId ?: "unknown_user"  // Default value if userId is null
     )
 }

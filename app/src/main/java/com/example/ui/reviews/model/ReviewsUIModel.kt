@@ -13,6 +13,7 @@ data class ReviewUIModel(
     val rating: Int,
     val reviewImages: List<String>?, // Optional list of review images
     val reviewText: String,
+    val userId: String,
     val formattedDate: String
 ) : Parcelable {
 

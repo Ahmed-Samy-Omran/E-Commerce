@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,13 +15,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
+            <!-- Changed from ImageView to ShapeableImageView for circular avatar -->
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/user_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/user_image"
-                android:scaleType="centerCrop" />
-
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/CircleImageView"
+                app:strokeColor="@color/primary_yellow"
+                app:strokeWidth="1dp" />
 
             <!-- Name and Rating -->
             <LinearLayout
@@ -35,24 +38,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textStyle="bold"
                     tools:text="User Name" />
-
 
                 <androidx.appcompat.widget.AppCompatRatingBar
                     android:id="@+id/ratingBar"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:progressTint="@color/primary_yellow"
                     android:layout_marginStart="16dp"
                     android:numStars="5"
+                    android:progressTint="@color/primary_yellow"
                     android:stepSize="1"
                     android:theme="@style/RatingBarStyle" />
-
 
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Rest of your layout remains the same -->
         <!-- Review Text -->
         <TextView
             android:id="@+id/reviewTextView"
@@ -94,4 +97,101 @@
 
     </LinearLayout>
 
-</layout>
+</layout><!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools">-->
+
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:padding="10dp">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:orientation="horizontal">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/user_img"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:contentDescription="@string/user_image"-->
+    <!--                android:scaleType="centerCrop" />-->
+
+
+    <!--            &lt;!&ndash; Name and Rating &ndash;&gt;-->
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:orientation="vertical">-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/userNameTextView"-->
+    <!--                    style="@style/TitleTextStyle"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginStart="16dp"-->
+    <!--                    tools:text="User Name" />-->
+
+
+    <!--                <androidx.appcompat.widget.AppCompatRatingBar-->
+    <!--                    android:id="@+id/ratingBar"-->
+    <!--                    style="?android:attr/ratingBarStyleSmall"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:progressTint="@color/primary_yellow"-->
+    <!--                    android:layout_marginStart="16dp"-->
+    <!--                    android:numStars="5"-->
+    <!--                    android:stepSize="1"-->
+    <!--                    android:theme="@style/RatingBarStyle" />-->
+
+
+    <!--            </LinearLayout>-->
+    <!--        </LinearLayout>-->
+
+    <!--        &lt;!&ndash; Review Text &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/reviewTextView"-->
+    <!--            style="@style/MessageTextStyle"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="16dp"-->
+    <!--            android:layout_marginTop="16dp"-->
+    <!--            android:ellipsize="end"-->
+    <!--            android:hyphenationFrequency="full"-->
+    <!--            android:lineSpacingExtra="4dp"-->
+    <!--            android:maxLines="5"-->
+    <!--            android:textIsSelectable="true"-->
+    <!--            tools:text="air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites." />-->
+
+    <!--        &lt;!&ndash; Review Images (Horizontal Scroll) &ndash;&gt;-->
+    <!--        <HorizontalScrollView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="16dp"-->
+    <!--            android:layout_marginTop="8dp">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/reviewImagesContainer"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:orientation="horizontal" />-->
+    <!--        </HorizontalScrollView>-->
+
+    <!--        &lt;!&ndash; Review Date &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/reviewDateTextView"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="16dp"-->
+    <!--            android:layout_marginTop="13dp"-->
+    <!--            android:textColor="@color/neutral_grey"-->
+    <!--            tools:text="December 10, 2016" />-->
+
+    <!--    </LinearLayout>-->
+
+    <!--</layout>-->
+

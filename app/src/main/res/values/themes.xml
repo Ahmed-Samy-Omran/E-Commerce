@@ -78,7 +78,7 @@
         <item name="android:padding">16dp</item>
     </style>
 
-        <style name="MediumPrimaryTextViewStyle">
+    <style name="MediumPrimaryTextViewStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
@@ -86,16 +86,16 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-<!--    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">-->
-<!--        <item name="backgroundTint">@color/white</item>-->
-<!--        <item name="itemActiveIndicatorStyle">@null</item>-->
-<!--        <item name="itemTextAppearanceActive">@style/SelectedBottomNavigationViewTextStyle</item>-->
-<!--        <item name="itemTextAppearanceInactive">@style/SelectedBottomNavigationViewTextStyle</item>-->
-<!--    </style>-->
+    <!--    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">-->
+    <!--        <item name="backgroundTint">@color/white</item>-->
+    <!--        <item name="itemActiveIndicatorStyle">@null</item>-->
+    <!--        <item name="itemTextAppearanceActive">@style/SelectedBottomNavigationViewTextStyle</item>-->
+    <!--        <item name="itemTextAppearanceInactive">@style/SelectedBottomNavigationViewTextStyle</item>-->
+    <!--    </style>-->
 
-<!--    <style name="SelectedBottomNavigationViewTextStyle" parent="@style/TextAppearance.AppCompat.Caption">-->
-<!--        <item name="android:textSize">12sp</item>-->
-<!--    </style>-->
+    <!--    <style name="SelectedBottomNavigationViewTextStyle" parent="@style/TextAppearance.AppCompat.Caption">-->
+    <!--        <item name="android:textSize">12sp</item>-->
+    <!--    </style>-->
 
 
     <style name="CurvedBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
@@ -104,6 +104,7 @@
         <item name="cbn_fabBg">@color/white</item>
         <item name="cbn_bg">@color/primary_color</item>
     </style>
+
     <style name="SaleTimerItemTextStyle">
 
         <item name="android:inAnimation">@anim/flip_in</item>
@@ -118,10 +119,17 @@
         <item name="android:background">@drawable/flip_card_background</item>
     </style>
 
-    <style name="RatingBarStyle" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/neutral_grey</item>
-        <item name="colorControlActivated">@color/primary_yellow</item>
+    <!--    <style name="RatingBarStyle" parent="Theme.AppCompat">-->
+    <!--        <item name="colorControlNormal">@color/neutral_grey</item>-->
+    <!--        <item name="colorControlActivated">@color/primary_yellow</item>-->
+    <!--    </style>-->
+
+    <style name="RatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_custom</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:maxHeight">24dp</item>
     </style>
+
 
     <style name="MediumTitleTextStyle">
         <item name="android:textSize">14sp</item>
@@ -166,6 +174,11 @@
         <item name="android:padding">8dp</item>
         <item name="android:fontFamily">@font/poppins_regular</item>">
 
+    </style>
+
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>

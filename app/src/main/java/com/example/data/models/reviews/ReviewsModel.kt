@@ -5,10 +5,7 @@ import androidx.annotation.Keep
 import com.example.utils.formatTimestamp
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
-import kotlinx.parcelize.Parcelize
-
-
-@Keep
+import kotlinx.parcelize.Parcelize@Keep
 @Parcelize
 data class ReviewModel(
     var id: String? = null,
@@ -17,6 +14,7 @@ data class ReviewModel(
     var rate:Int? = null,
     var reviewImages: List<String>? = null,
     var reviewText:  String? = null,
+
 
     @get:PropertyName("timestamp")
     @set:PropertyName("timestamp")
@@ -31,3 +29,5 @@ data class ReviewModel(
         return formatTimestamp(this) // Your existing function
     }
 }
+
+

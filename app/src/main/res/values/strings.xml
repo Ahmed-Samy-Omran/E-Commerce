@@ -97,6 +97,13 @@
     <string name="star_4">4 ⭐</string>
     <string name="star_5">5 ⭐</string>
     <string name="review_product">Review Product</string>
+    <string name="write_review">Write Review</string>
+    <string name="add_review_describition">Please write Overall level of satisfaction with your shipping / Delivery Service</string>
+    <string name="write_your_review">Write Your Review</string>
+    <string name="write_your_review_here">Write your review here</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="rate_of_product">rate of product</string>
+    <string name="send_review">send review</string>
     <!--    <string name="server_client_id">322843996565-r72jde9qij54q1fbj2frso8n99m3qmr7.apps.googleusercontent.com</string>-->
 
 
