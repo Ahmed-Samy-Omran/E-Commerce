@@ -178,6 +178,9 @@ dependencies {
 
     // bottom navigation animations
     implementation ("np.com.susanthapa:curved_bottom_navigation:0.6.5")
+    implementation ("com.airbnb.android:lottie:6.4.0")
+
+
 
 
 }

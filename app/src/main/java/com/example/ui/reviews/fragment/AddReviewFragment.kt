@@ -24,6 +24,8 @@
     import com.example.ui.products.model.ProductUIModel
     import com.example.ui.products.viewmodel.ProductDetailsViewModel
     import com.example.ui.reviews.model.ReviewUIModel
+    import com.example.ui.showSnakeBarError
+    import com.example.utils.PlaneFlyAnimator
     import com.example.utils.formatTimestamp
     import com.google.firebase.Timestamp
     import com.google.firebase.auth.FirebaseAuth
@@ -101,6 +103,7 @@
 
         // Handle button click to submit review
         private fun setupSubmitButton() {
+
             binding.submitReviewButton.setOnClickListener {
                 val reviewText = binding.reviewEt.text.toString().trim()
 
@@ -124,37 +127,38 @@
                 // Disable submit button here if needed to prevent double clicks
                 binding.submitReviewButton.isEnabled = false
 
+
                 // Use the new method in ViewModel that handles ReviewUIModel creation
                 viewModel.addReview(productId, reviewText, currentRating.toInt())
             }
         }
 
-        // Observe result of adding review
+
         private fun observeReviewResult() {
             viewModel.addReviewResult.observe(viewLifecycleOwner) { success ->
                 if (success) {
-                    Toast.makeText(requireContext(), "Review added!", Toast.LENGTH_SHORT).show()
-                    // Clear review text & reset rating if staying on the same fragment
                     binding.reviewEt.text.clear()
                     setStarRating(0f)
                     currentRating = 0f
-
-                    // Enable submit button again
                     binding.submitReviewButton.isEnabled = true
 
-                    // Or navigate back if needed
-                    parentFragmentManager.popBackStack()
+                    // 🔥 Animate plane then navigate
+                    PlaneFlyAnimator.animate(binding.submitReviewButton) {
+                        findNavController().navigate(R.id.action_addReviewFragment_to_reviewFragment)
+                        viewModel.resetAddReviewResult()
+                    }
+                    Toast.makeText(requireContext(), "Review added!", Toast.LENGTH_SHORT).show()
                 }
             }
 
             viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
                 if (!errorMsg.isNullOrEmpty()) {
                     Toast.makeText(requireContext(), "Error: $errorMsg", Toast.LENGTH_SHORT).show()
-                    // Re-enable submit button on error
                     binding.submitReviewButton.isEnabled = true
                 }
             }
         }
+
 
         override fun onDestroyView() {
             super.onDestroyView()

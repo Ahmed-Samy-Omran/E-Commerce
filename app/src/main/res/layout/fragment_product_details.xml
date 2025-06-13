@@ -152,9 +152,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:progressTint="@color/primary_yellow"
-
                     android:numStars="5"
+
+                    android:progressTint="@color/primary_yellow"
                     android:stepSize="1"
                     android:theme="@style/RatingBarStyle" />
 
@@ -207,37 +207,36 @@
                     android:layout_marginEnd="10dp"
                     android:ellipsize="end"
                     android:maxLines="5"
-                    android:scrollHorizontally="false"
                     android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
                     android:textIsSelectable="true"
                     tools:text="Description will appear here" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content">
+                    android:orientation="horizontal">
 
                     <TextView
+                        style="@style/TitleTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        style="@style/TitleTextStyle"
+                        android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:text="@string/review_product"
-                        android:layout_marginStart="16dp"
 
                         />
 
                     <TextView
                         android:id="@+id/move_to_review"
+                        style="@style/MediumPrimaryTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/MediumPrimaryTextViewStyle"
-                        android:text="@string/see_more"
                         android:layout_gravity="end"
                         android:layout_marginEnd="16dp"
-                       />
+                        android:text="@string/see_more" />
 
 
                 </LinearLayout>
@@ -247,9 +246,48 @@
                     android:id="@+id/reviewsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="5dp"
+                    android:orientation="vertical" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/noReviewsAnimation"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/no_reviews" />
+
+                <TextView
+                    android:id="@+id/noReviewsText"
+                    style="@style/SectionTitleTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="-3dp"
+                    android:text="@string/no_reviews_yet"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnWriteReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/be_the_first_to_review"
+                    android:layout_marginStart="-3dp"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    android:textColor="@color/primary_dark_color"
+                    android:background="@drawable/be_first_add_review_btn"
                     />
+
+
 
 
 

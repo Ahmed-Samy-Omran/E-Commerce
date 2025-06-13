@@ -3,15 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewmodel"
             type="com.example.ui.products.viewmodel.ProductDetailsViewModel" />
-
         <variable
             name="product"
             type="com.example.ui.products.model.ProductUIModel" />
@@ -20,18 +16,19 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+       >
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
                 <androidx.appcompat.widget.Toolbar
@@ -55,7 +52,6 @@
                             android:padding="10dp"
                             android:src="@drawable/ic_back_arrow" />
 
-
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/review_title_tv"
                             style="@style/TitleTextStyle"
@@ -63,141 +59,150 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="14dp"
                             tools:text="5 Review" />
-
-
                     </LinearLayout>
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <androidx.core.widget.NestedScrollView
+        <!-- Wrapper with scroll and button separated -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <!-- Scrollable Content -->
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="ifContentScrolls">
 
-            <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/ratingChipGroup"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="36dp"
+                            android:orientation="horizontal"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="4dp"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipAll"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="50dp"
+                                android:backgroundTint="@color/white"
+                                android:checked="true"
+                                android:fontFamily="@font/poppins_bold"
+                                android:minWidth="72dp"
+                                android:padding="8dp"
+                                android:text="@string/all_reviews"
+                                android:textColor="@color/primary_color" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip1Star"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:backgroundTint="@color/white"
+                                android:text="@string/star_1" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip2Stars"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:text="@string/star_2" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip3Stars"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:text="@string/star_3" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip4Stars"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:text="@string/star_4" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip5Stars"
+                                style="@style/CustomChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:backgroundTint="@color/white"
+                                android:text="@string/star_5" />
+                        </com.google.android.material.chip.ChipGroup>
+                    </HorizontalScrollView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
+                        tools:listitem="@layout/item_review" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/noReviewsAnimation"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:visibility="gone"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/no_reviews" />
+
+                    <TextView
+                        android:id="@+id/noReviewsText"
+                        style="@style/SectionTitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:textSize="22sp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="-3dp"
+                        android:text="@string/no_reviews_yet"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- Write Review Button (visible now!) -->
+            <Button
+                android:id="@+id/write_review_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
-
-                    <!-- Chip Group for Filtering -->
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/ratingChipGroup"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="36dp"
-                        android:orientation="horizontal"
-                        app:chipSpacingHorizontal="8dp"
-                        app:chipSpacingVertical="4dp"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipAll"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="50dp"
-                            android:backgroundTint="@color/white"
-                            android:checked="true"
-                            android:fontFamily="@font/poppins_bold"
-                            android:minWidth="72dp"
-                            android:padding="8dp"
-                            android:text="@string/all_reviews"
-                            android:textColor="@color/primary_color" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip1Star"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:backgroundTint="@color/white"
-                            android:text="@string/star_1" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip2Stars"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-                            android:text="@string/star_2" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip3Stars"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-
-                            android:text="@string/star_3" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip4Stars"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-                            android:text="@string/star_4" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip5Stars"
-                            style="@style/CustomChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="6dp"
-                            android:backgroundTint="@color/white"
-                            android:text="@string/star_5" />
-                    </com.google.android.material.chip.ChipGroup>
-
-                </HorizontalScrollView>
-                <!-- No Reviews TextView - Added here -->
-                <TextView
-                    android:id="@+id/noReviewsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp"
-                    android:gravity="center"
-                    android:text="No reviews yet. Be the first to add one!"
-                    android:textColor="@color/primary_dark_color"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reviewsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="16dp"
-                    tools:listitem="@layout/item_review" />
-
-                <Button
-                    android:id="@+id/write_review_btn"
-                    android:layout_width="match_parent"
-                    android:paddingTop="6dp"
-                    android:text="@string/write_review"
-                    android:paddingBottom="6dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/write_review_bg"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="16dp"
+                android:paddingVertical="10dp"
+                android:text="@string/write_review"
+                android:background="@drawable/write_review_bg"/>
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 </layout>

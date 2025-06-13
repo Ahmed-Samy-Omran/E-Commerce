@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,7 @@ import com.example.ui.reviews.ReviewFilter
 import com.example.ui.reviews.adapter.ReviewAdapter
 import com.example.ui.reviews.model.ReviewUIModel
 import com.example.utils.HorizontalSpaceItemDecoration
+import com.example.utils.ViewButtonAnimations
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -55,21 +58,42 @@ class ProductDetailsFragment :
 
     }
 
+//    private fun observeReviews() {
+//        lifecycleScope.launch {
+//            viewModel.reviews.collectLatest { reviews ->
+//                if (reviews.isNotEmpty()) {
+//                    Log.d("ProductDetailsFragment", "Received ${reviews.size} reviews")
+//                    allReviews = listOf(reviews.first()).toMutableList()
+//                    reviewAdapter.submitList(allReviews)
+//                } else {
+//                    Log.d("ProductDetailsFragment", "No reviews available")
+//                }
+//            }
+//        }
+//    }
+
     private fun observeReviews() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.reviews.collectLatest { reviews ->
+                Log.d("ProductDetailsFragment", "Reviews data: $reviews")
                 if (reviews.isNotEmpty()) {
                     Log.d("ProductDetailsFragment", "Received ${reviews.size} reviews")
                     allReviews = listOf(reviews.first()).toMutableList()
                     reviewAdapter.submitList(allReviews)
+                    binding.reviewsRecyclerView.visibility = View.VISIBLE
+                    binding.noReviewsAnimation.visibility = View.GONE
+                    binding.noReviewsText.visibility = View.GONE
+                    binding.btnWriteReview.visibility = View.GONE
                 } else {
                     Log.d("ProductDetailsFragment", "No reviews available")
+                    binding.reviewsRecyclerView.visibility = View.GONE
+                    binding.noReviewsAnimation.visibility = View.VISIBLE
+                    binding.noReviewsText.visibility = View.VISIBLE
+                    binding.btnWriteReview.visibility = View.VISIBLE
                 }
             }
         }
     }
-
-
 
     private fun observeDescription() {
         lifecycleScope.launch {
@@ -97,7 +121,18 @@ class ProductDetailsFragment :
         initImages(product.images)
 
         binding.moveToReview.setOnClickListener {
-            findNavController().navigate(R.id.action_productDetailsFragment_to_reviewFragment)
+            ViewButtonAnimations.playClickScaleAnimation(it) {
+                // Navigate to the review section
+                findNavController().navigate(R.id.action_productDetailsFragment_to_reviewFragment)
+            }
+
+        }
+
+
+        binding.btnWriteReview.setOnClickListener {
+            ViewButtonAnimations.playClickScaleAnimation(it) {
+                findNavController().navigate(R.id.action_productDetailsFragment_to_addReviewFragment)
+            }
         }
 
         // Check if the product is a bag based on categories_ids
