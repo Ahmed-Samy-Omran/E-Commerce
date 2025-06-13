@@ -193,6 +193,15 @@
                     android:textColorHint="@color/neutral_grey"
                     android:textSize="14sp" />
 
+                <TextView
+                    style="@style/MessageTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/you_can_only_submit_one_review_per_product"
+                   />
+
+
 
                 <TextView
                     style="@style/TitleTextStyle"

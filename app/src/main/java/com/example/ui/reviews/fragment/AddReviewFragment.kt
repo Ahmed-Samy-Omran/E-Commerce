@@ -59,9 +59,30 @@
 
             // Get productId from ViewModel or arguments
             productId = viewModel.productId
+
+            viewModel.checkIfUserReviewed()
             setupStarClicks()
             setupSubmitButton()
             observeReviewResult()
+            observeIfUserAlreadyReviewed()
+        }
+
+        private fun observeIfUserAlreadyReviewed() {
+            viewModel.existingUserReview.observe(viewLifecycleOwner) { review ->
+                if (review != null) {
+                    // Disable review form
+                    binding.reviewEt.isEnabled = false
+                    binding.submitReviewButton.isEnabled = false
+                    binding.ratingText.text = "You've already reviewed this product"
+
+                    val stars = listOf(
+                        binding.star1, binding.star2, binding.star3, binding.star4, binding.star5
+                    )
+                    stars.forEach { it.isEnabled = false }
+
+                    Toast.makeText(requireContext(), "You’ve already reviewed this product.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         // Setup star rating selection

@@ -7,7 +7,6 @@ import com.example.ui.reviews.model.ReviewUIModel
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -67,7 +66,7 @@ class ReviewRepositoryImpl @Inject constructor(
 
             // Check if the user already submitted a review
             val existing = reviewsRef
-                .whereEqualTo("userId", getCurrentUserId())
+                .whereEqualTo("user_id", getCurrentUserId())
                 .get()
                 .await()
 
@@ -93,47 +92,12 @@ class ReviewRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addOrUpdateReview(
-        productId: String,
-        review: ReviewModel
-    ): Resource<Boolean> {
-        return try {
-            val reviewRef = if (review.id != null) {
-                // Update existing review
-                firestore.collection("products")
-                    .document(productId)
-                    .collection("reviews")
-                    .document(review.id!!)
-            } else {
-                // Create new review
-                firestore.collection("products")
-                    .document(productId)
-                    .collection("reviews")
-                    .document()
-            }
-
-            // Ensure user data is set
-            val reviewToSave = review.copy(
-                id = reviewRef.id,
-                image = review.image ?: getCurrentUserImageUrl(),
-                name = review.name ?: getCurrentUserName(),
-                userId = review.userId ?: getCurrentUserId(),
-                timeStamp = review.timeStamp ?: Timestamp.now()
-            )
-
-            reviewRef.set(reviewToSave).await()
-            Resource.Success(true)
-        } catch (e: Exception) {
-            Log.d(TAG, "addOrUpdateReview: ${e.message}")
-            Resource.Error(e)
-        }
-    }
 
     override suspend fun checkIfUserReviewed(productId: String, userId: String): QuerySnapshot {
         return firestore.collection("products")
             .document(productId)
             .collection("reviews")
-            .whereEqualTo("user_id", userId)
+            .whereEqualTo("user_id", userId) // ✅ Match this field with Firestore document
             .limit(1)
             .get()
             .await()
@@ -181,9 +145,6 @@ class ReviewRepositoryImpl @Inject constructor(
         return FirebaseAuth.getInstance().currentUser?.uid ?: "unknown"
     }
 
-//    override fun getCurrentUserName(): String {
-//        return FirebaseAuth.getInstance().currentUser?.displayName ?: "Anonymous"
-//    }
 
     override fun getCurrentUserName(): String {
         val user = FirebaseAuth.getInstance().currentUser

@@ -13,7 +13,7 @@ interface ReviewsRepo {
 //    suspend fun addReview(productId: String, review: ReviewUIModel): Resource<Boolean>
 suspend fun addReview(productId: String, review: ReviewUIModel): Resource<String>
     // ✅ New method to support editing
-    suspend fun addOrUpdateReview(productId: String, review: ReviewModel): Resource<Boolean>
+//    suspend fun addOrUpdateReview(productId: String, review: ReviewModel): Resource<Boolean>
 
     suspend fun checkIfUserReviewed(productId: String, userId: String): QuerySnapshot
 
