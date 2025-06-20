@@ -1,5 +1,6 @@
 package com.example.data.repository.reviews
 
+import android.net.Uri
 import com.example.data.models.Resource
 import com.example.data.models.reviews.ReviewModel
 import com.example.ui.reviews.model.ReviewUIModel
@@ -10,10 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ReviewsRepo {
 
     fun getReviews(productId: String): Flow<Resource<List<ReviewModel>>>
-//    suspend fun addReview(productId: String, review: ReviewUIModel): Resource<Boolean>
-suspend fun addReview(productId: String, review: ReviewUIModel): Resource<String>
-    // ✅ New method to support editing
-//    suspend fun addOrUpdateReview(productId: String, review: ReviewModel): Resource<Boolean>
+    suspend fun addReview(productId: String, review: ReviewUIModel): Resource<String>
 
     suspend fun checkIfUserReviewed(productId: String, userId: String): QuerySnapshot
 
@@ -28,4 +26,6 @@ suspend fun addReview(productId: String, review: ReviewUIModel): Resource<String
     fun getCurrentUserName(): String
 
     fun getCurrentUserImageUrl(): String
+
+    suspend fun uploadReviewImages(imageUris: List<Uri>): List<String>
 }

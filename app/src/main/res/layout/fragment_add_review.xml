@@ -19,9 +19,9 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:background="@color/white">
+        android:clipToPadding="false">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -70,17 +70,17 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:padding="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:layout_marginStart="10dp"
 
                 android:orientation="vertical">
 
@@ -142,17 +142,6 @@
                         android:src="@drawable/star_empty" />
 
 
-                    <!--                    <RatingBar-->
-                    <!--                        android:id="@+id/ratingBar"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginStart="-22dp"-->
-                    <!--                        android:numStars="5"-->
-                    <!--                        android:rating="0"-->
-                    <!--                        android:scaleX="0.8"-->
-                    <!--                        android:scaleY="0.8"-->
-                    <!--                        android:stepSize="1"-->
-                    <!--                        android:theme="@style/Widget.AppCompat.RatingBar" />-->
 
                     <TextView
                         android:id="@+id/ratingText"
@@ -198,9 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/you_can_only_submit_one_review_per_product"
-                   />
-
+                    android:text="@string/you_can_only_submit_one_review_per_product" />
 
 
                 <TextView
@@ -208,9 +195,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-
                     android:text="@string/add_photo"
                     android:textSize="14sp" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reviewImageRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:overScrollMode="never"
+                    android:clipToPadding="false"
+                    android:layoutDirection="ltr"
+                    android:scrollbars="horizontal"
+                    android:orientation="horizontal"/>
 
 
                 <ImageView
@@ -218,11 +216,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="35dp"
                     android:layout_marginEnd="10dp"
                     android:contentDescription="@string/send_review"
-                    android:padding="2dp"
                     android:elevation="10dp"
+                    android:padding="2dp"
                     android:src="@drawable/send_ic" />
 
 
@@ -230,6 +228,19 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <FrameLayout
+            android:id="@+id/loadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+        </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

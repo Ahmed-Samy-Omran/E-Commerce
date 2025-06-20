@@ -1,6 +1,7 @@
 package com.example.ui.products.viewmodel
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -79,6 +80,9 @@ class ProductDetailsViewModel @Inject constructor(
     private val _existingUserReview = MutableLiveData<ReviewModel?>()
     val existingUserReview: LiveData<ReviewModel?> get() = _existingUserReview
 
+    // 🔥 ADD THIS — to store selected images temporarily in ViewModel
+    val selectedReviewImages = mutableListOf<Uri>()
+
     init {
         listenToProductDetails()
         fetchReviews()
@@ -155,37 +159,84 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
 
-    fun addReview(productId: String, reviewText: String, rating: Int) {
+//    fun addReview(productId: String, reviewText: String, rating: Int) {
+//
+//        // Prevent duplicate review submission
+//        if (_existingUserReview.value != null) {
+//            _error.value = "You have already submitted a review for this product."
+//            return
+//        }
+//
+//        val reviewUIModel = ReviewUIModel(
+//            id = "", // Firestore will generate it
+//            userId = getCurrentUserId(),                  // <-- Add this line
+//            userName = getCurrentUserName(),
+//            imageUrl = getCurrentUserImageUrl(),
+//            rating = rating,
+//            reviewText = reviewText,
+//            reviewImages = emptyList(),
+//            formattedDate = ""
+//        )
+//
+//        viewModelScope.launch {
+//            when (val result = reviewRepository.addReview(productId, reviewUIModel)) {
+//                is Resource.Success -> {
+//                    _addReviewResult.value = true
+//                    fetchReviews()
+//                    checkIfUserReviewed() // Refresh to prevent duplicate again
+//                }
+//                is Resource.Error -> _error.value = result.exception?.message
+//                else -> {}
+//            }
+//        }
+//    }
 
+    fun addReview(productId: String, reviewText: String, rating: Int) {
         // Prevent duplicate review submission
         if (_existingUserReview.value != null) {
             _error.value = "You have already submitted a review for this product."
             return
         }
 
-        val reviewUIModel = ReviewUIModel(
-            id = "", // Firestore will generate it
-            userId = getCurrentUserId(),                  // <-- Add this line
-            userName = getCurrentUserName(),
-            imageUrl = getCurrentUserImageUrl(),
-            rating = rating,
-            reviewText = reviewText,
-            reviewImages = emptyList(),
-            formattedDate = ""
-        )
-
         viewModelScope.launch {
-            when (val result = reviewRepository.addReview(productId, reviewUIModel)) {
-                is Resource.Success -> {
-                    _addReviewResult.value = true
-                    fetchReviews()
-                    checkIfUserReviewed() // Refresh to prevent duplicate again
+            try {
+                // 🔥 ADD THIS — Upload selected images and get URLs
+                val uploadedImageUrls = reviewRepository.uploadReviewImages(selectedReviewImages)
+
+                // 🔥 UPDATE THIS — Now include uploaded images
+                val reviewUIModel = ReviewUIModel(
+                    id = "",
+                    userId = getCurrentUserId(),
+                    userName = getCurrentUserName(),
+                    imageUrl = getCurrentUserImageUrl(),
+                    rating = rating,
+                    reviewText = reviewText,
+                    reviewImages = uploadedImageUrls,
+                    formattedDate = "" // You can format timestamp later
+                )
+
+                // 🔥 Save review to Firestore
+                when (val result = reviewRepository.addReview(productId, reviewUIModel)) {
+                    is Resource.Success -> {
+                        _addReviewResult.value = true
+                        fetchReviews()
+                        checkIfUserReviewed()
+                        clearSelectedReviewImages()
+                    }
+                    is Resource.Error -> _error.value = result.exception?.message
+                    else -> {}
                 }
-                is Resource.Error -> _error.value = result.exception?.message
-                else -> {}
+
+            } catch (e: Exception) {
+                _error.value = e.message
             }
         }
     }
+
+    fun clearSelectedReviewImages() {
+        selectedReviewImages.clear()
+    }
+
     fun resetAddReviewResult() {
         _addReviewResult.value = false
     }
@@ -205,6 +256,12 @@ class ProductDetailsViewModel @Inject constructor(
     fun getCurrentUserImageUrl(): String {
         return reviewRepository.getCurrentUserImageUrl()
     }
+
+    fun setSelectedReviewImages(uris: List<Uri>) {
+        selectedReviewImages.clear()
+        selectedReviewImages.addAll(uris)
+    }
+
 
     companion object {
         private const val TAG = "ProductDetailsViewModel"

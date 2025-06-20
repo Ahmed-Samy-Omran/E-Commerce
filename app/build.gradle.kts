@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.core)
     implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -132,7 +133,9 @@ dependencies {
 
 
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
+//    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
     implementation("com.google.firebase:firebase-auth:23.1.0")
 
     implementation ("androidx.credentials:credentials:1.3.0")
@@ -172,6 +175,9 @@ dependencies {
 
 
     implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage")
+//    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
 
     // flip clock
     implementation("com.google.accompanist:accompanist-pager:0.26.3-beta")
@@ -180,7 +186,7 @@ dependencies {
     implementation ("np.com.susanthapa:curved_bottom_navigation:0.6.5")
     implementation ("com.airbnb.android:lottie:6.4.0")
 
-
+    implementation ("com.google.android.material:material:1.12.0")
 
 
 }

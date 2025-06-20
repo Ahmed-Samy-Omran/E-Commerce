@@ -1,5 +1,6 @@
 package com.example.data.repository.reviews
 
+import android.net.Uri
 import android.util.Log
 import com.example.data.models.Resource
 import com.example.data.models.reviews.ReviewModel
@@ -10,10 +11,13 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 import javax.inject.Inject
+
 
 
 class ReviewRepositoryImpl @Inject constructor(
@@ -154,6 +158,44 @@ class ReviewRepositoryImpl @Inject constructor(
     override fun getCurrentUserImageUrl(): String {
         return FirebaseAuth.getInstance().currentUser?.photoUrl?.toString().toString()
     }
+
+    override suspend fun uploadReviewImages(imageUris: List<Uri>): List<String> {
+        // بنجيب instance من Firebase Storage
+        val storage = FirebaseStorage.getInstance()
+
+        // هنا هنخزن روابط الصور بعد ما نرفعها
+        val downloadUrls = mutableListOf<String>()
+
+        // بنمشي على كل صورة الـ Uri بتاعها علشان نرفعها
+        for (uri in imageUris) {
+            // بنولّد اسم عشوائي للصورة باستخدام UUID علشان مايحصلش تعارض في الأسماء
+            val fileName = UUID.randomUUID().toString()
+
+            // بنحدد مكان حفظ الصورة داخل Firebase Storage داخل فولدر اسمه "review_images"
+            val ref = storage.reference.child("review/$fileName")
+
+            try {
+                // بنرفع الصورة إلى Firebase Storage
+                ref.putFile(uri).await()
+
+                // بعد الرفع بنجيب الرابط القابل للمشاركة (Download URL)
+                val url = ref.downloadUrl.await().toString()
+
+                // بنضيف الرابط في الليست
+                downloadUrls.add(url)
+            } catch (e: Exception) {
+                // في حالة وجود خطأ أثناء الرفع، بنطبعه في اللوج
+                Log.e(TAG, "uploadReviewImages: Failed to upload image", e)
+            }
+        }
+
+        // في الآخر بنرجّع ليست فيها روابط الصور اللي اترفعت بنجاح
+        return downloadUrls
+
+    }
+
+
+
     companion object {
         private const val TAG = "ReviewRepositoryImpl"
     }
