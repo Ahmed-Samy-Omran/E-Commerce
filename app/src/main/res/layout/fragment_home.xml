@@ -45,35 +45,61 @@
                         android:orientation="horizontal"
                         android:paddingTop="8dp">
 
-                        <TextView
-                            android:id="@+id/search_tv"
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/fakeSearchBar"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="11"
-                            android:background="@drawable/edit_text_bg"
-                            android:drawablePadding="16dp"
-                            android:padding="16dp"
-                            android:text="@string/search_products"
-                            android:textColor="@color/neutral_grey"
-                            app:drawableStartCompat="@drawable/ic_search" />
+                            android:layout_height="48dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_weight="10"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:layout_width="300dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="16dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_search"
+                                    app:tint="@color/neutral_grey" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="@string/search_products"
+                                    android:textColor="@color/neutral_grey"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
 
                         <ImageButton
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
                             android:background="@color/white"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_favorite" />
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_favorite"
+                            app:tint="@color/neutral_grey" />
 
                         <ImageButton
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
                             android:background="@color/white"
-                            android:padding="8dp"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:padding="3dp"
                             android:src="@drawable/ic_notification" />
 
                     </LinearLayout>
@@ -272,8 +298,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="65dp"
-                        android:gravity="center_horizontal"
                         android:fontFamily="@font/adam"
+                        android:gravity="center_horizontal"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         tools:text="Recommended Product" />
