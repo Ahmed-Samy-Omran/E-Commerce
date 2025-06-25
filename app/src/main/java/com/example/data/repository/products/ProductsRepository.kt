@@ -25,6 +25,8 @@ interface ProductsRepository {
 
     fun listenToProductDetails(productID: String): Flow<ProductModel>
 
+    suspend fun searchProducts(query: String): List<ProductUIModel>
+
 
 
 }

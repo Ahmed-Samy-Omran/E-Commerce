@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.example.ui.explore.fragments.ExploreFragment"
+        android:name="com.example.ui.search.fragments.SearchFragment"
         android:label="Explore"
-        tools:layout="@layout/fragment_explore" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_cart"

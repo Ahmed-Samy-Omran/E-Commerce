@@ -131,7 +131,28 @@ class ProductsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun searchProducts(query: String): List<ProductUIModel> {
+        return try {
+            val snapshot = firestore.collection("products")
 
+                // that code get every thing that starts with query(nike for example)
+                // query + '\uf8ff and that Unicode character make the search get all text start with that query
+                .whereGreaterThanOrEqualTo("name_lowercase", query)
+                .whereLessThanOrEqualTo("name_lowercase", query + '\uf8ff')
+
+
+                .get()
+                .await()
+            // here we convert the documents to ProductModel and then to ProductUIModel to represent it in UI.
+            snapshot.documents.mapNotNull { doc ->
+                doc.toObject(ProductModel::class.java)?.toProductUIModel()
+            }
+        } catch (e: Exception) {
+            //that mean when the search failed that print error in log cat and then return empty list
+            e.printStackTrace()
+            emptyList()
+        }
+    }
 
 
     companion object {

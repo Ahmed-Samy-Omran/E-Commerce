@@ -9,19 +9,15 @@
     import androidx.activity.viewModels
     import androidx.appcompat.app.AppCompatActivity
     import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-    import androidx.core.view.ViewCompat
-    import androidx.core.view.WindowInsetsCompat
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
-    import androidx.navigation.NavController
-    import androidx.navigation.fragment.NavHostFragment
     import com.example.e_commerce.R
     import com.example.e_commerce.databinding.ActivityMainBinding
     import com.example.ui.account.fragments.AccountFragment
     import com.example.ui.common.viewmodel.UserViewModel
     import com.example.ui.auth.AuthActivity
     import com.example.ui.cart.fragments.CartFragment
-    import com.example.ui.explore.fragments.ExploreFragment
+    import com.example.ui.search.fragments.SearchFragment
     import com.example.ui.home.fragments.HomeFragment
     import com.example.ui.offers.fragments.OffersFragment
     import dagger.hilt.android.AndroidEntryPoint
@@ -103,7 +99,7 @@
             binding.navView.setOnMenuItemClickListener { _, index ->
                 when (index) {
                     0 -> replaceFragment(HomeFragment())
-                    1 -> replaceFragment(ExploreFragment())
+                    1 -> replaceFragment(SearchFragment())
                     2 -> replaceFragment(CartFragment())
                     3 -> replaceFragment(OffersFragment())
                     4 -> replaceFragment(AccountFragment())
@@ -170,5 +166,7 @@
         companion object {
             private const val TAG = "MainActivity"
         }
+
+
 
     }

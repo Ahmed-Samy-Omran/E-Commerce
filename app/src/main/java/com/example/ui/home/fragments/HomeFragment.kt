@@ -91,22 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     }
                 }
             }
-        // Observe Flash Sale Products
-//        lifecycleScope.launch {
-//            viewModel.flashSaleState.collect { productsList ->
-//
-//                flashSaleAdapter.submitList(productsList)
-//                binding.invalidateAll()
-//            }
-//
-//        }
 
-//        lifecycleScope.launch {
-//            viewModel.megaSaleState.collect { productsList ->
-//                megaSaleAdapter.submitList(productsList)
-//                binding.invalidateAll()
-//            }
-//        }
 
         lifecycleScope.launch {
             viewModel.flashSaleState.collect { productsList ->
@@ -132,44 +117,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
 
-//        lifecycleScope.launch {
-//            viewModel.recommendedSectionDataState.collectLatest { recommendedSectionData ->
-//                Log.d(TAG, "Recommended section data: $recommendedSectionData")
-//                recommendedSectionData?.let {
-//                    setupRecommendedViewData(it)
-//                } ?: run {
-//                    Log.d(TAG, "Recommended section data is null")
-//                    //                    binding.recommendedProductLayout.visibility = View.GONE
-//                }
-//
-//                viewModel.getNextProducts()
-//                lifecycleScope.launch {
-//                    viewModel.allProductsState.collectLatest { productsList ->
-//                        allProductsAdapter.submitList(productsList)
-//                        binding.invalidateAll()
-//                    }
-//                }
-//            }
-//        }
-
         lifecycleScope.launch {
             viewModel.recommendedSectionDataState.collectLatest { recommendedSectionData ->
 
                 Log.d(TAG, "Recommended section data: $recommendedSectionData")
-
-//                if (recommendedSectionData == null) {
-//                    // Show shimmer for recommended section
-//                    binding.recommendedProductLayout.removeAllViews()
-//                    val shimmer = layoutInflater.inflate(
-//                        R.layout.recommended_product_shimmer,
-//                        binding.recommendedProductLayout,
-//                        false
-//                    )
-//                    binding.recommendedProductLayout.addView(shimmer)
-//                } else {
-//                    // Show actual content
-//                    setupRecommendedViewData(recommendedSectionData)
-//                }
 
 
                 if (recommendedSectionData == null) {
@@ -233,18 +184,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             ShimmerAdapter(6, R.layout.categories_shimmer_view)
     }
 
-//    private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
-//        loadImage(binding.recommendedProductIv, sectionData.image)
-//        binding.recommendedProductTitleIv.text = sectionData.title
-////        binding.recommendedProductDescriptionIv.text = sectionData.description
-//        binding.recommendedProductLayout.setOnClickListener {
-//            Toast.makeText(
-//                requireContext(),
-//                "Recommended Product Clicked, goto ${sectionData.type}",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
 
     private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
         // Stop and hide shimmer
@@ -267,26 +206,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-//    private fun setupRecommendedViewData(sectionData: SpecialSectionUIModel) {
-//        // Stop and hide shimmer
-//        binding.recommendedShimmerView.root.stopShimmer()
-//        binding.recommendedShimmerView.root.visibility = View.GONE
-//
-//        // Show real layout
-//        binding.recommendedProductLayout.visibility = View.VISIBLE
-//
-//        // Populate data
-//        loadImage(binding.recommendedProductIv, sectionData.image)
-//        binding.recommendedProductTitleIv.text = sectionData.title
-//
-//        binding.recommendedProductLayout.setOnClickListener {
-//            Toast.makeText(
-//                requireContext(),
-//                "Recommended Product Clicked, goto ${sectionData.type}",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
+
 
 
     private fun initCategoriesView(data: List<CategoryUIModel>?) {
