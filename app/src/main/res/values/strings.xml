@@ -112,6 +112,19 @@
     <string name="no_result">NO Result</string>
     <string name="thank_you_for_shopping_using_lafyuu">thank you for shopping using lafyuu</string>
     <string name="back_to_home">Back to Home</string>
+    <string name="filter_and_sort_products">Filter and Sort Products</string>
+    <string name="filter_by">Filter by</string>
+    <string name="available_only">Available only</string>
+    <string name="price">Price</string>
+    <string name="rating">Rating</string>
+    <string name="low_to_high">Low to High</string>
+    <string name="high_to_low">High to Low</string>
+    <string name="apply">Apply</string>
+    <string name="sort_by">Sort by</string>
+    <string name="clear_all">Clear All</string>
+    <string name="less_than_3_stars">Less than 3 stars</string>
+    <string name="_3_stars_and_above">3 stars and above</string>
+    <string name="apply_filters">Apply Filters</string>
     <!--    <string name="server_client_id">322843996565-r72jde9qij54q1fbj2frso8n99m3qmr7.apps.googleusercontent.com</string>-->
 
 

@@ -22,11 +22,11 @@
             android:padding="16dp"
             android:visibility="gone">
 
-            <View
-                android:layout_width="80dp"
-                android:layout_height="4dp"
-                android:layout_margin="16dp"
-                android:background="@color/neutral_grey" />
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="4dp"
+                    android:layout_margin="16dp"
+                    android:background="@color/neutral_grey" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/TitleTextStyle"

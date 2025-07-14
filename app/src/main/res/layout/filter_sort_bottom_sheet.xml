@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/forget_password_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="3dp"
+                android:text="@string/filter_and_sort_products"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/clear_filters_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/clear_all"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!-- Title -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="@color/neutral_grey" />
+
+
+        <!-- Row with two columns -->
+
+
+        <!-- Column 1: Filters -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/filter_by"
+                android:textColor="@color/black" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+
+                android:checkedButton="@color/black"
+
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/available_only"
+                android:textColor="@color/black"
+                app:buttonTint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="3dp"
+                android:text="@string/price"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_btn"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="10dp">
+
+
+                <TextView
+                    android:id="@+id/min_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="3dp"
+                    android:layout_weight="0.5"
+                    android:ems="3"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    tools:text="5000 EGP" />
+
+                <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/rangeSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="15"
+
+                    android:valueFrom="50"
+                    android:valueTo="1500"
+
+                    app:thumbColor="@color/white"
+
+                    app:thumbStrokeColor="@color/black"
+                    app:thumbStrokeWidth="1dp"
+                    app:tickColor="@color/neutral_grey"
+
+                    app:trackColorActive="@color/black"
+                    app:trackColorInactive="@color/silver"
+                    app:trackHeight="3dp"
+
+
+                    app:values="@array/default_price_values" />
+
+                <TextView
+                    android:id="@+id/max_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="3dp"
+                    android:ems="3"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    tools:text="5000 EGP" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="3dp"
+                android:text="@string/rating"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_btn"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        style="@style/radio_btn_style"
+
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/less_than_3_stars" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="9dp"
+                        android:background="@color/neutral_grey" />
+
+                    <RadioButton
+                        style="@style/radio_btn_style"
+
+                        android:text="@string/_3_stars_and_above" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="3dp"
+                android:text="@string/sort_by"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_btn"
+              android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        style="@style/radio_btn_style"
+
+                        android:layout_marginEnd="4dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/high_to_low" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="9dp"
+                        android:background="@color/neutral_grey" />
+
+                    <RadioButton
+                        style="@style/radio_btn_style"
+
+                        android:text="@string/low_to_high" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <!--                <RadioGroup-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+
+            <!--                    <RadioButton-->
+            <!--                        android:id="@+id/checkbox_available"-->
+            <!--                        style="@style/CustomRadioButtonStyle"-->
+            <!--                        android:text="@string/available_only" />-->
+
+            <!--                    <RadioButton-->
+            <!--                        android:id="@+id/checkbox_price"-->
+            <!--                        style="@style/CustomRadioButtonStyle"-->
+            <!--                        android:text="@string/price"-->
+
+            <!--                        />-->
+
+            <!--                    <RadioButton-->
+            <!--                        android:id="@+id/checkbox_rate"-->
+            <!--                        style="@style/CustomRadioButtonStyle"-->
+            <!--                        android:text="@string/rating"-->
+
+            <!--                        />-->
+
+            <!--                </RadioGroup>-->
+
+
+        </LinearLayout>
+
+        <!-- Column 2: Sort -->
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:orientation="vertical"-->
+        <!--                android:paddingStart="8dp">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginStart="5dp"-->
+        <!--                    android:fontFamily="@font/poppins_bold"-->
+        <!--                    android:paddingBottom="8dp"-->
+        <!--                    android:text="@string/sort_by" />-->
+
+        <!--                <RadioGroup-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content">-->
+
+        <!--                    <RadioButton-->
+        <!--                        android:id="@+id/checkbox_sort_price_low"-->
+        <!--                        style="@style/CustomRadioButtonStyle"-->
+        <!--                        android:text="@string/low_to_high" />-->
+
+
+        <!--                    &lt;!&ndash;                <CheckBox&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    android:id="@+id/checkbox_price_high"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;     0               android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    android:text="High to Low" />&ndash;&gt;-->
+
+        <!--                    <RadioButton-->
+        <!--                        android:id="@+id/checkbox_sort_price_high"-->
+        <!--                        style="@style/CustomRadioButtonStyle"-->
+        <!--                        android:text="@string/high_to_low" />-->
+
+        <!--                </RadioGroup>-->
+
+
+        <!--            </LinearLayout>-->
+
+
+        <!-- Apply Button -->
+        <Button
+            android:id="@+id/apply_filters_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="14dp"
+            android:padding="5dp"
+            android:fontFamily="@font/poppins_regular"
+            android:backgroundTint="@color/black"
+            android:text="@string/apply_filters"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
+</layout>

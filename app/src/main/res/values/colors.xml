@@ -9,4 +9,8 @@
     <color name="primary_red">#FB7181</color>
     <color name="primary_yellow">#FFC833</color>
     <color name="yellow">#FFDF00</color>
+    <color name="light_grey">#F8F8F8</color>
+    <color name="your_accent_color_alpha">#33FF4081</color>
+
+    <color name="silver">#c0c0c0 </color>
 </resources>

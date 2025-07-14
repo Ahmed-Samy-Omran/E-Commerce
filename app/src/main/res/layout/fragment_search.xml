@@ -81,6 +81,19 @@
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
+
+                        <ImageButton
+                            android:id="@+id/filter_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@color/white"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:padding="3dp"
+                            android:src="@drawable/filter_ic"
+                            app:tint="@color/neutral_grey" />
+
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -91,16 +104,7 @@
                             android:src="@drawable/sort_ic"
                             app:tint="@color/neutral_grey" />
 
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/white"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
-                            android:padding="3dp"
-                            android:src="@drawable/filter_ic"
-                            app:tint="@color/neutral_grey" />
+
                     </LinearLayout>
 
                 </androidx.appcompat.widget.Toolbar>
