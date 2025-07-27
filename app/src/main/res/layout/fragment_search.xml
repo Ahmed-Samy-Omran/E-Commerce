@@ -48,6 +48,7 @@
                             app:cardElevation="4dp">
 
                             <LinearLayout
+
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical"
@@ -58,6 +59,7 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
+                                    android:contentDescription="@string/search_icon"
                                     android:src="@drawable/ic_search"
                                     app:tint="@color/neutral_grey" />
 
@@ -89,19 +91,10 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="16dp"
                             android:background="@color/white"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
-                            android:padding="3dp"
-                            android:src="@drawable/filter_ic"
-                            app:tint="@color/neutral_grey" />
+                            android:contentDescription="@string/filter_button"
 
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:background="@color/white"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
-                            android:padding="3dp"
-                            android:src="@drawable/sort_ic"
+                            android:foreground="?attr/selectableItemBackground"                            android:padding="3dp"
+                            android:src="@drawable/filter_ic"
                             app:tint="@color/neutral_grey" />
 
 
@@ -130,12 +123,12 @@
 
                 <TextView
                     android:id="@+id/num_of_result"
-                    android:textColor="@color/neutral_grey"
-                    android:fontFamily="@font/poppins_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="14dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/neutral_grey"
                     tools:text="145 Result" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -143,21 +136,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:paddingStart="15dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:layout_marginEnd="5dp"
                     tools:listitem="@layout/product_item_layout" />
 
                 <LinearLayout
                     android:id="@+id/emptyLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:visibility="gone"
                     android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
                     android:padding="24dp"
-                    >
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="72dp"
@@ -167,45 +159,30 @@
                         android:src="@drawable/not_found_ic" />
 
                     <TextView
+                        style="@style/TitleTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/product_not_found"
-                        android:textSize="22sp"
 
-                        style="@style/TitleTextStyle"
-                        />
+                        android:textSize="22sp" />
 
                     <TextView
+                        style="@style/MessageTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/thank_you_for_shopping_using_lafyuu"
                         android:layout_marginTop="5dp"
-                        style="@style/MessageTextStyle"
-                        />
-
-<!--                    <Button-->
-<!--                        android:id="@+id/bacK_home_btn"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:paddingVertical="10dp"-->
-<!--                        android:text="@string/back_to_home"-->
-<!--                        android:background="@drawable/write_review_bg"/>-->
-
+                        android:text="@string/thank_you_for_shopping_using_lafyuu" />
 
 
                 </LinearLayout>
-
-
-
-
 
 
             </LinearLayout>
 
 
         </androidx.core.widget.NestedScrollView>
+
         <FrameLayout
             android:id="@+id/loadingOverlay"
             android:layout_width="match_parent"

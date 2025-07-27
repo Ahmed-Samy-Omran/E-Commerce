@@ -16,6 +16,7 @@ data class ProductUIModel(
     val images: List<String>,        // Image URLs can also be an empty list if there are no images.
     val price: Int,                  // Presenting price as a non-nullable Int for simplicity in UI calculations and display.
     val priceAfterSale: Int? = null,      // Default price after sale is 0.
+    val inStock:Boolean,
     val salePercentage: Int?,       // Offer percentage can be nullable to indicate no current offers.
     val saleType: String?,           // Sale type can be nullable if not all products are on sale.
     val colors: List<ProductColorUIModel>,      // Colors can be an empty list if no color options are available.

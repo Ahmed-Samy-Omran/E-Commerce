@@ -159,37 +159,6 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
 
-//    fun addReview(productId: String, reviewText: String, rating: Int) {
-//
-//        // Prevent duplicate review submission
-//        if (_existingUserReview.value != null) {
-//            _error.value = "You have already submitted a review for this product."
-//            return
-//        }
-//
-//        val reviewUIModel = ReviewUIModel(
-//            id = "", // Firestore will generate it
-//            userId = getCurrentUserId(),                  // <-- Add this line
-//            userName = getCurrentUserName(),
-//            imageUrl = getCurrentUserImageUrl(),
-//            rating = rating,
-//            reviewText = reviewText,
-//            reviewImages = emptyList(),
-//            formattedDate = ""
-//        )
-//
-//        viewModelScope.launch {
-//            when (val result = reviewRepository.addReview(productId, reviewUIModel)) {
-//                is Resource.Success -> {
-//                    _addReviewResult.value = true
-//                    fetchReviews()
-//                    checkIfUserReviewed() // Refresh to prevent duplicate again
-//                }
-//                is Resource.Error -> _error.value = result.exception?.message
-//                else -> {}
-//            }
-//        }
-//    }
 
     fun addReview(productId: String, reviewText: String, rating: Int) {
         // Prevent duplicate review submission

@@ -21,6 +21,7 @@ data class ProductModel(
 
     var price: Int? = null,
     var rate: Float? = null,
+    var inStock: Boolean? = null,
 
     @get:PropertyName("sale_percentage")
     @set:PropertyName("sale_percentage")

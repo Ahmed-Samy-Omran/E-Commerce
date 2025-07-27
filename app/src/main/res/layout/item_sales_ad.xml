@@ -36,11 +36,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/adam"
 
+            tools:text="@string/low_to_high"
             android:text="@{salesAd.title}"
             android:textColor="@android:color/white"
             android:textSize="20sp"
@@ -52,13 +53,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="12dp"
             android:orientation="horizontal">
 
             <com.example.utils.FlipClockDigit
                 android:id="@+id/hoursTextView"
                 style="@style/SaleTimerItemTextStyle"
                 app:countdownTimer="@{salesAd.hours}"
+                android:layout_gravity="center"
 
                 app:lifecycleScope="@{lifecycleScope}" />
             <!--android:background="@drawable/flip_card_background"    -->
@@ -76,6 +78,8 @@
                 android:id="@+id/minutesTextView"
                 style="@style/SaleTimerItemTextStyle"
                 app:countdownTimer="@{salesAd.minutes}"
+                android:layout_gravity="center"
+
                 app:lifecycleScope="@{lifecycleScope}" />
 
             <TextView
@@ -91,6 +95,8 @@
             <com.example.utils.FlipClockDigit
                 android:id="@+id/secondsTextView"
                 style="@style/SaleTimerItemTextStyle"
+                android:layout_gravity="center"
+
                 app:countdownTimer="@{salesAd.seconds}"
                 app:lifecycleScope="@{lifecycleScope}" />
         </LinearLayout>

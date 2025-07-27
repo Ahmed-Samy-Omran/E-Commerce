@@ -109,10 +109,10 @@
 
         <item name="android:inAnimation">@anim/flip_in</item>
         <item name="android:outAnimation">@anim/flip_out</item>
-        <item name="android:layout_height">42dp</item>
-        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_width">35dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="fontFamily">@font/poppins_bold</item>

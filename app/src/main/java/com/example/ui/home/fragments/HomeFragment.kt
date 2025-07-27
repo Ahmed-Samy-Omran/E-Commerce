@@ -1,11 +1,16 @@
 package com.example.ui.home.fragments
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -17,6 +22,7 @@ import com.example.ui.common.views.CircleView
 import com.example.ui.common.views.loadImage
 import com.example.ui.common.views.sliderIndicatorsView
 import com.example.ui.common.views.updateIndicators
+import com.example.ui.home.MainActivity
 import com.example.ui.home.adapter.CategoriesAdapter
 import com.example.ui.home.adapter.ShimmerAdapter
 import com.example.ui.home.adapter.SalesAdAdapter
@@ -29,10 +35,12 @@ import com.example.ui.products.ProductDetailsActivity.Companion.PRODUCT_UI_MODEL
 import com.example.ui.products.adapter.ProductAdapter
 import com.example.ui.products.adapter.ProductViewType
 import com.example.ui.products.model.ProductUIModel
+import com.example.ui.search.fragments.SearchFragment
 import com.example.utils.DepthPageTransformer
 import com.example.utils.GridSpacingItemDecoration
 import com.example.utils.HorizontalSpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
@@ -50,7 +58,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun init() {
         initViews()
         iniViewModel()
+//        binding.searchEt.setOnClickListener {
+//            if (findNavController().currentDestination?.id == R.id.navigation_home)  {
+//                findNavController().navigate(R.id.action_navigation_home_to_navigation_search)
+//            } else {
+//                Log.w(TAG, "Attempted to navigate from HomeFragment but not currently on home destination.")
+//            }
+//        }
+
+        binding.searchEt.setOnClickListener {
+            try {
+                 //
+                (requireActivity() as? MainActivity)?.navigateToSearchTab()
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "Navigation to search failed: ${e.message}")
+                Toast.makeText(requireContext(), "Navigation failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        binding.searchEt.setOnClickListener {
+//         try {
+//             findNavController().navigate(R.id.action_navigation_home_to_navigation_search)
+//         }
+//         catch (e: Exception) {
+//             Log.e(TAG, "Navigation to search failed: ${e.message}")
+//             Toast.makeText(requireContext(), "Navigation failed", Toast.LENGTH_SHORT).show()
+//         }
+//        }
+//    }
 
     private fun iniViewModel() {
         lifecycleScope.launch {
@@ -291,9 +331,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             })
         }
 
-        lifecycleScope.launch(IO) {
-            tickerFlow(5000).collect {
-                withContext(Main) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                tickerFlow(5000).collect {
                     binding.saleAdsViewPager.setCurrentItem(
                         (binding.saleAdsViewPager.currentItem + 1) % salesAds.size, true
                     )

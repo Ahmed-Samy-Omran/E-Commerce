@@ -58,10 +58,13 @@
                             app:cardElevation="4dp">
 
                             <LinearLayout
+                                android:id="@+id/search_et"
                                 android:layout_width="300dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
+                                android:clickable="true"
+                                android:focusable="true"
                                 android:paddingStart="16dp">
 
                                 <ImageView
@@ -297,7 +300,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="65dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/adam"
                         android:gravity="center_horizontal"
                         android:textColor="@android:color/white"

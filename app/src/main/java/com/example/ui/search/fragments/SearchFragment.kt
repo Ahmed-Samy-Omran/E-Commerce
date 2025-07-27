@@ -59,8 +59,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         setupRecyclerView()
         observeSearchState()
         setupSearchListener()
+        openFilterBottomSheet()
+
+
+
 //        setupBackToHomeButton()
     }
+
+    private fun openFilterBottomSheet() {
+       binding.filterBtn.setOnClickListener{
+           val filterBottomSheet = FilterSortBottomSheet{options->
+               viewModel.applyFiltersAndSort(options)
+           }
+           // If you're inside an Activity, use supportFragmentManager that used for make bottomSheet dialog appear `
+           filterBottomSheet.show(parentFragmentManager, "filter")
+       }
+    }
+
 
 //    private fun setupBackToHomeButton() {
 //        binding.bacKHomeBtn.setOnClickListener {
@@ -162,20 +177,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchFlow
-                    .debounce(300) // ✅ استنى    500 ملي ثانية بعد آخر كتابة
-                    .distinctUntilChanged() // ✅ ما تبعتش نفس الكلمة مرتين
-                    .collectLatest { query -> // when the user types something, we will collect the latest value and cancel the previous one
-                        if (query.isNotBlank()) { // ✅ لو الكلمة مش فاضيةsend the query to the viewModel
-                            viewModel.searchProducts(query)
-                        }
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        searchFlow
+                            .debounce(300) // ✅ استنى    500 ملي ثانية بعد آخر كتابة
+                            .distinctUntilChanged() // ✅ ما تبعتش نفس الكلمة مرتين
+                            .collectLatest { query -> // when the user types something, we will collect the latest value and cancel the previous one
+                                if (query.isNotBlank()) { // ✅ لو الكلمة مش فاضيةsend the query to the viewModel
+                                    viewModel.searchProducts(query)
+                                }
 //                        else {
 //                            searchAdapter.submitList(emptyList())
 //                            binding.searchRecyclerView.isVisible = false
 //                            binding.emptyLayout.isVisible = true
 //                        }
-                    }
+                            }
             }
 
         }

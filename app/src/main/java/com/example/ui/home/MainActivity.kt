@@ -11,6 +11,8 @@
     import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
+    import androidx.navigation.findNavController
+    import androidx.navigation.fragment.NavHostFragment
     import com.example.e_commerce.R
     import com.example.e_commerce.databinding.ActivityMainBinding
     import com.example.ui.account.fragments.AccountFragment
@@ -33,6 +35,7 @@
         private var _binding: ActivityMainBinding? = null
         private val binding get() = _binding!!
         private val userViewModel: UserViewModel by viewModels()
+        private lateinit var menuItems: Array<CbnMenuItem>
 
 
 
@@ -53,19 +56,33 @@
                     return@launch
                 }
 
-                // Load initial fragment
-                if (savedInstanceState == null) {
-                    replaceFragment(HomeFragment())
-                }
 
                 setupBottomNavigation()
                 initViewModel()
+
             }
         }
+
+        // ✅ دالة نستخدمها لو حبيت تنتقل لعلامة Search من أي مكان في التطبيق
+        fun navigateToSearchTab() {
+            val navController = findNavController(R.id.nav_host_fragment)
+
+            // اعرف Index بتاع search (بما إنك حافظ الترتيب)
+            val searchIndex = 1
+
+            // غير التاب في BottomNavigation
+            binding.navView.setMenuItems(menuItems, searchIndex)
+
+            // روح لـ SearchFragment لو مش فيه حاليًا
+            if (navController.currentDestination?.id != R.id.navigation_search) {
+                navController.navigate(R.id.navigation_search)
+            }
+        }
+
         private fun setupBottomNavigation() {
 
             // Setup bottom navigation
-            val menuItems = arrayOf(
+            menuItems = arrayOf(
                 CbnMenuItem(
                     R.drawable.ic_home,
                     R.drawable.avd_home, // Using same drawable to avoid AVD requirement
@@ -74,7 +91,7 @@
                 CbnMenuItem(
                     R.drawable.ic_search,
                     R.drawable.avd_search,
-                    R.id.navigation_explore
+                    R.id.navigation_search
                 ),
                 CbnMenuItem(
                     R.drawable.ic_cart,
@@ -92,27 +109,45 @@
                     R.id.navigation_account
                 )
             )
-
             binding.navView.setMenuItems(menuItems, 0)
 
-            // Handle navigation clicks
+            val navController = findNavController(R.id.nav_host_fragment)
+
             binding.navView.setOnMenuItemClickListener { _, index ->
-                when (index) {
-                    0 -> replaceFragment(HomeFragment())
-                    1 -> replaceFragment(SearchFragment())
-                    2 -> replaceFragment(CartFragment())
-                    3 -> replaceFragment(OffersFragment())
-                    4 -> replaceFragment(AccountFragment())
+                val destinationId = when (index) {
+                    0 -> R.id.navigation_home
+                    1 -> R.id.navigation_search
+                    2 -> R.id.navigation_cart
+                    3 -> R.id.navigation_offer
+                    4 -> R.id.navigation_account
+                    else -> return@setOnMenuItemClickListener
+                }
+
+                // ✅ ما تروحش لنفس الوجهة اللي أنت فيها أصلًا
+                if (navController.currentDestination?.id != destinationId) {
+                    navController.navigate(destinationId)
                 }
             }
+
+            // Handle navigation clicks by manual
+//            binding.navView.setOnMenuItemClickListener { _, index ->
+//                when (index) {
+//                    0 -> replaceFragment(HomeFragment())
+//                    1 -> replaceFragment(SearchFragment())
+//                    2 -> replaceFragment(CartFragment())
+//                    3 -> replaceFragment(OffersFragment())
+//                    4 -> replaceFragment(AccountFragment())
+//                }
+//            }
         }
 
 
-        private fun replaceFragment(fragment: Fragment) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit()
-        }
+//        private fun replaceFragment(fragment: Fragment) {
+//            supportFragmentManager.beginTransaction()
+////                .replace(R.id.fragment_container, fragment)
+//                .replace(R.id.nav_host_fragment, fragment)
+//                .commit()
+//        }
 
 
         private fun initViewModel() {

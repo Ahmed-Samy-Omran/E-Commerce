@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="product"
+            type="com.example.ui.products.model.ProductUIModel" />
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="18dp"
 
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/clear_all"
@@ -41,7 +49,7 @@
 
         </LinearLayout>
 
-        <!-- Title -->
+
 
         <View
             android:layout_width="match_parent"
@@ -159,8 +167,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/transparent_btn"
                 android:layout_gravity="center_vertical"
+                android:background="@drawable/transparent_btn"
                 android:orientation="horizontal">
 
                 <RadioGroup
@@ -170,6 +178,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
+                        android:id="@+id/radio_less_than_3_stars"
                         style="@style/radio_btn_style"
 
                         android:layout_marginEnd="4dp"
@@ -184,6 +193,7 @@
                         android:background="@color/neutral_grey" />
 
                     <RadioButton
+                        android:id="@+id/radio_3_stars_and_above"
                         style="@style/radio_btn_style"
 
                         android:text="@string/_3_stars_and_above" />
@@ -205,8 +215,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/transparent_btn"
-              android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <RadioGroup
@@ -217,6 +227,8 @@
                     android:orientation="horizontal">
 
                     <RadioButton
+                        android:id="@+id/radio_btn_high_to_low"
+
                         style="@style/radio_btn_style"
 
                         android:layout_marginEnd="4dp"
@@ -231,6 +243,7 @@
                         android:background="@color/neutral_grey" />
 
                     <RadioButton
+                        android:id="@+id/radio_btn_low_to_high"
                         style="@style/radio_btn_style"
 
                         android:text="@string/low_to_high" />
@@ -320,9 +333,9 @@
             android:layout_height="wrap_content"
 
             android:layout_marginTop="14dp"
-            android:padding="5dp"
-            android:fontFamily="@font/poppins_regular"
             android:backgroundTint="@color/black"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="5dp"
             android:text="@string/apply_filters"
             android:textColor="@android:color/white" />
 

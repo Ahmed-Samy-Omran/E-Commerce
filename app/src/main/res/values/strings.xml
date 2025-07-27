@@ -125,6 +125,8 @@
     <string name="less_than_3_stars">Less than 3 stars</string>
     <string name="_3_stars_and_above">3 stars and above</string>
     <string name="apply_filters">Apply Filters</string>
+    <string name="filter_button">Filter Button</string>
+    <string name="search_icon">Search Icon</string>
     <!--    <string name="server_client_id">322843996565-r72jde9qij54q1fbj2frso8n99m3qmr7.apps.googleusercontent.com</string>-->
 
 
